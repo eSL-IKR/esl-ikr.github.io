@@ -59,7 +59,7 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
   const links = [
     { label:'Utama', Icon:Home, run:onHome },
     { label:'Semester', Icon:BookOpen, run:onSemester },
-    { label:'Makmal', Icon:Box, run:()=>onLab('') },
+    { label:'Makmal', Icon:Box, run:()=>window.dispatchEvent(new Event('esl:open-lab-chooser')) },
     { label:'Carian', Icon:Search, run:showSearch },
   ];
 
@@ -85,7 +85,7 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
       <span className="studio-symbols" role="img" aria-label="Kod, pelayan dan pangkalan data">
         <Code2 size={20} /><Server size={20} /><Database size={20} />
       </span>
-      <button type="button" className="studio-lab-link" onClick={() => onLab('')}><Box size={15} aria-hidden="true" /><span>Makmal PC 3D</span></button>
+      <button type="button" className="studio-lab-link" onClick={() => window.dispatchEvent(new Event('esl:open-lab-chooser'))}><Box size={15} aria-hidden="true" /><span>Pilihan Makmal 3D</span></button>
       <div className="studio-tools"><ProgressBackup /><ThemeToggle /></div>
       <span className="studio-learning"><GraduationCap size={18} aria-hidden="true" />Pusat E-Pembelajaran</span>
     </nav>

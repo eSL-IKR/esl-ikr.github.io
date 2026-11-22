@@ -18,6 +18,12 @@ export default function PortalHero() {
   const chooserTriggerRef = useRef(null);
   const chooserDialogRef = useRef(null);
   const chooserFirstLinkRef = useRef(null);
+  // All generic Makmal links (desktop + phone) open the same 2-lab chooser.
+  useEffect(() => {
+    const openChooser = () => setChooserOpen(true);
+    window.addEventListener('esl:open-lab-chooser', openChooser);
+    return () => window.removeEventListener('esl:open-lab-chooser', openChooser);
+  }, []);
 
   useEffect(() => {
     if (!isChooserOpen) return undefined;

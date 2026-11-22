@@ -1,4 +1,3 @@
-
 name: Deploy eSL-IKR to GitHub Pages
 
 on:
@@ -17,36 +16,49 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  upload:
-    name: Upload Website
+  build:
+    name: Build and upload website
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build latest React portal
+        run: npm run build
+
+      - name: Verify both simulator pages
+        shell: bash
+        run: |
+          test -f dist/index.html
+          test -f dist/pclab/index.html
+          test -f dist/structured-cabling/index.html
+          test -f dist/assets/makmal-pc-3d.webp
+          test -f dist/assets/structured-cabling-3d.webp
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Verify Website Files
-        run: |
-          test -f dist/index.html
-          echo "eSL-IKR website files found."
-
-      - name: Upload GitHub Pages Artifact
+      - name: Upload website artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 
   deploy:
-    name: Deploy Website
-    needs: upload
+    name: Deploy website
+    needs: build
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

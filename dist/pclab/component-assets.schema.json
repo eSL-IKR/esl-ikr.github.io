@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "eSL-IKR Component Asset Registry",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "count",
+    "categories",
+    "items",
+    "assetPolicy",
+    "attribution",
+    "baseProductCount",
+    "syntheticVisualVariantCount"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "categories": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "label",
+          "defaultTransform"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "defaultTransform": {
+            "$ref": "#/$defs/transform"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "baseAndOpenDbProducts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "visualVariants": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    },
+    "assetPolicy": {
+      "type": "object"
+    },
+    "attribution": {
+      "type": "object"
+    },
+    "baseProductCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "syntheticVisualVariantCount": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "vec3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "position",
+        "rotationDeg",
+        "scale",
+        "fit"
+      ],
+      "properties": {
+        "anchor": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/vec3"
+        },
+        "rotationDeg": {
+          "$ref": "#/$defs/vec3"
+        },
+        "scale": {
+          "$ref": "#/$defs/vec3"
+        },
+        "fit": {
+          "type": "string",
+          "enum": [
+            "contain",
+            "fill",
+            "none"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "item": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "name",
+        "modelUrl",
+        "expectedModelPath",
+        "format",
+        "renderer",
+        "transform",
+        "source",
+        "sourceProductId",
+        "variantOf",
+        "isVisualVariant",
+        "price",
+        "priceCurrency",
+        "priceIsEstimate",
+        "dimensions",
+        "compatibility",
+        "specifications"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "modelUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expectedModelPath": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string",
+          "const": "glb"
+        },
+        "renderer": {
+          "type": "string",
+          "enum": [
+            "procedural",
+            "glb"
+          ]
+        },
+        "transform": {
+          "$ref": "#/$defs/transform"
+        },
+        "sourceProductId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "variantOf": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isVisualVariant": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "priceCurrency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "priceIsEstimate": {
+          "type": "boolean"
+        },
+        "dimensions": {
+          "type": "object"
+        },
+        "compatibility": {
+          "type": "object"
+        },
+        "specifications": {
+          "type": "object"
+        },
+        "modelTag": {
+          "type": "string"
+        },
+        "priceNote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

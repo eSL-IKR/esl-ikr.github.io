@@ -1,0 +1,36 @@
+/* Tema gelap/cerah eModul IKR. Atribut data-theme pada <html> ditetapkan oleh src/theme.js.
+   Mod cerah ialah rupa asal portal; mod gelap menimpa warna utiliti Tailwind (lihat bahagian dijana di bawah). */
+@layer theme, base, components, utilities;
+
+:root { color-scheme: light; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --dk-page: #0b1220;
+  --dk-surface: #111a2e;
+  --dk-raise: #18233a;
+  --dk-line: #25324d;
+  --dk-line-2: #36456a;
+}
+
+html[data-theme="dark"] body {
+  background-color: var(--dk-page);
+  color: #e5ebf5;
+}
+
+/* Jalur Makmal PC dalam portal (portal-pro.css) */
+html[data-theme="dark"] .pp-lab-card { background: var(--dk-surface); border-color: var(--dk-line); }
+html[data-theme="dark"] .pp-lab-card:hover { border-color: #6366f1; }
+html[data-theme="dark"] .pp-lab-icon { background: linear-gradient(135deg, #1e1b4b, #312e81); color: #c7d2fe; }
+html[data-theme="dark"] .pp-lab-card h3 { color: #f1f5f9; }
+html[data-theme="dark"] .pp-lab-card p { color: #b4c0d3; }
+html[data-theme="dark"] .pp-lab-card .pp-go { color: #a5b4fc; }
+
+/* Elemen borang pada halaman modul */
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select { color-scheme: dark; }
+
+@media print {
+  html[data-theme="dark"] body { background: #fff; color: #000; }
+}

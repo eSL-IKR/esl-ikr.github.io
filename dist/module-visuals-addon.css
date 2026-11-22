@@ -1,0 +1,46 @@
+
+/* Fixed, accessible two-column layout: selector LEFT, photo ON TOP of summary in RIGHT panel */
+.ikr-photo-guide-v2{isolation:isolate;display:grid;grid-template-columns:minmax(270px,.87fr) minmax(0,1.13fr);margin:clamp(20px,2vw,32px) auto 12px;max-width:1180px;width:calc(100% - 24px);min-width:0;overflow:hidden;border:1px solid #284055;border-radius:18px;background:#102337;color:#ecf6fa;box-shadow:0 14px 30px rgba(2,12,22,.10)}
+.ikr-photo-guide-v2 .ikr-guide-index{min-width:0;padding:clamp(17px,2.1vw,26px);background:linear-gradient(150deg,#142f40,#102436)}
+.ikr-photo-guide-v2 .ikr-guide-eyebrow{display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:10px;letter-spacing:1.35px;font-weight:850;color:#8ce4d7}
+.ikr-photo-guide-v2 .ikr-guide-index h2{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:clamp(17px,1.8vw,21px);line-height:1.32;font-weight:850;color:#fff;letter-spacing:-.3px}
+.ikr-photo-guide-v2 .ikr-guide-index h2 svg{width:21px;height:21px;flex:none;color:#8ce4d7}
+.ikr-photo-guide-v2 .ikr-guide-heading>p{margin:0 0 15px;font-size:12px;color:#b6ccd9;line-height:1.6}
+.ikr-photo-guide-v2 .ikr-guide-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:355px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#3c6575 transparent;padding:2px 3px 3px 0}
+.ikr-photo-guide-v2 .ikr-guide-options button{display:flex;align-items:center;gap:9px;min-width:0;min-height:57px;padding:7px;text-align:left;border-radius:11px;border:1px solid #36566a;background:#203c50;color:#f1f8fa;cursor:pointer;transition:border-color .16s,background .16s,transform .16s}
+.ikr-photo-guide-v2 .ikr-guide-options button:hover{border-color:#7bdbcc;background:#274e5b;transform:translateY(-1px)}
+.ikr-photo-guide-v2 .ikr-guide-options button[aria-pressed=true]{border-color:#8aefdf;background:#ccf5e9;color:#143e43;box-shadow:inset 0 0 0 1px #60cdbc}
+.ikr-photo-guide-v2 .ikr-guide-options button:focus-visible,.ikr-photo-guide-v2 .ikr-guide-controls button:focus-visible,.ikr-photo-guide-v2 .ikr-guide-source:focus-visible{outline:3px solid #f8c86b;outline-offset:2px}
+.ikr-photo-guide-v2 .ikr-thumb{flex:0 0 53px;width:53px;height:43px;border-radius:7px;background:#f5f7f8;overflow:hidden;display:grid;place-items:center;border:1px solid #cedfe7}
+.ikr-photo-guide-v2 .ikr-thumb>img{width:100%;height:100%;object-fit:contain;display:block}
+.ikr-photo-guide-v2 .ikr-option-copy{display:block;min-width:0;flex:1}
+.ikr-photo-guide-v2 .ikr-option-copy strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.3;font-weight:750}
+.ikr-photo-guide-v2 .ikr-option-copy small{display:block;font-size:10px;opacity:.7;margin-top:3px}
+.ikr-photo-guide-v2 .ikr-guide-small-note{display:flex;align-items:start;gap:7px;margin:14px 0 0;font-size:11px;color:#9fbac9;line-height:1.48}
+.ikr-photo-guide-v2 .ikr-guide-small-note svg{flex:0 0 14px;margin-top:1px}
+.ikr-photo-guide-v2 .ikr-guide-detail{display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:0;margin:0;background:#edf4f6;color:#163447}
+.ikr-photo-guide-v2 .ikr-photo-visual{position:relative;display:grid;place-items:center;flex:0 0 auto;min-height:280px;height:clamp(285px,32vw,420px);padding:20px;background:#fff;overflow:hidden;border-bottom:1px solid #d6e4e8}
+.ikr-photo-guide-v2 .ikr-photo-visual>img{width:100%;height:100%;max-width:100%;max-height:100%;display:block;object-fit:contain;object-position:center}
+.ikr-photo-guide-v2 .ikr-picture-badge{position:absolute;top:12px;right:12px;padding:5px 9px;border-radius:99px;border:1px solid #d3e1e7;background:#fffffff1;color:#46616f;font-size:10px;font-weight:750;pointer-events:none}
+.ikr-photo-guide-v2 .ikr-guide-detail figcaption{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:18px 22px 20px;background:#eef6f6;min-width:0;flex:1}
+.ikr-photo-guide-v2 .ikr-guide-caption-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ikr-photo-guide-v2 .ikr-guide-caption-top>div{min-width:0;display:flex;flex-direction:column;gap:4px}
+.ikr-photo-guide-v2 .ikr-guide-caption-kicker{color:#44777a;font-size:10px;font-weight:850;letter-spacing:1.5px}
+.ikr-photo-guide-v2 .ikr-guide-detail strong{display:block;color:#153c48;font-size:clamp(16px,1.6vw,21px);line-height:1.32;font-weight:850;overflow-wrap:anywhere}
+.ikr-photo-guide-v2 .ikr-guide-counter{white-space:nowrap;color:#436575;background:#deeded;padding:5px 8px;border-radius:8px;font-size:11px;font-weight:850}
+.ikr-photo-guide-v2 .ikr-guide-detail figcaption>p{color:#32505f;font-size:13px;line-height:1.63;margin:0}
+.ikr-photo-guide-v2 .ikr-guide-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #d3e4e4;padding-top:11px;margin-top:auto}
+.ikr-photo-guide-v2 .ikr-guide-image-kind{font-size:11px;color:#55707b;line-height:1.4;min-width:0}
+.ikr-photo-guide-v2 .ikr-guide-image-kind b{color:#1f5363}
+.ikr-photo-guide-v2 .ikr-guide-controls{display:flex;gap:6px;flex:0 0 auto}
+.ikr-photo-guide-v2 .ikr-guide-controls button{width:36px;height:34px;display:grid;place-items:center;color:#194758;border:1px solid #bbd2d8;background:white;border-radius:9px;cursor:pointer}
+.ikr-photo-guide-v2 .ikr-guide-controls button:hover{background:#d6f4ee;border-color:#68baac}
+.ikr-photo-guide-v2 .ikr-guide-source{display:inline-flex;gap:5px;align-items:center;align-self:flex-start;color:#245678;text-decoration:underline;text-underline-offset:2px;font-size:11px;font-weight:700}
+.ikr-photo-guide-v2 .ikr-photo-unavailable{display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;color:#567583;text-align:center;font-size:12px;max-width:270px;line-height:1.5}
+.ikr-photo-guide-v2 .ikr-photo-unavailable.is-small span{display:none}
+@media(max-width:890px){.ikr-photo-guide-v2 .ikr-guide-options{grid-template-columns:1fr}.ikr-photo-guide-v2{grid-template-columns:minmax(190px,.85fr) minmax(0,1.15fr)}.ikr-photo-guide-v2 .ikr-thumb{width:42px;flex-basis:42px}.ikr-photo-guide-v2 .ikr-guide-index{padding:15px}.ikr-photo-guide-v2 .ikr-photo-visual{height:300px;min-height:240px}}
+@media(max-width:680px){.ikr-photo-guide-v2{grid-template-columns:1fr;width:calc(100% - 16px);margin:16px auto;border-radius:15px}.ikr-photo-guide-v2 .ikr-guide-options{grid-template-columns:repeat(2,minmax(0,1fr));max-height:225px}.ikr-photo-guide-v2 .ikr-guide-options button{min-height:55px}.ikr-photo-guide-v2 .ikr-guide-index{padding:15px}.ikr-photo-guide-v2 .ikr-photo-visual{height:clamp(235px,65vw,350px);min-height:235px}.ikr-photo-guide-v2 .ikr-guide-detail figcaption{padding:15px 17px 18px}}
+@media(max-width:390px){.ikr-photo-guide-v2 .ikr-guide-options{grid-template-columns:1fr 1fr;gap:6px}.ikr-photo-guide-v2 .ikr-thumb{width:37px;height:38px;flex-basis:37px}.ikr-photo-guide-v2 .ikr-option-copy strong{font-size:10px}.ikr-photo-guide-v2 .ikr-guide-index h2{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.ikr-photo-guide-v2 .ikr-guide-options button{transition:none}.ikr-photo-guide-v2 .ikr-guide-options button:hover{transform:none}}
+
+.ikr-photo-guide-v2 .ikr-thumb-missing{width:100%;height:100%;display:grid;place-items:center;color:#bcd0d8;background:#1f3341;font-size:22px;font-weight:800}

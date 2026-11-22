@@ -1,0 +1,26 @@
+:root{--bg:#0a0f18;--panel:#111926;--panel2:#162131;--line:#243247;--txt:#e6edf6;--mut:#8ea0b8;--cy:#35d0e6;--cy2:#1b8fa3;--ok:#4cc38a;--bad:#ef6a6a;--warn:#f0b24b;--r:10px;
+ --f:Inter,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--f);font-size:15px;overflow:hidden;-webkit-tap-highlight-color:transparent}
+#app{position:fixed;inset:0;display:grid;grid-template-columns:320px 1fr;grid-template-rows:1fr auto;grid-template-areas:"mission viewport" "mission dock"}
+#viewport{grid-area:viewport;position:relative;min-height:0;background:radial-gradient(ellipse at 50% 30%,#16233a,#0a0f18 70%)}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.btn{padding:10px 16px;border-radius:8px;font-weight:600;background:var(--panel2);border:1px solid var(--line);min-height:44px}
+.btn.primary{background:var(--cy2);border-color:var(--cy);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--cy)}
+.btn.ghost{background:transparent}
+.btn.small{padding:8px 12px;min-height:40px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.ibtn:focus-visible,.mode:focus-visible,.card-item:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(6,10,17,.82);z-index:20;padding:16px}
+.overlay[hidden]{display:none}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;max-width:420px;width:100%;display:grid;gap:14px}
+.card.wide{max-width:560px}
+.card h2{font-size:20px}.card p{color:var(--mut);line-height:1.5}
+.bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--cy);transition:width .2s}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode{text-align:left;padding:14px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);display:grid;gap:6px}
+.mode:hover{border-color:var(--cy)}.mode span{color:var(--mut);font-size:13px;line-height:1.4}
+.helplist{padding-left:18px;display:grid;gap:8px;color:var(--mut);line-height:1.5}.helplist b{color:var(--txt)}

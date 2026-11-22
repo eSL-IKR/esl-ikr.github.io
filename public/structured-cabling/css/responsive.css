@@ -1,0 +1,22 @@
+@media (max-width:820px),(max-aspect-ratio:1/1){
+ #app{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"mission" "viewport"}
+ .brand span{display:none}
+ #mission{border-right:0;border-bottom:1px solid var(--line);max-height:46vh}
+ .mission-head{grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:0}
+ .mtitle{font-size:16px}.chev{display:block;transition:transform .2s}
+ #mission.collapsed .chev{transform:rotate(-90deg)}
+ #mission.collapsed .mission-body{display:none}
+ .mission-body{padding:6px 14px 10px;border-top:1px solid var(--line)}
+ .mission-foot{padding:8px 14px 10px;grid-template-columns:1fr auto;align-items:center}
+ .mission-foot .btn{min-height:44px}
+ #dock{position:absolute;left:0;right:0;bottom:0;border-radius:16px 16px 0 0;border:1px solid var(--line);border-bottom:0;
+   transform:translateY(calc(100% - 52px));transition:transform .25s ease;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9}
+ #dock.open{transform:none}
+ .dock-handle{display:grid;place-items:center;height:36px;margin:-8px -12px 0}.dock-handle i{width:44px;height:5px;border-radius:3px;background:var(--line)}
+ #dock .tabs{margin-top:-6px}
+ .card-item{flex-basis:140px}
+ .modes{grid-template-columns:1fr}
+ #topbar{padding:8px}
+}
+@media (max-width:820px) and (max-height:520px){#mission{max-height:60vh}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

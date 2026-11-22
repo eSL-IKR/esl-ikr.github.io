@@ -1,0 +1,42 @@
+{
+  "items": {
+    "cat6":  {"name":"Kabel Cat6 UTP","type":"cable","model":"models/cables/cat6.glb","size":24,"pos":[-40,0,8],
+      "spec":{"Kategori":"Cat6","Perisai":"Tiada (UTP)","Lebar jalur":"250 MHz","Kelajuan":"10 Gbps sehingga 55 m","Plug/panel":"RJ45 UTP + panel Cat6 UTP"},
+      "shielded":false,"cat":6,"info":"Pilihan lalai untuk amali pengenalan. Serasi dengan plug RJ45 dan patch panel UTP makmal."},
+    "cat6a": {"name":"Kabel Cat6A F/UTP","type":"cable","model":"models/cables/cat6a.glb","size":24,"pos":[-40,0,14],
+      "spec":{"Kategori":"Cat6A","Perisai":"Foil (F/UTP)","Lebar jalur":"500 MHz","Kelajuan":"10 Gbps sehingga 100 m","Plug/panel":"RJ45 berperisai + panel berperisai"},
+      "shielded":true,"cat":6.5,"info":"Kabel berperisai. Perisai mesti ditamatkan pada plug dan panel berperisai."},
+    "cat7":  {"name":"Kabel Cat7 S/FTP","type":"cable","model":"models/cables/cat7.glb","size":24,"pos":[-40,0,20],
+      "spec":{"Kategori":"Cat7","Perisai":"S/FTP (foil setiap pasangan + braid)","Lebar jalur":"600 MHz","Kelajuan":"10 Gbps","Plug/panel":"Konektor berperisai (biasanya GG45/TERA, atau RJ45 berperisai)"},
+      "shielded":true,"cat":7,"info":"Tidak semua Cat7 serasi dengan plug RJ45 UTP biasa. Perlu komponen berperisai."},
+    "cat8":  {"name":"Kabel Cat8 S/FTP","type":"cable","model":"models/cables/cat8.glb","size":24,"pos":[-40,0,26],
+      "spec":{"Kategori":"Cat8","Perisai":"S/FTP","Lebar jalur":"2000 MHz","Kelajuan":"25/40 Gbps sehingga 30 m","Plug/panel":"Komponen Cat8 berperisai"},
+      "shielded":true,"cat":8,"info":"Untuk pusat data jarak pendek. Perlu komponen Cat8 berperisai."},
+
+    "cutter":   {"name":"Playar Pemotong (Wire Cutter)","type":"tool","model":"models/tools/cutter.glb","size":20,"pos":[-28,0,-18],"layFlat":true,
+      "info":"Digunakan dalam Misi 2 untuk memotong hujung kabel secara rata."},
+    "stripper": {"name":"Pengupas Kabel (Rotary Stripper)","type":"tool","model":"models/tools/stripper.glb","size":12,"pos":[-8,0,-18],"layFlat":true,
+      "info":"Digunakan dalam Misi 3 untuk mengupas jaket luar tanpa mencederakan konduktor."},
+    "crimper":  {"name":"Alat Crimping RJ45","type":"tool","model":"models/tools/crimper.glb","size":20,"pos":[12,0,-18],"layFlat":true,
+      "info":"Digunakan dalam Misi 5 untuk menekan plug RJ45 pada wayar."},
+    "punchdown":{"name":"Punch Down Tool","type":"tool","model":"models/tools/punchdown.glb","size":18,"pos":[-18,0,-6],"layFlat":true,
+      "info":"Digunakan dalam Misi 6 untuk menekan wayar ke terminal IDC patch panel."},
+
+    "rj45":     {"name":"Plug RJ45 (8P8C)","type":"part","model":"models/connectors/rj45.glb","size":6,"pos":[8,0,10],"merge":true,
+      "info":"Plug UTP standard. Model dipaparkan lebih besar daripada saiz sebenar supaya mudah dilihat."},
+    "keystone": {"name":"Keystone Jack Cat6","type":"part","model":"models/connectors/keystone.glb","size":5,"pos":[22,0,10],"merge":true,
+      "info":"Pilihan tambahan, tidak diperlukan dalam amali utama."},
+    "panel":    {"name":"Patch Panel Cat6 24-Port","type":"part","model":"models/patch-panel/panel.glb","size":48,"pos":[48,0,-24],"merge":true,
+      "info":"Panel UTP 24 port. Hujung belakang (IDC) ditamatkan dalam Misi 6."},
+    "tester":   {"name":"LAN Cable Tester (Utama + Remote)","type":"tool","model":"models/tester/tester.glb","size":22,"pos":[44,0,12],"layFlat":true,"merge":true,
+      "info":"Digunakan dalam Misi 7 dan 8 untuk menguji kabel yang telah ditamatkan."}
+  },
+  "plugs": {
+    "plug_utp": {"name":"Plug RJ45 UTP (Cat6)","shielded":false,"stock":true,"item":"rj45","note":"Tiada perisai logam."},
+    "plug_stp": {"name":"Plug RJ45 Berperisai","shielded":true,"stock":true,"item":null,"proto":true,"note":"Mempunyai selongsong logam. Model 3D tiada, kad pilihan sahaja."}
+  },
+  "panels": {
+    "panel_utp": {"name":"Patch Panel Cat6 UTP 24-Port","shielded":false,"item":"panel","note":"Panel makmal."},
+    "panel_stp": {"name":"Patch Panel Berperisai 24-Port","shielded":true,"item":null,"proto":true,"note":"Mempunyai bar pembumian. Model 3D tiada, kad pilihan sahaja."}
+  }
+}

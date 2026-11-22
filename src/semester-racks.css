@@ -1,0 +1,41 @@
+.semester-racks{max-width:1080px;width:100%;margin:0 auto 56px}
+.rack-stage{position:relative;width:100%;height:460px;border:0;border-radius:0;overflow:hidden;background:transparent;box-shadow:none}
+.rack-stage canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+.rack-labels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:4px}
+.semester-rack{text-align:center;min-width:0;color:var(--pp-ink,#edf3ff)}
+.semester-rack h3{font-size:24px;font-weight:800;line-height:1.3}
+.semester-rack p{font-size:15px;color:#afbdd3;margin-top:5px}
+.rack-enter{display:inline-flex;gap:16px;align-items:center;min-height:44px;margin-top:14px;padding:8px 16px;border:1px solid #48607b;border-radius:9px;color:inherit;cursor:pointer;opacity:0;visibility:hidden}
+.semester-rack:nth-child(1) .rack-enter{border-color:#269aff}.semester-rack:nth-child(2) .rack-enter{border-color:#19cbb1}.semester-rack:nth-child(3) .rack-enter{border-color:#a575ff}
+.semester-rack[data-open=true] .rack-enter,.semester-rack:focus-within .rack-enter{opacity:1;visibility:visible}
+.rack-enter:focus-visible{outline:2px solid #48c8e8;outline-offset:4px}
+html[data-theme=light] .semester-rack{color:#18304c}
+html[data-theme=light] .semester-rack p{color:#4a6079}
+@media(max-width:700px){.rack-stage{height:320px;border-radius:0}.rack-labels{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.semester-rack h3{font-size:clamp(13px,3.6vw,18px)}.semester-rack p{font-size:clamp(10px,2.4vw,12px)}.rack-enter{opacity:1;visibility:visible;min-height:42px;padding:7px 8px;font-size:11px;gap:4px}}
+@media(hover:none){.rack-enter{opacity:1;visibility:visible}}
+@media(prefers-reduced-motion:no-preference){.rack-enter{transition:opacity .2s}}
+
+.rack-loading{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:#9fb4d6;font-size:13px;letter-spacing:.02em;animation:rack-pulse 1.4s ease-in-out infinite}
+@keyframes rack-pulse{50%{opacity:.4}}
+.rack-stage canvas{opacity:0}
+.rack-stage canvas[data-status=ready]{opacity:1}
+@media(prefers-reduced-motion:no-preference){.rack-stage canvas{transition:opacity .9s ease}}
+@media(prefers-reduced-motion:reduce){.rack-loading{animation:none}}
+
+/* Rak terapung di ruang terbuka, tanpa panel segi empat di belakang. */
+.semester-racks { position:relative; isolation:isolate; max-width:1190px; margin:0 auto 65px; }
+.rack-stage { position:relative; background:transparent!important; border:0!important; border-radius:0!important; box-shadow:none!important; overflow:visible; }
+.rack-stage::before { content:""; position:absolute; pointer-events:none; z-index:-1; inset:12% 3% 0; background:
+  radial-gradient(ellipse 20% 38% at 18% 70%,rgba(57,129,210,.12),transparent 75%),
+  radial-gradient(ellipse 20% 38% at 50% 70%,rgba(38,164,130,.10),transparent 75%),
+  radial-gradient(ellipse 20% 38% at 82% 70%,rgba(143,89,197,.11),transparent 75%);
+  filter:blur(19px); }
+.rack-labels { position:relative; z-index:2; margin-top:0; gap:18px; }
+.semester-rack { padding:6px 4px 12px; background:transparent!important; border:0!important; box-shadow:none!important; }
+.semester-rack h3 { font-weight:850; letter-spacing:-.035em; font-size:clamp(18px,2.1vw,27px); }
+.semester-rack::after { content:""; display:block; width:36%; height:2px; margin:13px auto 0; border-radius:8px; background:#277fcb; box-shadow:0 0 12px #217ac378; opacity:.65; }
+.semester-rack:nth-child(2)::after { background:#21a98c; box-shadow:0 0 12px #21a98c66; }
+.semester-rack:nth-child(3)::after { background:#9664c2; box-shadow:0 0 12px #9664c266; }
+.semester-rack:hover::after,.semester-rack:focus-within::after { opacity:1; width:45%; }
+@media(prefers-reduced-motion:no-preference){ .semester-rack::after { transition:width .3s,opacity .3s; } }
+@media(max-width:700px){ .rack-stage { height:330px; } .semester-rack h3 { font-size:clamp(13px,3.5vw,19px); } }

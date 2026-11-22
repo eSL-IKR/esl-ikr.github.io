@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Kendiri LINUX DEBIAN (CLI)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="../libs/bootstrap/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Styling Terminal Linux */
+        .terminal-container {
+            background-color: #010409;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid #30363d;
+            color: #ffffff !important;
+        }
+        .terminal-body {
+            padding: 15px;
+            height: 420px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            color: #ffffff !important;
+        }
+        .cli-prompt {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: #ffffff !important;
+            font-family: 'Courier New', Courier, monospace;
+            width: 75%;
+            outline: none;
+            font-weight: bold;
+        }
+
+        /* Custom Cards */
+        .card-custom {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: #ffffff !important;
+        }
+        .code-inline {
+            background: #21262d;
+            color: #79c0ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        /* Modal Result Styling */
+        .cert-card {
+            background: #161b22;
+            border: 2px solid #238636;
+            color: #ffffff !important;
+        }
+
+        /* Lock Overlay Untuk Cheat Sheet Semasa Exam */
+        .locked-overlay {
+            background: rgba(22, 27, 34, 0.98);
+            backdrop-filter: blur(4px);
+            z-index: 5;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="py-3 text-white">
+
+    <!-- MODAL POP-UP 1: DAFTAR NAMA PELAJAR -->
+    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-primary fw-bold">🐧 Pendaftaran Pelajar CLI</h5>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <p class="small text-white-50">Sila masukkan nama anda sebelum memulakan amali / peperiksaan asas Linux Debian 12.</p>
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Nama Penuh / ID Pelajar:</label>
+                        <input type="text" id="student-name-input" class="form-control bg-black text-white border-secondary" placeholder="Contoh: Ahmad Zikri" autofocus>
+                        <div id="name-error" class="text-danger small mt-1 d-none">Sila masukkan nama anda terlebih dahulu!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Mod Pembelajaran:</label>
+                        <select id="mode-select" class="form-select bg-black text-white border-secondary">
+                            <option value="practice" selected>🟢 Mod Latihan (Cheat Sheet & Petunjuk Disediakan)</option>
+                            <option value="exam">🔴 Mod Peperiksaan (Strict: NO Cheat Sheet & Masa 5 Minit!)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary w-100 fw-bold text-white" onclick="registerStudent()">Mula Sesi Pembelajaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POP-UP 2: SLIP KEPUTUSAN PEPERIKSAAN -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content cert-card text-white shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-success fw-bold">🏆 SLIP KEPUTUSAN PEPERIKSAAN CLI</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center text-white">
+                    <h6 class="text-white-50 mb-1">NAMA PELAJAR:</h6>
+                    <h3 class="text-warning fw-bold mb-3" id="res-student-name">Ahmad Zikri</h3>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">MARKAH:</small>
+                                <span class="fs-4 fw-bold text-info" id="res-score">100%</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">GRED:</small>
+                                <span class="fs-4 fw-bold text-success" id="res-grade">CELIK CLI (LULUS)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50" id="res-time-taken">Masa Diambil: 03 minit 20 saat</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light btn-sm w-100 text-white" data-bs-dismiss="modal" onclick="location.reload()">Selesai / Log Keluar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid px-4 text-white">
+        <!-- Header Utama -->
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+            <div>
+                <h3 class="text-primary mb-0 fw-bold">🐧 Latihan Kendiri LINUX DEBIAN (CLI)</h3>
+                <small class="text-white-50">Modul Pre-Server: Kuasai 25 Arahan Asas Sebelum Menguruskan Pelayan NOS</small>
+            </div>
+            <div>
+                <span class="badge bg-secondary fs-6 me-2 text-white" id="header-student-name">Pelajar: Demo</span>
+                <span class="badge bg-success fs-6 text-white" id="header-mode-badge">Mod: Latihan</span>
+                <span class="badge bg-danger fs-6 d-none ms-2 text-white" id="timer-badge">⏱️ 05:00</span>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- SEKSYEN KIRI: TERMINAL SIMULASI CLI -->
+            <div class="col-lg-7">
+                <div class="terminal-container">
+                    <div class="terminal-header d-flex justify-content-between align-items-center">
+                        <span class="small fw-bold text-white" id="terminal-title-bar">student@debian:~ (Debian 12 Terminal)</span>
+                        <small class="text-white-50" id="mission-progress">Misi 1 daripada 25</small>
+                    </div>
+                    
+                    <!-- Skrin Output Terminal -->
+                    <div class="terminal-body" id="terminal-screen">
+                        <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                        <div class="text-white-50">Selamat Datang ke Latihan Kendiri LINUX DEBIAN (CLI)!</div>
+                        <div class="text-warning mt-1">Sila ikuti arahan tugas pada panel sebelah kanan.</div>
+                        <br>
+                    </div>
+
+                    <!-- Input Baris Arahan CLI -->
+                    <div class="p-3 border-top border-secondary d-flex align-items-center bg-dark rounded-bottom">
+                        <span class="cli-prompt me-2" id="prompt-label">student@debian:~$</span>
+                        <input type="text" id="cli-input-field" class="cli-input" placeholder="Taip arahan Linux di sini dan tekan Enter..." autofocus>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-2">
+                    <small class="text-white-50">Petua: Gunakan ejaan huruf kecil (case-sensitive) untuk arahan Linux.</small>
+                    <button class="btn btn-outline-danger btn-sm text-white" onclick="location.reload()">🔄 Tukar Moda / Nama</button>
+                </div>
+            </div>
+
+            <!-- SEKSYEN KANAN: PANDUAN MISI & NOTA CHEAT SHEET -->
+            <div class="col-lg-5">
+                
+                <!-- CARD MISI AMALI PELAJAR -->
+                <div class="card card-custom mb-3 border-warning text-white">
+                    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+                        <span id="card-header-title">🎯 TUGASAN MISI SEMASA</span>
+                        <span class="badge bg-dark text-warning" id="step-badge">MISI 1</span>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title text-info fw-bold" id="mission-title">Misi 1: Semak Lokasi Direktori Semasa</h6>
+                        <p class="card-text small text-white" id="mission-desc">
+                            Gunakan arahan <span class="code-inline">pwd</span> (Print Working Directory) untuk melihat dalam folder mana anda berada sekarang.
+                        </p>
+                        <div class="alert alert-dark border-secondary p-2 mb-0 small text-white" id="guide-cmd-box">
+                            <strong class="text-warning">Arahan Yang Perlu Ditaip:</strong> <code class="text-success fs-6" id="mission-cmd">pwd</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOTA CHEAT SHEET ARAHAN ASAS -->
+                <div class="card card-custom position-relative text-white" style="max-height: 380px; overflow-y: auto;">
+                    
+                    <!-- EXAM LOCK OVERLAY -->
+                    <div id="cheat-sheet-lock" class="locked-overlay position-absolute top-0 start-0 w-100 h-100 d-none d-flex flex-column justify-content-center align-items-center text-center p-3">
+                        <div class="fs-1">🔒</div>
+                        <h5 class="text-danger fw-bold mb-1">EXAM MODE LOCKED</h5>
+                        <p class="small text-white mb-0">Cheat sheet ini dikunci semasa Peperiksaan (Masa 5 Minit). Sila taip arahan berdasarkan ingatan anda sendiri!</p>
+                    </div>
+
+                    <div class="card-header bg-dark text-primary fw-bold border-secondary sticky-top">
+                        📚 CHEAT SHEET: NOTA ARAHAN ASAS LINUX
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush bg-transparent small text-white">
+                            <div class="list-group-item bg-transparent text-white border-secondary">
+                                <span class="fw-bold text-info">1. Navigasi Direktori:</span>
+                                <ul class="mb-0 ps-3 text-white-50">
+                                    <li><code class="text-white">pwd</code>, <code class="text-white">ls</code>, <code class="text-white">ls -la</code>, <code class="text-white">cd [folder]</code>, <code class="text-white">cd ..</code></li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item bg-transparent text-white border-secondary">
+                                <span class="fw-bold text-info">2. Pengurusan Fail & Folder:</span>
+                                <ul class="mb-0 ps-3 text-white-50">
+                                    <li><code class="text-white">mkdir [nama]</code>, <code class="text-white">touch [fail]</code>, <code class="text-white">cp [asal] [baru]</code>, <code class="text-white">mv [asal] [baru]</code>, <code class="text-white">rm [fail]</code></li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item bg-transparent text-white border-secondary">
+                                <span class="fw-bold text-info">3. Membaca & Menyunting Fail:</span>
+                                <ul class="mb-0 ps-3 text-white-50">
+                                    <li><code class="text-white">cat [fail]</code>, <code class="text-white">head [fail]</code>, <code class="text-white">nano [fail]</code></li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item bg-transparent text-white border-secondary">
+                                <span class="fw-bold text-info">4. Masa & Sumber Sistem:</span>
+                                <ul class="mb-0 ps-3 text-white-50">
+                                    <li><code class="text-white">date</code>, <code class="text-white">free -h</code>, <code class="text-white">df -h</code>, <code class="text-white">uptime</code></li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item bg-transparent text-white border-secondary">
+                                <span class="fw-bold text-info">5. Rangkaian & Pentadbiran:</span>
+                                <ul class="mb-0 ps-3 text-white-50">
+                                    <li><code class="text-white">whoami</code>, <code class="text-white">hostname</code>, <code class="text-white">ip a</code>, <code class="text-white">ping [ip]</code>, <code class="text-white">history</code>, <code class="text-white">clear</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Engine Simulasi -->
+    <script src="../libs/bootstrap/bootstrap.bundle.min.js"></script><script>window.bootstrap||document.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>')</script>
+    <script>
+        // GLOBAL VARIABLES
+        let studentName = "";
+        let currentMode = "practice";
+        let currentMissionIndex = 0;
+        let score = 0;
+        let timerSeconds = 300; // HAD MASA 5 MINIT (300 Saat)
+        let timerInterval;
+
+        // SENARAI 25 MISI LATIHAN BERANTAI
+        const missions = [
+            { step: 1, title: "Soalan 1: Semak Lokasi Direktori Semasa", desc: "Periksa dalam folder manakah anda berada pada sistem pelayan sekarang.", hintCmd: "pwd", cmd: "pwd", output: "/home/" },
+            { step: 2, title: "Soalan 2: Senaraikan Fail & Folder", desc: "Papar senarai kandungan fail/folder di dalam direktori semasa.", hintCmd: "ls", cmd: "ls", output: "Desktop  Documents  Downloads  Music  Pictures" },
+            { step: 3, title: "Soalan 3: Cipta Folder Baharu", desc: "Cipta folder baharu bernama 'lab_nos'.", hintCmd: "mkdir lab_nos", cmd: "mkdir lab_nos", output: "[OK] Folder 'lab_nos' berjaya dicipta!" },
+            { step: 4, title: "Soalan 4: Sahkan Wujud Folder Baharu", desc: "Papar senarai fail/folder sekali lagi untuk memastikan folder 'lab_nos' yang anda buat tadi benar-benar wujud.", hintCmd: "ls", cmd: "ls", output: "Desktop  Documents  Downloads  Music  Pictures  lab_nos" },
+            { step: 5, title: "Soalan 5: Masuk Ke Dalam Folder Baharu", desc: "Berpindah masuk ke dalam folder 'lab_nos'.", hintCmd: "cd lab_nos", cmd: "cd lab_nos", output: "[OK] Berjaya berpindah ke direktori /lab_nos" },
+            { step: 6, title: "Soalan 6: Sahkan Lokasi Folder Terkini", desc: "Semak lokasi direktori kerja anda sekali lagi selepas berpindah folder.", hintCmd: "pwd", cmd: "pwd", output: "/home/student/lab_nos" },
+            { step: 7, title: "Soalan 7: Cipta Fail Teks Baharu", desc: "Cipta fail teks kosong bernama 'nota.txt' di dalam folder ini.", hintCmd: "touch nota.txt", cmd: "touch nota.txt", output: "[OK] Fail 'nota.txt' berjaya dicipta!" },
+            { step: 8, title: "Soalan 8: Sahkan Kewujudan Fail Teks", desc: "Gunakan arahan untuk menyenaraikan isi folder dan sahkan 'nota.txt' berada di situ.", hintCmd: "ls", cmd: "ls", output: "nota.txt" },
+            { step: 9, title: "Soalan 9: Sunting Fail Menggunakan Nano", desc: "Buka penyunting teks nano untuk menyunting fail 'nota.txt'.", hintCmd: "nano nota.txt", cmd: "nano nota.txt", output: "[NANO EDITOR]: 'Selamat Datang Ke Subjek Network Operating System'\n[FILE SAVED] Fail 'nota.txt' berjaya disimpan!" },
+            { step: 10, title: "Soalan 10: Baca Isi Kandungan Fail", desc: "Paparkan isi teks dalam fail 'nota.txt' pada skrin terminal.", hintCmd: "cat nota.txt", cmd: "cat nota.txt", output: "Selamat Datang Ke Subjek Network Operating System" },
+            { step: 11, title: "Soalan 11: Baca 1 Baris Teratas Fail", desc: "Paparkan baris teratas fail 'nota.txt' menggunakan arahan head.", hintCmd: "head -n 1 nota.txt", cmd: "head -n 1 nota.txt", output: "Selamat Datang Ke Subjek Network Operating System" },
+            { step: 12, title: "Soalan 12: Salin Fail (Copy)", desc: "Salin fail 'nota.txt' menjadi fail sandaran bernama 'nota_backup.txt'.", hintCmd: "cp nota.txt nota_backup.txt", cmd: "cp nota.txt nota_backup.txt", output: "[OK] Fail berjaya disalin ke 'nota_backup.txt'" },
+            { step: 13, title: "Soalan 13: Tukar Nama Fail (Move/Rename)", desc: "Tukar nama fail 'nota_backup.txt' kepada nama baharu 'salinan.txt'.", hintCmd: "mv nota_backup.txt salinan.txt", cmd: "mv nota_backup.txt salinan.txt", output: "[OK] Fail berjaya ditukar nama kepada 'salinan.txt'" },
+            { step: 14, title: "Soalan 14: Senaraikan Butiran Terperinci", desc: "Papar senarai fail berserta maklumat kebenaran akses (permissions) & saiz.", hintCmd: "ls -la", cmd: "ls -la", output: "drwxr-xr-x 2 student student 4096 Aug 10 14:00 .\n-rw-r--r-- 1 student student   48 Aug 10 14:00 nota.txt\n-rw-r--r-- 1 student student   48 Aug 10 14:00 salinan.txt" },
+            { step: 15, title: "Soalan 15: Semak Tarikh & Masa Sistem", desc: "Semak penetapan tarikh dan masa pada pelayan.", hintCmd: "date", cmd: "date", output: new Date().toString() },
+            { step: 16, title: "Soalan 16: Semak Uptime Pelayan", desc: "Semak tempoh berapa lama pelayan ini telah beroperasi sejak dihidupkan.", hintCmd: "uptime", cmd: "uptime", output: " 14:00:00 up 2 days,  3:15,  1 user,  load average: 0.05, 0.03, 0.01" },
+            { step: 17, title: "Soalan 17: Semak Penggunaan RAM", desc: "Periksa penggunaan ingatan RAM secara human-readable.", hintCmd: "free -h", cmd: "free -h", output: "               total        used        free      shared  buff/cache   available\nMem:           3.8Gi       512Mi       2.8Gi        12Mi       500Mi       3.1Gi" },
+            { step: 18, title: "Soalan 18: Semak Ruang Storan Disk", desc: "Periksa peratusan ruang storan disk space yang tinggal.", hintCmd: "df -h", cmd: "df -h", output: "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        98G  4.2G   89G   5% /" },
+            { step: 19, title: "Soalan 19: Semak Identiti Pengguna", desc: "Periksa ID nama akaun pengguna yang sedang aktif log masuk.", hintCmd: "whoami", cmd: "whoami", output: "" },
+            { step: 20, title: "Soalan 20: Semak Nama Host Pelayan", desc: "Semak nama hostname bagi pelayan ini.", hintCmd: "hostname", cmd: "hostname", output: "debian-server" },
+            { step: 21, title: "Soalan 21: Semak Alamat IP Pelayan", desc: "Papar kad rangkaian dan alamat IP pelayan.", hintCmd: "ip a", cmd: "ip a", output: "1: lo: <LOOPBACK> inet 127.0.0.1/8\n2: eth0: <BROADCAST> inet 10.0.0.30/24" },
+            { step: 22, title: "Soalan 22: Uji Sambungan Rangkaian", desc: "Hantar paket data ICMP untuk menguji ping ke IP Gateway '10.0.0.1'.", hintCmd: "ping 10.0.0.1", cmd: "ping 10.0.0.1", output: "PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.\n64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=0.45 ms" },
+            { step: 23, title: "Soalan 23: Padam Fail Teks Salinan", desc: "Padam fail 'salinan.txt' yang berada dalam direktori.", hintCmd: "rm salinan.txt", cmd: "rm salinan.txt", output: "[OK] Fail 'salinan.txt' berjaya dipadam!" },
+            { step: 24, title: "Soalan 24: Semak Sejarah Arahan (History)", desc: "Paparkan rekod senarai arahan yang telah anda taip sebelum ini.", hintCmd: "history", cmd: "history", output: "  1  pwd\n  2  ls\n  3  mkdir lab_nos\n  4  cd lab_nos\n  ..." },
+            { step: 25, title: "Soalan 25: Bersihkan Skrin Terminal", desc: "Bersihkan semua rekod teks pada skrin terminal.", hintCmd: "clear", cmd: "clear", output: "CLEAR_SCREEN" }
+        ];
+
+        const terminalScreen = document.getElementById('terminal-screen');
+        const cliInput = document.getElementById('cli-input-field');
+        const promptLabel = document.getElementById('prompt-label');
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+
+        window.onload = function() {
+            loginModal.show();
+        };
+
+        function registerStudent() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (!nameInput) {
+                document.getElementById('name-error').classList.remove('d-none');
+                return;
+            }
+
+            studentName = nameInput;
+            const usernameClean = studentName.toLowerCase().replace(/\s+/g, '');
+
+            missions[18].output = usernameClean;
+            missions[0].output = `/home/${usernameClean}`;
+
+            currentMode = document.getElementById('mode-select').value;
+
+            document.getElementById('header-student-name').innerText = `Pelajar: ${studentName}`;
+            document.getElementById('terminal-title-bar').innerText = `${usernameClean}@debian:~ (Debian 12 Terminal)`;
+            
+            // MOD PEPERIKSAAN STRICT: LOCK CHEAT SHEET & MASA 5 MINIT
+            if (currentMode === 'exam') {
+                document.getElementById('header-mode-badge').className = "badge bg-danger fs-6 text-white";
+                document.getElementById('header-mode-badge').innerText = "Mod: PEPERIKSAAN (5 MINIT)";
+                document.getElementById('timer-badge').classList.remove('d-none');
+                document.getElementById('guide-cmd-box').classList.add('d-none'); // Hide Hint
+                document.getElementById('cheat-sheet-lock').classList.remove('d-none'); // Show Lock Screen
+                startTimer();
+            } else {
+                document.getElementById('header-mode-badge').className = "badge bg-success fs-6 text-white";
+                document.getElementById('header-mode-badge').innerText = "Mod: LATIHAN";
+                document.getElementById('guide-cmd-box').classList.remove('d-none');
+                document.getElementById('cheat-sheet-lock').classList.add('d-none');
+            }
+
+            loginModal.hide();
+            updateMissionUI();
+        }
+
+        // MASA 5 MINIT (300 SAAT)
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                let m = Math.floor(timerSeconds / 60);
+                let s = timerSeconds % 60;
+                document.getElementById('timer-badge').innerText = `⏱️ ${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateMissionUI() {
+            const usernameClean = studentName.toLowerCase().replace(/\s+/g, '');
+            const m = missions[currentMissionIndex];
+
+            document.getElementById('mission-progress').innerText = `Soalan ${m.step} daripada ${missions.length}`;
+            document.getElementById('step-badge').innerText = `SOALAN ${m.step}`;
+            document.getElementById('mission-title').innerText = m.title;
+            document.getElementById('mission-desc').innerHTML = m.desc;
+            
+            if (currentMode === 'practice') {
+                document.getElementById('mission-cmd').innerText = m.hintCmd;
+            }
+
+            if (currentMissionIndex >= 4) {
+                promptLabel.innerText = `${usernameClean}@debian:~/lab_nos$`;
+            } else {
+                promptLabel.innerText = `${usernameClean}@debian:~$`;
+            }
+        }
+
+        cliInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const inputCmd = this.value.trim();
+                const currentMission = missions[currentMissionIndex];
+
+                appendTerminalLine(`${promptLabel.innerText} ${inputCmd}`, '#58a6ff');
+                this.value = '';
+
+                if (inputCmd === currentMission.cmd) {
+                    if (currentMission.output === "CLEAR_SCREEN") {
+                        terminalScreen.innerHTML = "";
+                    } else {
+                        appendTerminalLine(currentMission.output, '#00ff66');
+                    }
+
+                    score += 1;
+                    currentMissionIndex++;
+
+                    if (currentMissionIndex < missions.length) {
+                        appendTerminalLine(`\n[BETUL! 🎉] Soalan ${currentMission.step} Selesai!`, '#ffff55');
+                        updateMissionUI();
+                    } else {
+                        finishExam();
+                    }
+                } else {
+                    appendTerminalLine(`bash: ${inputCmd}: command not found atau sintaks salah.`, '#ff5555');
+                    if (currentMode === 'practice') {
+                        appendTerminalLine(`[PETUA]: Sila taip arahan: '${currentMission.hintCmd}'`, '#ffaa00');
+                    }
+                }
+
+                terminalScreen.scrollTop = terminalScreen.scrollHeight;
+            }
+        });
+
+        function appendTerminalLine(text, color) {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerText = text;
+            terminalScreen.appendChild(div);
+        }
+
+        function finishExam() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            const percentage = Math.round((score / missions.length) * 100);
+            document.getElementById('res-student-name').innerText = studentName;
+            document.getElementById('res-score').innerText = `${percentage}% (${score}/${missions.length})`;
+
+            const gradeSpan = document.getElementById('res-grade');
+            if (percentage >= 80) {
+                gradeSpan.className = "fs-4 fw-bold text-success";
+                gradeSpan.innerText = "CEMERLANG (PASS)";
+            } else if (percentage >= 50) {
+                gradeSpan.className = "fs-4 fw-bold text-warning";
+                gradeSpan.innerText = "LULUS (PASS)";
+            } else {
+                gradeSpan.className = "fs-4 fw-bold text-danger";
+                gradeSpan.innerText = "GAGAL (RE-TEST)";
+            }
+
+            let timeUsed = 300 - timerSeconds;
+            let mUsed = Math.floor(timeUsed / 60);
+            let sUsed = timeUsed % 60;
+            document.getElementById('res-time-taken').innerText = `Masa Diambil: ${mUsed} Minit ${sUsed} Saat`;
+
+            resultModal.show();
+        }
+    </script>
+</body>
+</html>

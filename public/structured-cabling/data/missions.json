@@ -1,0 +1,12 @@
+{"missions":[
+ {"id":1,"title":"Pilih Kabel dan Komponen","goal":"Pilih satu kabel, satu plug RJ45 dan satu patch panel yang serasi.","built":true,
+  "steps":["Pilih kabel (klik pada bangku atau kad inventori)","Pilih plug RJ45","Pilih patch panel","Tekan Sahkan Pilihan"],
+  "hint":"Semak lajur Perisai pada maklumat kabel. Kabel UTP perlu komponen UTP; kabel berperisai perlu komponen berperisai."},
+ {"id":2,"title":"Potong Kabel","goal":"Gunakan wire cutter pada titik potong.","built":false,"phase":3,"steps":[],"hint":""},
+ {"id":3,"title":"Kupas Jaket Luar","goal":"Kupas jaket dan dedahkan 4 pasang wayar.","built":false,"phase":3,"steps":[],"hint":""},
+ {"id":4,"title":"Susun T568A / T568B","goal":"Susun 8 wayar mengikut standard.","built":false,"phase":3,"steps":[],"hint":""},
+ {"id":5,"title":"Crimping RJ45","goal":"Masukkan wayar dan crimp plug.","built":false,"phase":4,"steps":[],"hint":""},
+ {"id":6,"title":"Patch Panel dan Punch Down","goal":"Tamatkan hujung kabel pada terminal IDC.","built":false,"phase":5,"steps":[],"hint":""},
+ {"id":7,"title":"Sambung Cable Tester","goal":"Sambung unit tester dengan betul.","built":false,"phase":6,"steps":[],"hint":""},
+ {"id":8,"title":"Uji dan Baiki","goal":"Uji kabel dan betulkan kerosakan.","built":false,"phase":6,"steps":[],"hint":""}
+]}

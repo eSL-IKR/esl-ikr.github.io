@@ -1,0 +1,507 @@
+/* Palette selected by the user: midnight blue, cyan and violet from reference 2. */
+.studio-portal { --studio-paper:#f6f5f1; --studio-ink:#252a30; --studio-surface:#fff; --studio-line:#d8dce0; background:var(--studio-paper); color:var(--studio-ink); padding-top:88px; }
+[data-theme="dark"] .studio-portal { --studio-paper:#0b1222; --studio-ink:#eef2ff; --studio-surface:#101a30; --studio-line:#283553; }
+.studio-portal > .fixed.inset-0 { display:none; }
+.studio-portal > header { display:none; }
+.studio-portal > header .hidden.md\:flex, .studio-portal > header .shadow-inner { display:none; }
+.studio-portal > header img { max-height:36px; }
+.studio-portal main { padding-top:20px; }
+.studio-portal button { cursor:pointer; }
+.studio-portal :focus-visible { outline:3px solid #3975cc; outline-offset:4px; }
+.studio-nav { position:fixed; z-index:60; top:20px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; width:min(740px,calc(100% - 32px)); padding:12px 16px; border:1px solid var(--studio-line); border-radius:40px; background:var(--studio-surface); box-shadow:0 8px 28px #0000000c; transition:width .2s,padding .2s; }
+@supports(backdrop-filter:blur(12px)) { .studio-nav { background:color-mix(in srgb,var(--studio-surface) 92%,transparent); backdrop-filter:blur(12px); } }
+.studio-nav.is-compact { width:min(640px,calc(100% - 32px)); padding:8px 12px; }
+.studio-nav button { padding:10px 16px; border-radius:24px; font-size:14px; color:var(--studio-ink); }
+.studio-nav button:hover,.studio-bottom button:hover { background:#71809618; }
+.studio-brand { margin-right:auto; display:flex; align-items:center; gap:16px; font-weight:750; white-space:nowrap; }
+.studio-brand img { width:90px; height:32px; object-fit:contain; }
+.studio-brand strong { color:#7165ff; }
+.studio-tools { display:flex; align-items:center; gap:4px; }
+.studio-nav { width:min(1120px,calc(100% - 32px)); }
+.studio-nav.is-compact { width:min(960px,calc(100% - 32px)); }
+.studio-search { display:flex; gap:8px; align-items:center; }
+.studio-search kbd { font-size:11px; border:1px solid var(--studio-line); border-radius:4px; padding:2px 4px; }
+.studio-bottom { display:none; }
+.studio-portal .pp-hero { background:#030819; border:1px solid #242c49; border-radius:28px; box-shadow:0 24px 70px -32px #45378b70; padding:clamp(24px,4vw,48px); }
+.studio-portal .pp-hero-bg { background:radial-gradient(ellipse at 100% 0%,#453d9166,transparent 58%),radial-gradient(ellipse at 0% 100%,#0c6e8238,transparent 42%),#030819; }
+.studio-portal .pp-hero-bg::after { display:block; opacity:.5; }
+.studio-portal .pp-eyebrow { padding:0; border:0; background:none; letter-spacing:0; text-transform:none; font:500 13px/1.6 inherit; color:#c7cbd1; }
+.studio-portal .pp-dot { background:#86a8d7; animation:none; box-shadow:none; }
+.studio-portal .pp-title { font-size:clamp(36px,4.2vw,58px); line-height:1.08; font-weight:800; letter-spacing:-.035em; color:#f5f7ff; }
+.studio-portal .pp-grad { background:linear-gradient(100deg,#65dcef 0%,#8896ff 52%,#c084fc 100%); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; color:#a6b8ff; }
+.studio-portal .pp-lead { font-size:16px; line-height:1.8; color:#c5c8cd; }
+.studio-portal .pp-btn { border-radius:8px; box-shadow:none; font-weight:500; }
+.studio-portal .pp-btn-primary { background:linear-gradient(110deg,#6254ed,#5145d6); color:#fff; box-shadow:0 8px 24px #6254ed35; }
+.studio-portal .pp-btn-primary:hover { background:#5145d6; }
+.studio-portal .pp-btn-ghost { color:#f6f5f1; border-color:#707780; }
+.studio-portal .pp-stats dd { font-size:24px; font-weight:500; color:#f6f5f1; }
+.studio-portal .pp-stats dt { color:#bfc6ce; }
+.studio-route { display:flex; gap:0; margin-top:28px; padding:0; list-style:none; font-size:12px; color:#bbc6d3; }
+.studio-route li { display:flex; align-items:center; white-space:nowrap; }
+.studio-route li:not(:last-child)::after { content:''; width:clamp(16px,3vw,40px); height:1px; margin:0 12px; background:#647386; }
+.studio-portal #pilih-semester { scroll-margin-top:112px; font-weight:500; }
+.studio-portal .pp-lab-card { background:var(--studio-surface); border:1px solid var(--studio-line); box-shadow:none; border-radius:12px; }
+.studio-portal .pp-lab-icon { background:#71809612; color:#3975b8; box-shadow:none; }
+.studio-dialog { margin:auto; width:min(620px,calc(100% - 32px)); max-height:80dvh; padding:0; border:1px solid var(--studio-line); border-radius:16px; color:var(--studio-ink); background:var(--studio-surface); box-shadow:0 24px 90px #0005; }
+.studio-dialog::backdrop { background:#10151db3; backdrop-filter:blur(4px); }
+.studio-dialog-head { display:flex; justify-content:space-between; align-items:center; padding:20px; }
+.studio-dialog-head h2 { font-size:18px; font-weight:600; }
+.studio-dialog-head button { padding:8px; border-radius:8px; }
+.studio-dialog input { display:block; width:calc(100% - 40px); margin:0 20px 16px; padding:12px; min-height:48px; border:1px solid var(--studio-line); border-radius:8px; background:var(--studio-paper); color:var(--studio-ink); }
+.studio-dialog ul { list-style:none; margin:0; padding:8px; max-height:44dvh; overflow:auto; }
+.studio-dialog li { border-radius:8px; }
+.studio-dialog li[aria-selected="true"] { background:#3975cc20; }
+.studio-dialog li button { width:100%; text-align:left; padding:12px; display:grid; gap:4px; }
+.studio-dialog li span { font-size:12px; line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.studio-hint,.studio-empty { padding:16px 20px; font-size:12px; border-top:1px solid var(--studio-line); }
+@media(max-width:640px) {
+ .studio-portal { padding-top:80px; padding-bottom:calc(80px + env(safe-area-inset-bottom)); }
+ .studio-nav { top:12px; gap:0; } .studio-nav > button:not(.studio-brand):not(.studio-search),.studio-search kbd,.studio-search span { display:none; }
+ .studio-brand { gap:8px; font-size:13px!important; } .studio-brand img { width:56px; height:24px; } .studio-tools button { padding:8px; }
+ .studio-nav button { padding:8px 12px; }
+ .studio-bottom { display:flex; position:fixed; bottom:0; left:0; right:0; z-index:60; background:var(--studio-surface); border-top:1px solid var(--studio-line); padding:8px 8px calc(8px + env(safe-area-inset-bottom)); }
+ .studio-bottom button { flex:1; min-height:52px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:11px; color:var(--studio-ink); border-radius:8px; }
+ .studio-portal .pp-title { font-size:34px; } .studio-portal .pp-hero { padding:24px 20px; }
+}
+@media(prefers-reduced-motion:reduce) { .studio-portal *, .studio-portal *::before, .studio-portal *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+
+/* Light mode has its own surfaces and contrast, including the 3D controls. */
+:root:not([data-theme="dark"]) .studio-portal {
+ --studio-paper:#f0f4fb; --studio-ink:#16233c; --studio-surface:#ffffff; --studio-line:#d5deed;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-hero {
+ --pp-ink:#15223b; --pp-soft:#40516c; --pp-mute:#53637b; --pp-line:#d2dcee;
+ background:#f8faff; color:#15223b; border-color:#d5def0;
+ box-shadow:0 16px 48px -32px #304c8266;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-hero-bg {
+ background:radial-gradient(ellipse at 100% 0%,#dddffd99,transparent 60%),radial-gradient(ellipse at 0% 100%,#d8f0f780,transparent 45%),#f8faff;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-hero-bg::after { opacity:.22; }
+:root:not([data-theme="dark"]) .studio-portal .pp-title { color:#15223b; }
+:root:not([data-theme="dark"]) .studio-portal .pp-grad {
+ background-image:linear-gradient(100deg,#08758a,#414ec0 52%,#7542b6);
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-eyebrow {
+ color:#455775; font-family:inherit; font-size:13px; font-weight:500; line-height:1.6;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-dot { background:#14758d; }
+:root:not([data-theme="dark"]) .studio-portal .pp-lead { color:#40516c; }
+:root:not([data-theme="dark"]) .studio-portal .pp-btn-ghost {
+ background:#ffffffb3; color:#27385a; border-color:#afbdd6;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-btn-ghost:hover { background:#e8edfb; }
+:root:not([data-theme="dark"]) .studio-portal .pp-stats dd { color:#18294a; }
+:root:not([data-theme="dark"]) .studio-portal .pp-stats dt,
+:root:not([data-theme="dark"]) .studio-portal .studio-route { color:#485b78; }
+:root:not([data-theme="dark"]) .studio-route li:not(:last-child)::after { background:#a0b0cd; }
+:root:not([data-theme="dark"]) .studio-portal .pp-stage {
+ background:linear-gradient(155deg,#ffffff,#e4ebf8); border-color:#c9d5e9;
+ box-shadow:0 16px 32px -24px #334e7b66;
+}
+:root:not([data-theme="dark"]) .studio-portal .pp-stage-bar { background:#f7f9fe; border-color:#d3ddef; }
+:root:not([data-theme="dark"]) .studio-portal .pp-chip,
+:root:not([data-theme="dark"]) .studio-portal .pp-ctrl { color:#344767; border-color:#bdcbe1; background:#fff; min-height:32px; }
+:root:not([data-theme="dark"]) .studio-portal .pp-chip:hover,
+:root:not([data-theme="dark"]) .studio-portal .pp-ctrl:hover:not(:disabled),
+:root:not([data-theme="dark"]) .studio-portal .pp-chip[data-on="true"],
+:root:not([data-theme="dark"]) .studio-portal .pp-ctrl[aria-pressed="true"] { color:#342a96; background:#e7e8fc; border-color:#9697db; }
+:root:not([data-theme="dark"]) .studio-portal .pp-stage-skeleton .pp-stage-canvas { background:#e8edf7; }
+
+/* Full-width header requested from the reference; search stays a small control. */
+.studio-portal { padding-top:76px; }
+.studio-portal .studio-nav, .studio-portal .studio-nav.is-compact {
+ top:0; left:0; transform:none; width:100%; min-height:68px; padding:12px 24px;
+ border:0; border-bottom:1px solid var(--studio-line); border-radius:0; box-shadow:none; gap:12px;
+ background:var(--studio-surface);
+}
+[data-theme="dark"] .studio-portal .studio-nav { background:#0e1729; }
+.studio-nav .studio-brand { padding:4px 0; gap:12px; font-size:20px; border-radius:4px; }
+.studio-brand > svg { color:#a5b4fc; flex-shrink:0; }
+.studio-brand-divider { width:1px; height:28px; background:var(--studio-line); margin:0 4px; }
+.studio-symbols { display:flex; align-items:center; gap:12px; color:#8393ae; margin-right:16px; }
+.studio-nav .studio-lab-link { display:flex; align-items:center; gap:8px; white-space:nowrap; padding:8px; font-size:12px; }
+.studio-nav .studio-search { width:40px; height:40px; padding:10px; justify-content:center; border:1px solid var(--studio-line); }
+.studio-learning { display:flex; align-items:center; gap:8px; padding:8px 16px; border:1px solid #35629b50; background:#346db719; color:#3d6397; border-radius:24px; font-size:12px; font-weight:600; white-space:nowrap; }
+[data-theme="dark"] .studio-learning { color:#94bff5; }
+.studio-portal main > div:has(> label[for="cari-modul"]) { max-width:520px; }
+@media(max-width:900px) { .studio-learning { display:none; } .studio-symbols { margin-right:0; } }
+@media(max-width:640px) {
+ .studio-portal .studio-nav,.studio-portal .studio-nav.is-compact { padding:8px 12px; min-height:60px; gap:6px; }
+ .studio-portal { padding-top:68px; }
+ .studio-nav .studio-brand { gap:6px; font-size:14px!important; }
+ .studio-brand-divider,.studio-brand > svg { display:none; }
+ .studio-symbols { gap:6px; } .studio-symbols svg { width:14px; height:14px; }
+ .studio-nav .studio-lab-link { display:none; }
+ .studio-nav .studio-search { width:36px; height:36px; padding:8px; }
+ .studio-tools { gap:0; } .studio-tools button { width:36px; height:36px; padding:8px; }
+}
+@media(max-width:380px) { .studio-brand img { width:44px; } .studio-nav .studio-brand { font-size:12px!important; gap:4px; } .studio-symbols { gap:3px; } }
+
+/* Secondary pill lives below the full-width institutional header. */
+.studio-portal { padding-top:152px; }
+.studio-subnav { position:fixed; top:84px; left:50%; transform:translateX(-50%); z-index:55; width:min(620px,calc(100% - 32px)); display:flex; align-items:center; gap:8px; padding:8px 16px; border:1px solid var(--studio-line); border-radius:999px; background:var(--studio-surface); color:var(--studio-ink); box-shadow:0 8px 24px #0000000c; transition:width .2s; }
+.studio-subnav.is-compact { width:124px; justify-content:center; padding-inline:10px; }
+.studio-subnav.is-compact .studio-subbrand { margin:0; }
+.studio-subnav.is-compact > button:not(.studio-subbrand) { display:none; }
+.studio-subnav button { min-height:36px; padding:8px 12px; border-radius:24px; font-size:12px; white-space:nowrap; }
+.studio-subnav button:hover { background:#71809618; }
+.studio-subbrand { margin-right:auto; font-weight:600; }
+.studio-subbrand strong { color:#648cf0; }
+.studio-subsearch { display:flex; align-items:center; gap:6px; }
+.studio-subsearch kbd { border:1px solid var(--studio-line); padding:2px 4px; border-radius:4px; font-size:10px; }
+[data-theme="dark"] .studio-subnav { background:#22262d; border-color:#363e4a; }
+.studio-portal #pilih-semester { scroll-margin-top:164px; }
+@media(max-width:640px) {
+ .studio-portal { padding-top:136px; }
+ .studio-subnav { top:72px; gap:0; padding:6px 10px; }
+ .studio-subnav button { padding:8px; font-size:11px; }
+ .studio-subsearch kbd { display:none; }
+}
+
+/* Identiti rasmi ADTEC JTM dan eSL-IKR, carian tunggal di header. */
+.studio-portal .studio-nav, .studio-portal .studio-nav.is-compact { gap:clamp(8px,1.1vw,20px); padding-inline:clamp(12px,2vw,30px); }
+.studio-portal .studio-nav .studio-brand { display:flex; align-items:center; gap:11px; margin-right:clamp(8px,1.8vw,32px); flex:none; min-width:0; }
+.studio-portal .studio-institution { display:flex; align-items:center; justify-content:center; flex:none; background:rgba(246,249,255,.98); padding:5px 8px; border-radius:8px; }
+.studio-portal .studio-institution img { width:150px; height:47px; display:block; object-fit:contain; max-width:none; }
+.studio-portal .studio-brand-divider { display:block; flex:none; height:36px; width:1px; margin:0 3px; background:var(--studio-line); }
+.studio-portal .studio-topsearch {
+  display:flex; align-items:center; min-width:160px; width:min(390px,30vw); max-width:390px; height:42px;
+  gap:10px; padding:9px 14px; border:1px solid var(--studio-line);
+  border-radius:30px; background:rgba(70,112,165,.07); text-align:left;
+  color:var(--studio-muted,#91a6c6); font-size:12px; font-weight:500;
+}
+.studio-portal .studio-topsearch:hover { background:rgba(86,148,225,.13); border-color:#5685b77d; }
+.studio-portal .studio-topsearch span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; }
+.studio-portal .studio-topsearch kbd { flex:none; border:1px solid #8497ad4b; border-radius:5px; padding:2px 5px; font-size:10px; }
+.studio-portal .studio-subnav { max-width:540px; }
+.studio-portal .studio-subbrand { display:flex; width:130px; align-items:center; justify-content:center; padding:3px 6px; }
+.studio-portal .studio-subbrand img { height:27px; width:112px; max-width:100%; object-fit:contain; }
+.studio-portal .studio-subnav.is-compact { width:146px; }
+.studio-portal .studio-subnav.is-compact .studio-subbrand { width:128px; }
+[data-theme="light"] .studio-portal .studio-subbrand { background:#0b1731; }
+[data-theme="light"] .studio-portal .studio-subnav { background:#eef4ff; }
+@media(max-width:1270px) {
+  .studio-portal .studio-institution img { width:125px; height:40px; }
+  .studio-portal .studio-topsearch { width:min(315px,26vw); }
+  .studio-portal .studio-topsearch kbd { display:none; }
+  .studio-portal .studio-symbols { display:none; }
+}
+@media(max-width:980px) {
+  .studio-portal .studio-nav .studio-brand { gap:7px; margin-right:auto; }
+  .studio-portal .studio-institution img { width:110px; height:36px; }
+  .studio-portal .studio-topsearch { width:44px; min-width:44px; padding:12px; justify-content:center; }
+  .studio-portal .studio-topsearch span,.studio-portal .studio-topsearch kbd { display:none; }
+  .studio-portal .studio-brand-divider { height:25px; margin:0; }
+}
+@media(max-width:640px) {
+  .studio-portal .studio-nav .studio-brand { gap:4px; }
+  .studio-portal .studio-institution { padding:3px; border-radius:5px; }
+  .studio-portal .studio-institution img { width:88px; height:31px; }
+  .studio-portal .studio-topsearch { width:34px; min-width:34px; height:34px; padding:7px; }
+  .studio-portal .studio-subnav { max-width:calc(100% - 22px); }
+  .studio-portal .studio-subbrand img { width:90px; }
+}
+@media(max-width:380px) {
+  .studio-portal .studio-institution img { width:64px; }
+  .studio-portal .studio-brand-divider { display:none; }
+  .studio-portal .studio-learning { display:none; }
+}
+
+
+/* HOTFIX v3: ADTEC has true alpha transparency; no white capsule. */
+.studio-portal .studio-institution {
+  background:transparent!important; padding:0!important; border:0!important;
+  box-shadow:none!important; border-radius:0!important; isolation:isolate;
+}
+.studio-portal .studio-institution img {
+  max-width:100%; object-fit:contain;
+}
+[data-theme="dark"] .studio-portal .studio-institution img {
+  filter:drop-shadow(0 0 1.6px rgba(159,186,255,.65));
+}
+
+/* HOTFIX v3: top-center compact navigation brand uses the standalone symbol. */
+.studio-portal .studio-subbrand {
+  width:56px; min-width:56px; justify-content:center; margin-right:auto;
+  padding:4px 6px; line-height:0;
+}
+.studio-portal .studio-subbrand img {
+  display:block; height:39px; width:39px; max-width:none; object-fit:contain;
+}
+.studio-portal .studio-subnav.is-compact {
+  width:76px; padding:0; background:transparent!important; border:0!important;
+  box-shadow:none!important; backdrop-filter:none!important;
+}
+.studio-portal .studio-subnav.is-compact .studio-subbrand {
+  width:60px; min-width:60px; height:54px; margin:0 auto;
+  border:0; background:transparent!important; padding:5px;
+}
+.studio-portal .studio-subnav.is-compact .studio-subbrand img {
+  height:44px; width:44px;
+  filter:drop-shadow(0 3px 7px rgba(16,55,157,.35));
+}
+@media(max-width:640px) {
+  .studio-portal .studio-subbrand img { width:33px; height:33px; }
+  .studio-portal .studio-subnav.is-compact { width:64px; }
+  .studio-portal .studio-subnav.is-compact .studio-subbrand { width:52px; min-width:52px; height:48px; }
+  .studio-portal .studio-subnav.is-compact .studio-subbrand img { height:39px; width:39px; }
+}
+
+
+/* HOTFIX v4: buang ADTEC dari header, kemaskan brand dan guna ikon tajam untuk badge/tab. */
+.studio-portal .studio-brand { gap: 10px !important; }
+.studio-portal .studio-brand-divider,
+.studio-portal .studio-institution { display:none !important; }
+.studio-portal .studio-subbrand {
+  width:52px; min-width:52px; padding:4px; border-radius:999px;
+}
+.studio-portal .studio-subbrand img {
+  width:34px; height:34px; object-fit:contain; image-rendering:auto;
+  filter: drop-shadow(0 2px 6px rgba(16,55,157,.30));
+}
+.studio-portal .studio-subnav.is-compact { width:68px; }
+.studio-portal .studio-subnav.is-compact .studio-subbrand {
+  width:52px; min-width:52px; height:52px; padding:4px;
+}
+.studio-portal .studio-subnav.is-compact .studio-subbrand img {
+  width:36px; height:36px;
+}
+@media(max-width:640px){
+  .studio-portal .studio-subbrand img { width:30px; height:30px; }
+}
+
+
+/* ================================================================
+   eSL-IKR v5: SATU HEADER, SATU TRIGGER CARIAN, TANPA BAR KEDUA
+   Atas: logo besar statik + carian. Scroll: logo kecil + carian on click.
+   ================================================================ */
+:root, html, body, #root { max-width:100%; }
+html, body { overflow-x:clip; }
+.studio-portal { width:100%; max-width:100%; overflow-x:clip; padding-top:76px !important; }
+.studio-portal main { min-width:0; }
+.studio-portal .studio-subnav { display:none !important; }
+.studio-portal #pilih-semester { scroll-margin-top:85px; }
+.studio-portal .studio-nav {
+  box-sizing:border-box !important;
+  position:fixed !important;
+  z-index:70 !important;
+  left:0 !important; right:0 !important; top:0 !important;
+  width:100% !important; max-width:100% !important;
+  min-height:72px !important;
+  padding:9px clamp(12px,2vw,30px) !important;
+  border:0 !important; border-bottom:1px solid var(--studio-line) !important;
+  border-radius:0 !important; box-shadow:none !important;
+  display:flex !important; align-items:center !important; justify-content:space-between;
+  gap:clamp(8px,1.1vw,16px) !important;
+  transform:none !important;
+  transition:width .28s ease, padding .28s ease, border-radius .28s ease, box-shadow .28s ease, top .28s ease !important;
+}
+[data-theme="dark"] .studio-portal .studio-nav { background:rgba(12,21,39,.98) !important; }
+:root:not([data-theme="dark"]) .studio-portal .studio-nav { background:rgba(248,250,255,.97) !important; }
+.studio-portal .studio-nav .studio-brand {
+  display:flex !important; align-items:center; flex:0 0 auto; min-width:0; margin-right:clamp(6px,1.5vw,24px);
+  padding:0; gap:0;
+}
+.studio-portal .studio-institution,.studio-portal .studio-brand-divider {display:none !important;}
+.studio-portal .studio-nav .esl-logo-button {
+  display:flex; flex:none; width:190px; height:52px; padding:0; margin:0;
+  align-items:center; justify-content:center; border:0; border-radius:8px;
+  background:transparent; perspective:none !important; transform:none !important;
+}
+.studio-portal .studio-nav .esl-logo-button:hover { background:rgba(116,143,203,.08); }
+.studio-portal .esl-logo-static, .studio-portal .esl-logo-image {
+  width:100%; height:100%; max-width:100%; object-fit:contain; display:block;
+  transform:none !important; animation:none !important;
+}
+.studio-portal .studio-compact-toggle { display:none; }
+.studio-portal .studio-nav .studio-topsearch {
+  display:flex; flex:1 1 390px; min-width:0; width:min(390px,31vw); max-width:390px;
+  height:42px; align-items:center; justify-content:flex-start; gap:9px;
+  padding:8px 14px; white-space:nowrap; border-radius:24px;
+  background:rgba(62,105,157,.08); border:1px solid var(--studio-line);
+}
+.studio-portal .studio-topsearch span { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.studio-portal .studio-topsearch kbd { margin-left:auto; white-space:nowrap; }
+.studio-portal .studio-symbols { display:flex; flex:none; align-items:center; margin:0; gap:12px; }
+.studio-portal .studio-lab-link {flex:none;}
+.studio-portal .studio-tools { flex:none; }
+.studio-portal .studio-learning { flex:none; }
+
+/* Keadaan scroll: header lama bertukar menjadi kapsul yang SAMA, bukan header kedua. */
+.studio-portal .studio-nav.is-compact {
+  left:50% !important; right:auto !important; top:12px !important;
+  width:68px !important; max-width:calc(100% - 24px) !important;
+  min-height:56px !important; padding:5px !important;
+  justify-content:flex-start !important; gap:6px !important;
+  border:1px solid var(--studio-line) !important; border-radius:999px !important;
+  background:rgba(20,31,52,.96) !important;
+  box-shadow:0 12px 32px #0005 !important;
+  transform:translateX(-50%) !important;
+}
+:root:not([data-theme="dark"]) .studio-portal .studio-nav.is-compact {background:rgba(242,246,255,.97)!important;}
+.studio-portal .studio-nav.is-compact.has-search {
+  width:min(505px, calc(100% - 24px)) !important;
+  padding:6px 9px !important;
+}
+.studio-portal .studio-nav.is-compact .studio-brand,
+.studio-portal .studio-nav.is-compact .studio-symbols,
+.studio-portal .studio-nav.is-compact .studio-lab-link,
+.studio-portal .studio-nav.is-compact .studio-tools,
+.studio-portal .studio-nav.is-compact .studio-learning { display:none !important; }
+.studio-portal .studio-nav.is-compact .studio-compact-toggle {
+  border:0; outline-offset:3px; border-radius:999px;
+  display:flex !important; flex:none; align-items:center; justify-content:center;
+  width:56px; height:46px; padding:4px 7px !important;
+  margin:0; background:transparent !important;
+}
+.studio-portal .studio-nav.is-compact.has-search .studio-compact-toggle {width:52px;}
+.studio-portal .studio-compact-rotor {
+  width:37px; height:37px; display:block; position:relative;
+  transform-origin:center center; transform-style:preserve-3d;
+  animation:esl-small-logo-rest 7.8s infinite;
+  will-change:transform;
+  filter:drop-shadow(0 1px 3px rgba(33,102,208,.20));
+}
+.studio-portal .studio-compact-face {
+  display:block; position:absolute; inset:0; width:100%; height:100%;
+  object-fit:contain; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+}
+.studio-portal .studio-compact-back {transform:rotateY(180deg);}
+
+/* Satu pusingan 2.8s secara lembut, kemudian berhenti 5 saat. */
+@keyframes esl-small-logo-rest {
+  0% { transform:rotateY(0deg); animation-timing-function:cubic-bezier(.42,0,.18,1); }
+  35.89744% { transform:rotateY(360deg); }
+  100% { transform:rotateY(360deg); }
+}
+.studio-portal .studio-nav.is-compact .studio-topsearch {
+  flex:1 1 auto; width:auto; max-width:none; min-width:0;
+  height:41px; padding:7px 12px; margin:0; border-radius:25px;
+}
+.studio-portal .studio-nav.is-compact:not(.has-search) .studio-topsearch { display:none !important; }
+.studio-portal .studio-nav.is-compact.has-search .studio-topsearch {display:flex!important;}
+
+@media(max-width:1260px) {
+  .studio-portal .studio-symbols { gap:7px; }
+  .studio-portal .studio-learning { padding:7px 10px; }
+  .studio-portal .studio-nav .esl-logo-button { width:162px; height:48px; }
+}
+@media(max-width:1060px) {
+  .studio-portal .studio-nav:not(.is-compact) .studio-symbols {display:none !important;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-learning {display:none !important;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch {max-width:none; width:auto;}
+}
+@media(max-width:680px) {
+  .studio-portal { padding-top:67px !important; }
+  .studio-portal .studio-nav:not(.is-compact) {min-height:62px!important; padding:7px 10px!important; gap:6px!important;}
+  .studio-portal .studio-nav .esl-logo-button {width:116px!important; height:40px!important;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch {height:38px; padding:7px 9px; width:auto; min-width:0;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch kbd {display:none;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-lab-link {display:none!important;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-tools {display:none!important;}
+  .studio-portal .studio-nav.is-compact.has-search {width:min(460px,calc(100% - 20px))!important;}
+  .studio-portal .studio-nav.is-compact .studio-topsearch kbd {display:none;}
+}
+@media(max-width:390px) {
+  .studio-portal .studio-nav .esl-logo-button {width:98px!important;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch {padding:7px;}
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch span {font-size:10px;}
+}
+@media(prefers-reduced-motion: reduce) {
+  .studio-portal .studio-compact-rotor {animation:none !important; will-change:auto;}
+  .studio-portal .studio-nav {transition:none !important;}
+}
+
+/* eSL-IKR v6 MOBILE ICONS START */
+/* Tiga ikon asli (Code2, Server, Database) juga muncul pada telefon.
+   Cuma satu header, cuma satu search trigger, scroll pilihan B dikekalkan. */
+@media screen and (max-width: 680px) {
+  .studio-portal { padding-top: 110px !important; }
+
+  .studio-portal .studio-nav:not(.is-compact) {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto;
+    grid-template-rows: 42px 38px;
+    align-items: center !important;
+    justify-content: initial !important;
+    column-gap: 8px !important;
+    row-gap: 5px !important;
+    min-height: 102px !important;
+    padding: 7px 12px 10px !important;
+  }
+
+  .studio-portal .studio-nav:not(.is-compact) .studio-brand {
+    display: flex !important;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0;
+    justify-self: start;
+  }
+  .studio-portal .studio-nav:not(.is-compact) .esl-logo-button {
+    width: min(136px, 44vw) !important;
+    height: 42px !important;
+  }
+
+  /* Pembetulan khusus: v5 menyembunyikannya pada skrin <= 1060px. */
+  .studio-portal .studio-nav:not(.is-compact) .studio-symbols {
+    display: flex !important;
+    grid-column: 2;
+    grid-row: 1;
+    align-items: center;
+    justify-self: end;
+    align-self: center;
+    flex: none;
+    gap: clamp(6px, 2vw, 10px) !important;
+    margin: 0 !important;
+    padding: 0;
+    color: #a6bddc;
+  }
+  .studio-portal .studio-nav:not(.is-compact) .studio-symbols svg {
+    width: clamp(18px, 5.5vw, 21px) !important;
+    height: clamp(18px, 5.5vw, 21px) !important;
+    flex: none;
+    stroke-width: 1.9;
+  }
+
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 38px !important;
+    margin: 0;
+    padding: 7px 12px !important;
+  }
+  /* Kekal satu sahaja carian. Tiada butang carian tambahan di header. */
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch span {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .studio-portal .studio-nav:not(.is-compact) .studio-topsearch kbd {
+    display: none !important;
+  }
+
+  /* Status scroll pilihan B kekal kapsul kecil tunggal. */
+  .studio-portal .studio-nav.is-compact { display: flex !important; }
+}
+@media screen and (max-width: 330px) {
+  .studio-portal .studio-nav:not(.is-compact) {
+    column-gap: 4px !important;
+    padding-inline: 9px !important;
+  }
+  .studio-portal .studio-nav:not(.is-compact) .studio-brand .esl-logo-button {
+    width: min(126px, 43vw) !important;
+  }
+  .studio-portal .studio-nav:not(.is-compact) .studio-symbols {
+    gap: 6px !important;
+  }
+}
+/* eSL-IKR v6 MOBILE ICONS END */

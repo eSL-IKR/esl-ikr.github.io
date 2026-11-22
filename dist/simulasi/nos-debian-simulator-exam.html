@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teknologi Komputer Rangkaian ADTEC JTM Kampus Sandakan - Debian Simulator (EXAM MODE)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="../libs/bootstrap/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 12px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .sys-bar {
+            background-color: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            padding: 8px 15px;
+            margin-bottom: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #f0f6fc;
+        }
+
+        /* Terminal Styling - Debian 13 GNOME Light Theme */
+        .cli-container {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            height: 610px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .cli-header {
+            background-color: #e5e5e5;
+            padding: 6px 12px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.85rem;
+            color: #333333;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #cccccc;
+            font-weight: 500;
+        }
+
+        .cli-body {
+            padding: 12px;
+            flex-grow: 1;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        .cli-input-row {
+            padding: 4px 12px 12px 12px;
+            background-color: #ffffff;
+            border-top: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .cli-prompt {
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            width: 100%;
+            outline: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .prompt-userhost {
+            color: #26a269; /* Green GNOME terminal prompt color */
+            font-weight: bold;
+        }
+
+        .prompt-symbol {
+            color: #000000;
+            font-weight: bold;
+        }
+
+        /* GUI Client Desktop Environment Styling */
+        .gui-desktop-container {
+            background: linear-gradient(135deg, #1e1e2e, #0f0f1a);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            height: 610px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(13, 110, 253, 0.2);
+        }
+
+        .gui-top-bar {
+            background-color: #11111b;
+            color: #cdd6f4;
+            padding: 4px 15px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #313244;
+        }
+
+        .gui-window {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            margin: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .gui-window-header {
+            background-color: #e5e5e5;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            color: #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        /* Full Interactive Nano Editor Overlay - WHITE THEME */
+        .nano-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+        }
+
+        .nano-header {
+            background-color: #e5e5e5;
+            color: #000000;
+            text-align: center;
+            font-weight: bold;
+            padding: 4px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .nano-editor-area {
+            flex-grow: 1;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            outline: none;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            resize: none;
+            width: 100%;
+        }
+
+        .nano-footer {
+            background-color: #f0f0f0;
+            border-top: 1px solid #cccccc;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            color: #000000;
+        }
+
+        .nano-btn-hint {
+            background: #dcdcdc;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 8px;
+            color: #0275d8;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* Dark Side Help Panel */
+        .side-panel {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            height: 610px;
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            overflow-y: auto;
+        }
+
+        .output-view-box {
+            background-color: #161b22;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 12px;
+            min-height: 140px;
+            font-family: monospace;
+            border: 1px solid #30363d;
+        }
+
+        .modal-dark {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: #f0f6fc;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- SYSTEM BAR -->
+    <div class="sys-bar d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <span class="text-info fw-bold">TEKNOLOGI KOMPUTER RANGKAIAN ADTEC JTM KAMPUS SANDAKAN</span> | 
+            <span>Pelajar: <strong id="bar-student-name" class="text-warning">Belum Berdaftar</strong></span> | 
+            <span>Mod: <strong id="bar-lab-mode" class="text-danger">EXAM MODE</strong></span>
+        </div>
+        <div>
+            <span>Kemajuan: <strong id="bar-step-progress" class="text-info">Langkah 1 / 26</strong></span> | 
+            <button class="btn btn-outline-danger btn-sm ms-2 py-0" style="font-size:0.75rem;" onclick="resetEnvironment()">Reset Lab</button>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="row g-2">
+        
+        <!-- LEFT: DUAL-NODE TERMINAL / GUI DESKTOP -->
+        <div class="col-lg-7">
+            
+            <!-- NODE SELECTOR -->
+            <div class="d-flex gap-2 mb-2">
+                <button class="btn btn-primary btn-sm flex-fill fw-bold" id="btn-node-server" onclick="switchNode('server')">
+                    🖥️ [debian-server] Server CLI Node
+                </button>
+                <button class="btn btn-outline-secondary btn-sm flex-fill fw-bold" id="btn-node-client" onclick="switchNode('client')">
+                    💻 [debian-client] Client GUI Desktop Node
+                </button>
+            </div>
+
+            <!-- SERVER CLI TERMINAL WINDOW -->
+            <div class="cli-container" id="server-terminal-container">
+                <div class="cli-header">
+                    <span id="terminal-title">debian-server tty1</span>
+                    <span>GNU/Linux Debian 13 (trixie) CLI</span>
+                </div>
+
+                <div class="cli-body" id="terminal-screen">
+                    <!-- Server Terminal Logs -->
+                </div>
+
+                <div class="cli-input-row" id="cli-input-container">
+                    <span class="cli-prompt" id="cli-prompt-label">debian-server login:</span>
+                    <input type="text" id="cli-input" class="cli-input" autofocus autocomplete="off" spellcheck="false">
+                </div>
+
+                <!-- NANO EDITOR OVERLAY -->
+                <div class="nano-overlay d-none" id="nano-editor-overlay">
+                    <div class="nano-header" id="nano-filepath-header">
+                        GNU nano 7.2 -- /etc/network/interfaces
+                    </div>
+                    <textarea class="nano-editor-area" id="nano-textarea" spellcheck="false"></textarea>
+                    <div class="nano-footer">
+                        <div class="d-flex justify-content-between">
+                            <span><strong class="nano-btn-hint">Ctrl+O</strong> WriteOut (Simpan)</span>
+                            <span><strong class="nano-btn-hint">Enter</strong> Pengesahan Simpan</span>
+                            <span><strong class="nano-btn-hint">Ctrl+X</strong> Keluar Nano</span>
+                        </div>
+                        <div id="nano-status-msg" class="text-danger mt-1 fw-bold"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLIENT GUI DESKTOP CONTAINER (HIDDEN BY DEFAULT) -->
+            <div class="gui-desktop-container d-none" id="client-gui-container">
+                <!-- Top GNOME Status Bar -->
+                <div class="gui-top-bar">
+                    <span><b>Activities</b> &nbsp;&nbsp; Terminal &nbsp;&nbsp; Firefox Web Browser</span>
+                    <span>Debian 13 Desktop (GNOME) &nbsp;|&nbsp; <span id="client-gui-ip">IP: Unassigned</span></span>
+                </div>
+
+                <!-- Desktop Terminal Window -->
+                <div class="gui-window">
+                    <div class="gui-window-header">
+                        <span id="client-gui-header-title">🔴 🟡 🟢 &nbsp; root@debianclient:~ (GNOME Terminal)</span>
+                        <small>GNU Bash 5.2</small>
+                    </div>
+
+                    <div class="cli-body" id="client-terminal-screen">
+                        <!-- Client GUI Terminal Logs -->
+                    </div>
+
+                    <div class="cli-input-row">
+                        <span class="cli-prompt" id="client-cli-prompt-label"><span class="prompt-userhost">root@debianclient</span><span class="prompt-symbol">:~#</span></span>
+                        <input type="text" id="client-cli-input" class="cli-input" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT: GUIDANCE & LIVE OUTPUT INSPECTOR -->
+        <div class="col-lg-5">
+            <div class="side-panel">
+
+                <!-- STEP GUIDE SECTION -->
+                <div id="step-guide-container">
+                    <!-- Dynamic guide content -->
+                </div>
+
+                <hr class="border-secondary my-3">
+
+                <!-- LIVE OUTPUT INSPECTOR SECTION -->
+                <h6 class="text-info fw-bold mb-2">🌐 Live Output & Client Verification Inspector</h6>
+                <div class="output-view-box" id="inspector-output-box">
+                    <div class="text-white-50 text-center py-4">
+                        <div class="fs-2">🖥️</div>
+                        <small>Lengkapkan konfigurasi di Server, kemudian jalankan arahan pengujian pada Client untuk melihat paparan visual di sini.</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- STUDENT REGISTRATION MODAL -->
+    <div class="modal fade" id="registrationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-info fw-bold">Teknologi Komputer Rangkaian ADTEC Sandakan</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="small text-white-50">Sila mendaftar nama pengguna & kata laluan anda untuk memulakan **EXAM MODE**.</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Username Pelajar:</label>
+                        <input type="text" id="input-student-name" class="form-control bg-black text-white border-secondary" placeholder="Taip nama pengguna (cth: student)">
+                        <div id="name-error" class="text-danger small mt-1 d-none">Sila masukkan nama pengguna!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Password Pelajar:</label>
+                        <input type="password" id="input-student-pass" class="form-control bg-black text-white border-secondary" placeholder="Taip kata laluan (cth: debian123)">
+                        <div id="pass-error" class="text-danger small mt-1 d-none">Sila masukkan kata laluan!</div>
+                    </div>
+
+                    <div class="alert alert-danger small mb-0">
+                        <b>Mod Ujian (EXAM MODE):</b> Arahan CLI dan jawapan konfigurasi tidak disediakan. Anda perlu melaksanakan setiap langkah berdasarkan kertas soalan amali.
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-danger w-100 fw-bold text-white" onclick="initializeStudentLab()">Mulakan Ujian Debian (EXAM MODE)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="../libs/bootstrap/bootstrap.bundle.min.js"></script><script>window.bootstrap||document.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>')</script>
+
+    <script>
+        // DISABLE COPY & PASTE FOR STUDENTS
+        document.addEventListener('copy', function(e) { e.preventDefault(); });
+        document.addEventListener('cut', function(e) { e.preventDefault(); });
+        document.addEventListener('paste', function(e) { e.preventDefault(); });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'v' || e.key === 'V' || e.key === 'u' || e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+
+        // GLOBAL STATE
+        let studentName = "";
+        let studentPass = "";
+        let labMode = "exam";
+        let activeNode = "server";
+        let currentStepIndex = 0;
+
+        // TRACK IF WELCOME LOGS ALREADY INITIALIZED
+        let serverInitialized = false;
+        let clientInitialized = false;
+
+        // LOGIN STATE MACHINE
+        let loginState = "AWAITING_USER";
+        let isRoot = false;
+        let isAwaitingSuPass = false;
+        let isNetworkConfiguredValid = false;
+
+        // VIRTUAL FILE SYSTEM MEMORY
+        let fileSystem = {
+            "/etc/network/interfaces": "",
+            "/var/www/html/index.html": "",
+            "/etc/dhcp/dhcpd.conf": "",
+            "/etc/bind/named.conf.local": "",
+            "/etc/bind/db.tkr.sandakan": "",
+            "/etc/resolv.conf": ""
+        };
+
+        let clientStatus = {
+            ip: "Unassigned",
+            dhcpLeased: false
+        };
+
+        let currentEditingFile = "";
+        let nanoSavePending = false;
+
+        // 26 LAB STEPS (EXAM MODE ONLY)
+        const labSteps = [
+            // SYSTEM LOGIN & AUTHENTICATION
+            {
+                step: 1, node: "server",
+                title: "1. Login & Switch to Root User",
+                shortHelp: "Sila log masuk sebagai pengguna root superuser pada Debian Server.",
+                expectedCmd: "su -", altCmd: "su",
+                isSuCmd: true
+            },
+            {
+                step: 2, node: "server",
+                title: "2. Configure Static IP Address in interfaces file", shortHelp: "Sila buka fail konfigurasi antaramuka rangkaian dan tetapkan IP Statik Pelayan.",
+                expectedCmd: "nano /etc/network/interfaces",
+                isFileEdit: true, fileTarget: "/etc/network/interfaces",
+                requiredKeywords: ["192.168.1.10", "static", "255.255.255.0", "gateway 192.168.1.1"],
+                invalidKeywords: ["address 192.168.1.0", "gateway 192.168.0.0", "gateway 192.168.1.0"]
+            },
+            {
+                step: 3, node: "server",
+                title: "3. Verify Network Interfaces Configuration File",
+                shortHelp: "Sila paparkan kandungan fail antaramuka rangkaian yang disunting.",
+                expectedCmd: "cat /etc/network/interfaces",
+                isCatCmd: true, fileTarget: "/etc/network/interfaces"
+            },
+            {
+                step: 4, node: "server",
+                title: "4. Restart Networking Service",
+                shortHelp: "Sila muat semula perkhidmatan rangkaian pelayan.",
+                expectedCmd: "systemctl restart networking",
+                isNetworkingRestart: true,
+                output: "Applied static IP 192.168.1.10/24 on eth0 interface successfully."
+            },
+            {
+                step: 5, node: "server",
+                title: "5. Verify Server IP Configuration",
+                shortHelp: "Sila semak maklumat alamat IP semasa pelayan.",
+                expectedCmd: "ip a", altCmd: "ip addr",
+                output: "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN\n    inet 127.0.0.1/8 scope host lo\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP\n    inet 192.168.1.10/24 brd 192.168.1.255 scope global eth0"
+            },
+            {
+                step: 6, node: "server",
+                title: "6. Test Connectivity to Client Node",
+                shortHelp: "Sila uji ketersambungan ping dari Pelayan ke Client.",
+                isPingCheck: true
+            },
+
+            // 1. DHCP SERVER
+            {
+                step: 7, node: "server",
+                title: "7. Install ISC-DHCP-Server",
+                shortHelp: "Sila pasang perkhidmatan Pelayan DHCP.",
+                expectedCmd: "apt -y install isc-dhcp-server", altCmd: "apt-get install isc-dhcp-server -y",
+                output: "Setting up isc-dhcp-server (4.4.3-P1) ... Done"
+            },
+            {
+                step: 8, node: "server",
+                title: "8. Edit DHCP Configuration File",
+                shortHelp: "Sila buka dan sunting fail konfigurasi utama DHCP Server.",
+                expectedCmd: "nano /etc/dhcp/dhcpd.conf",
+                isFileEdit: true, fileTarget: "/etc/dhcp/dhcpd.conf",
+                requiredKeywords: ["subnet", "192.168.1.20", "192.168.1.100", "tkr.sandakan"]
+            },
+            {
+                step: 9, node: "server",
+                title: "9. Verify dhcpd.conf File Content",
+                shortHelp: "Sila paparkan kandungan fail konfigurasi DHCP yang telah disunting.",
+                expectedCmd: "cat /etc/dhcp/dhcpd.conf",
+                isCatCmd: true, fileTarget: "/etc/dhcp/dhcpd.conf"
+            },
+            {
+                step: 10, node: "server",
+                title: "10. Start ISC-DHCP-Server Service",
+                shortHelp: "Sila mulakan perkhidmatan DHCP Server.",
+                expectedCmd: "systemctl start isc-dhcp-server",
+                output: "Starting ISC DHCP server: dhcpd."
+            },
+            {
+                step: 11, node: "client",
+                title: "11. Request Dynamic IP from DHCP Client",
+                shortHelp: "Sila minta penetapan IP dinamik pada peranti Client.",
+                expectedCmd: "dhclient -v eth0", altCmd: "dhclient",
+                output: "DHCPDISCOVER on eth0 to 255.255.255.255\nDHCPOFFER of 192.168.1.20 from 192.168.1.10\nDHCPREQUEST for 192.168.1.20\nDHCPACK of 192.168.1.20\nbound to 192.168.1.20 -- renewal in 3600s.",
+                renderOutput: function() {
+                    return `<div class="p-2 text-white"><h6 class="text-info fw-bold">DHCP Lease Active</h6><b>Client IP:</b> 192.168.1.20<br><b>Gateway:</b> 192.168.1.1<br><b>DNS Server / Domain:</b> 192.168.1.10 (tkr.sandakan)</div>`;
+                }
+            },
+
+            // 2. DNS SERVER (BIND9)
+            {
+                step: 12, node: "server",
+                title: "12. Install BIND9 DNS Server",
+                shortHelp: "Sila pasang perkhidmatan Pelayan DNS BIND9.",
+                expectedCmd: "apt -y install bind9 bind9utils", altCmd: "apt-get install bind9 bind9utils -y",
+                output: "Setting up bind9 (9.18.16) ... Done"
+            },
+            {
+                step: 13, node: "server",
+                title: "13. Configure Local Named Zone File",
+                shortHelp: "Sila buka dan sunting fail pendaftaran zon tempatan DNS.",
+                expectedCmd: "nano /etc/bind/named.conf.local",
+                isFileEdit: true, fileTarget: "/etc/bind/named.conf.local",
+                requiredKeywords: ["zone", "tkr.sandakan"]
+            },
+            {
+                step: 14, node: "server",
+                title: "14. Configure Domain Record Database Zone",
+                shortHelp: "Sila buka dan sunting fail rekod pengkalan data zon DNS.",
+                expectedCmd: "nano /etc/bind/db.tkr.sandakan",
+                isFileEdit: true, fileTarget: "/etc/bind/db.tkr.sandakan",
+                requiredKeywords: ["SOA", "192.168.1.10", "tkr.sandakan"]
+            },
+            {
+                step: 15, node: "server",
+                title: "15. Verify DNS Zone File Content",
+                shortHelp: "Sila paparkan kandungan fail rekod zon DNS.",
+                expectedCmd: "cat /etc/bind/db.tkr.sandakan",
+                isCatCmd: true, fileTarget: "/etc/bind/db.tkr.sandakan"
+            },
+            {
+                step: 16, node: "server",
+                title: "16. Start BIND9 Service",
+                shortHelp: "Sila mulakan perkhidmatan DNS Server.",
+                expectedCmd: "systemctl start bind9",
+                output: "Started BIND Domain Name Server."
+            },
+            {
+                step: 17, node: "client",
+                title: "17. Update Client DNS Resolver",
+                shortHelp: "Sila sunting fail penunjuk DNS resolver pada peranti Client.",
+                expectedCmd: "nano /etc/resolv.conf",
+                isFileEdit: true, fileTarget: "/etc/resolv.conf",
+                requiredKeywords: ["192.168.1.10"]
+            },
+            {
+                step: 18, node: "client",
+                title: "18. Verify DNS Resolution via nslookup",
+                shortHelp: "Sila uji penterjemahan nama domain dari peranti Client.",
+                expectedCmd: "nslookup tkr.sandakan", altCmd: "dig tkr.sandakan",
+                output: "Server:\t\t192.168.1.10\nAddress:\t192.168.1.10#53\n\nName:\ttkr.sandakan\nAddress: 192.168.1.10",
+                renderOutput: function() {
+                    return `<div class="p-2 text-white"><h6 class="text-info fw-bold">DNS Query Resolved</h6><b>Domain:</b> tkr.sandakan<br><b>IPv4 Address:</b> 192.168.1.10</div>`;
+                }
+            },
+
+            // 3. WEB SERVER (APACHE2)
+            {
+                step: 19, node: "server",
+                title: "19. Install Apache2 Web Server",
+                shortHelp: "Sila pasang perkhidmatan Pelayan Web Apache2.",
+                expectedCmd: "apt -y install apache2", altCmd: "apt-get install apache2 -y",
+                output: "Setting up apache2 (2.4.57-2) ... Done"
+            },
+            {
+                step: 20, node: "server",
+                title: "20. Custom HTML Page using Nano Editor", shortHelp: "Sila buka dan sunting fail kandungan utama halaman web pelayan.",
+                expectedCmd: "nano /var/www/html/index.html",
+                isFileEdit: true, fileTarget: "/var/www/html/index.html",
+                requiredKeywords: ["<html>", "</html>"]
+            },
+            {
+                step: 21, node: "server",
+                title: "21. Verify index.html Content",
+                shortHelp: "Sila paparkan kandungan fail HTML laman web.",
+                expectedCmd: "cat /var/www/html/index.html",
+                isCatCmd: true, fileTarget: "/var/www/html/index.html"
+            },
+            {
+                step: 22, node: "server",
+                title: "22. Start Apache2 Web Service",
+                shortHelp: "Sila mulakan perkhidmatan Pelayan Web Apache2.",
+                expectedCmd: "systemctl start apache2",
+                output: "Started The Apache HTTP Server."
+            },
+            {
+                step: 23, node: "client",
+                title: "23. Verify Web Output from Client",
+                shortHelp: "Sila capai laman web pelayan menggunakan Nama Domain dari peranti Client.",
+                expectedCmd: "curl http://tkr.sandakan", altCmd: "curl http://192.168.1.10",
+                renderOutput: function() {
+                    return `<div class="p-2 text-white"><h5 class="text-success">HTTP/1.1 200 OK</h5><hr>${fileSystem["/var/www/html/index.html"]}</div>`;
+                }
+            },
+
+            // 4. OPENLDAP SERVER
+            {
+                step: 24, node: "server",
+                title: "24. Install OpenLDAP Server",
+                shortHelp: "Sila pasang perkhidmatan Pelayan Direktori (OpenLDAP).",
+                expectedCmd: "apt -y install slapd ldap-utils", altCmd: "apt-get install slapd ldap-utils -y",
+                output: "Setting up slapd (2.5.13) ... Done"
+            },
+            {
+                step: 25, node: "server",
+                title: "25. Start OpenLDAP Service", shortHelp: "Sila mulakan perkhidmatan Pelayan Direktori.",
+                expectedCmd: "systemctl start slapd",
+                output: "Started OpenLDAP Server Daemon."
+            },
+            {
+                step: 26, node: "client",
+                title: "26. Query LDAP Directory Database",
+                shortHelp: "Sila lakukan carian pengkalan data direktori domain dari peranti Client.",
+                expectedCmd: "ldapsearch -x -h 192.168.1.10 -b \"dc=tkr,dc=sandakan\"",
+                output: "# extended LDIF\ndn: dc=tkr,dc=sandakan\nobjectClass: top\nobjectClass: dcObject\nobjectClass: organization\no: tkr.sandakan\n\n# search result\nresult: 0 Success",
+                renderOutput: function() {
+                    return `<div class="p-2 text-white"><h6 class="text-primary fw-bold">Directory Entry Found</h6><b>Base DN:</b> dc=tkr,dc=sandakan<br><b>Status:</b> LDAP Directory Query Success</div>`;
+                }
+            }
+        ];
+
+        const registrationModal = new bootstrap.Modal(document.getElementById('registrationModal'));
+
+        window.onload = function() {
+            registrationModal.show();
+        };
+
+        function initializeStudentLab() {
+            const inputName = document.getElementById('input-student-name').value.trim();
+            const inputPass = document.getElementById('input-student-pass').value.trim();
+
+            if (!inputName) {
+                document.getElementById('name-error').classList.remove('d-none');
+                return;
+            }
+            if (!inputPass) {
+                document.getElementById('pass-error').classList.remove('d-none');
+                return;
+            }
+
+            studentName = inputName;
+            studentPass = inputPass;
+            labMode = "exam";
+
+            document.getElementById('bar-student-name').innerText = studentName;
+            document.getElementById('bar-lab-mode').innerText = "EXAM MODE";
+            document.getElementById('bar-lab-mode').className = "text-danger";
+
+            // Kemaskini tajuk dan prompt khusus untuk CLIENT node
+            document.getElementById('client-gui-header-title').innerText = `🔴 🟡 🟢 \u00a0 root@debianclient-${studentName}:~ (GNOME Terminal)`;
+            document.getElementById('client-cli-prompt-label').innerHTML = `<span class="prompt-userhost">root@debianclient-${studentName}</span><span class="prompt-symbol">:~#</span>`;
+
+            registrationModal.hide();
+            renderStepGuide();
+            renderTerminalWelcome();
+            setupNanoKeyBindings();
+            renderClientGuiWelcome();
+        }
+
+        function switchNode(node) {
+            activeNode = node;
+            const btnServer = document.getElementById('btn-node-server');
+            const btnClient = document.getElementById('btn-node-client');
+            const serverContainer = document.getElementById('server-terminal-container');
+            const clientContainer = document.getElementById('client-gui-container');
+
+            if (node === 'server') {
+                btnServer.className = "btn btn-primary btn-sm flex-fill fw-bold";
+                btnClient.className = "btn btn-outline-secondary btn-sm flex-fill fw-bold";
+                serverContainer.classList.remove('d-none');
+                clientContainer.classList.add('d-none');
+                document.getElementById('cli-input').focus();
+            } else {
+                btnClient.className = "btn btn-success btn-sm flex-fill fw-bold";
+                btnServer.className = "btn btn-outline-secondary btn-sm flex-fill fw-bold";
+                serverContainer.classList.add('d-none');
+                clientContainer.classList.remove('d-none');
+                if (!clientInitialized) {
+                    renderClientGuiWelcome();
+                }
+                document.getElementById('client-cli-input').focus();
+            }
+
+            updatePromptLabel();
+        }
+
+        function updatePromptLabel() {
+            const prompt = document.getElementById('cli-prompt-label');
+            const cliInput = document.getElementById('cli-input');
+
+            if (activeNode === 'server') {
+                if (loginState === "AWAITING_USER") {
+                    prompt.innerHTML = `<span class="prompt-symbol">debian-server login:</span>`;
+                    cliInput.type = "text";
+                } else if (loginState === "AWAITING_PASS" || isAwaitingSuPass) {
+                    prompt.innerHTML = `<span class="prompt-symbol">Password:</span>`;
+                    cliInput.type = "password"; // Hide password text
+                } else if (isRoot) {
+                    prompt.innerHTML = `<span class="prompt-userhost">root@debianserver-${studentName}</span><span class="prompt-symbol">:~#</span>`;
+                    cliInput.type = "text";
+                } else {
+                    prompt.innerHTML = `<span class="prompt-userhost">${studentName}@debianserver-${studentName}</span><span class="prompt-symbol">:~$</span>`;
+                    cliInput.type = "text";
+                }
+            }
+        }
+
+        function renderTerminalWelcome() {
+            if (serverInitialized) return;
+            serverInitialized = true;
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = "";
+            if (activeNode === 'server') {
+                if (loginState === "AWAITING_USER" || loginState === "AWAITING_PASS") {
+                    appendLog("Debian GNU/Linux 13 debian-server tty1", "#000000");
+                    appendLog("debian-server login: ", "#000000");
+                } else if (isRoot) {
+                    appendLog("Linux debian-server 6.11.0-1-amd64 #1 SMP PREEMPT_DYNAMIC x86_64", "#333333");
+                    appendLog("Logged in as root superuser.", "#d9534f");
+                } else {
+                    appendLog("Linux debian-server 6.11.0-1-amd64 #1 SMP PREEMPT_DYNAMIC x86_64", "#333333");
+                    appendLog(`Logged in as ${studentName}. Type 'su -' to switch to root.`, "#0275d8");
+                }
+            }
+        }
+
+        function renderClientGuiWelcome() {
+            if (clientInitialized) return;
+            clientInitialized = true;
+            const screen = document.getElementById('client-terminal-screen');
+            screen.innerHTML = "";
+            const cIp = clientStatus.dhcpLeased ? "192.168.1.20" : "Unassigned";
+            document.getElementById('client-gui-ip').innerText = `IP: ${cIp}`;
+            
+            appendClientLog(`Linux debianclient-${studentName} 6.11.0-1-amd64 (GNOME Desktop GUI Environment)`, "#333333");
+            appendClientLog(`Current Network Interface IPv4: ${cIp}`, "#26a269");
+        }
+
+        function renderStepGuide() {
+            const container = document.getElementById('step-guide-container');
+            document.getElementById('bar-step-progress').innerText = `Step ${currentStepIndex + 1} / ${labSteps.length}`;
+
+            if (currentStepIndex >= labSteps.length) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <h4 class="text-success fw-bold">🏆 UJIAN LAB SELESAI!</h4>
+                        <p class="small text-white-50">Pelajar: <strong>${studentName}</strong></p>
+                        <p class="small text-muted">Tahniah! Kesemua 26 langkah konfigurasi Debian (EXAM MODE) telah diselesaikan dengan jaya.</p>
+                        <button class="btn btn-outline-primary btn-sm" onclick="resetEnvironment()">Semula Ujian Assessment</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const step = labSteps[currentStepIndex];
+
+            container.innerHTML = `
+                <div class="mb-2">
+                    <span class="badge bg-danger">EXAM MODE - TANPA HINT</span>
+                    <span class="badge bg-dark border border-secondary text-info">${step.node.toUpperCase()} NODE</span>
+                </div>
+                <h6 class="text-warning fw-bold">${step.title}</h6>
+                <div class="p-2 mt-2 bg-black border border-secondary rounded">
+                    <small class="text-info fw-bold d-block">${step.shortHelp}</small>
+                </div>
+
+                <div class="mt-3 pt-2 border-top border-secondary">
+                    <small class="text-white-50 d-block mb-1">Status Pemilihan Node:</small>
+                    <span class="${activeNode === step.node ? 'text-success fw-bold' : 'text-danger fw-bold'}">
+                        ${activeNode === step.node ? '✔ Node yang betul dipilih (' + step.node.toUpperCase() + ')' : '✖ Sila tukar ke Node: ' + step.node.toUpperCase()}
+                    </span>
+                </div>
+            `;
+        }
+
+        function appendLog(text, color = "#000000") {
+            const screen = document.getElementById('terminal-screen');
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerHTML = text;
+            screen.appendChild(div);
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        function appendClientLog(text, color = "#000000") {
+            const screen = document.getElementById('client-terminal-screen');
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerHTML = text;
+            screen.appendChild(div);
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        // SERVER CLI INPUT PROCESSOR
+        document.getElementById('cli-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim();
+
+                if (loginState === "AWAITING_USER") {
+                    if (val === studentName) {
+                        appendLog(`debian-server login: ${val}`, "#000000");
+                        loginState = "AWAITING_PASS";
+                        updatePromptLabel();
+                        this.value = '';
+                        return;
+                    } else {
+                        appendLog(`debian-server login: ${val}`, "#000000");
+                        appendLog("Login incorrect", "#d9534f");
+                        appendLog("debian-server login: ", "#000000");
+                        this.value = '';
+                        return;
+                    }
+                }
+
+                if (loginState === "AWAITING_PASS") {
+                    appendLog("Password: ", "#000000");
+                    this.value = '';
+
+                    if (val === studentPass) {
+                        loginState = "LOGGED_IN";
+                        updatePromptLabel();
+                        appendLog(`Linux debianserver-${studentName} 6.11.0-1-amd64 #1 SMP PREEMPT_DYNAMIC x86_64`, "#333333");
+                        appendLog(`Last login: Wed Oct 07 14:00:00 2026 from 192.168.1.1`, "#333333");
+                        appendLog(`Logged in as ${studentName}. Type 'su -' to gain root privileges.`, "#0275d8");
+                        return;
+                    } else {
+                        appendLog("Login incorrect", "#d9534f");
+                        loginState = "AWAITING_USER";
+                        updatePromptLabel();
+                        appendLog("debian-server login: ", "#000000");
+                        return;
+                    }
+                }
+
+                if (isAwaitingSuPass) {
+                    appendLog("Password: ", "#000000");
+                    this.value = '';
+
+                    if (val === studentPass) {
+                        isAwaitingSuPass = false;
+                        isRoot = true;
+                        updatePromptLabel();
+                        appendLog(`<span class='prompt-userhost'>root@debianserver-${studentName}</span><span class='prompt-symbol'>:~#</span> Logged in as root superuser.`, "#d9534f");
+
+                        const currentStep = labSteps[currentStepIndex];
+                        if (currentStep && currentStep.isSuCmd) {
+                            currentStepIndex++;
+                            renderStepGuide();
+                        }
+                    } else {
+                        appendLog("su: Authentication failure", "#d9534f");
+                        isAwaitingSuPass = false;
+                        updatePromptLabel();
+                    }
+                    return;
+                }
+
+                if (!val) return;
+
+                const promptHtml = document.getElementById('cli-prompt-label').innerHTML;
+                appendLog(`${promptHtml} ${val}`, '#000000');
+                this.value = '';
+
+                processCliCommand(val);
+            }
+        });
+
+        // CLIENT GUI TERMINAL INPUT PROCESSOR
+        document.getElementById('client-cli-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const val = this.value.trim();
+                if (!val) return;
+
+                appendClientLog(`<span class="prompt-userhost">root@debianclient-${studentName}</span><span class="prompt-symbol">:~#</span> ${val}`, '#000000');
+                this.value = '';
+
+                processCliCommand(val);
+            }
+        });
+
+        function processCliCommand(cmd) {
+            const lower = cmd.toLowerCase();
+
+            if (lower === 'clear') {
+                if (activeNode === 'server') {
+                    document.getElementById('terminal-screen').innerHTML = "";
+                } else {
+                    document.getElementById('client-terminal-screen').innerHTML = "";
+                }
+                return;
+            }
+
+            if (lower === 'help') {
+                const helpTxt = "GNU bash, version 5.2.15-release\nUtilities: su -, nano, cat, systemctl, apt, ip a, ping, dhclient, curl, nslookup, ldapsearch, clear";
+                if (activeNode === 'server') appendLog(helpTxt, "#333333");
+                else appendClientLog(helpTxt, "#333333");
+                return;
+            }
+
+            if (currentStepIndex < labSteps.length) {
+                const currentStep = labSteps[currentStepIndex];
+
+                if (activeNode !== currentStep.node) {
+                    const errTxt = `bash: command executed on wrong node. Switch to [debian-${currentStep.node}] first.`;
+                    if (activeNode === 'server') appendLog(errTxt, "#d9534f");
+                    else appendClientLog(errTxt, "#d9534f");
+                    return;
+                }
+
+                // Step 1: Root Login Command (su -)
+                if (currentStep.isSuCmd && (lower === 'su -' || lower === 'su')) {
+                    isAwaitingSuPass = true;
+                    updatePromptLabel();
+                    return;
+                }
+
+                // Check permissions if root required
+                if (activeNode === 'server' && !isRoot) {
+                    appendLog("bash: Permission denied. Must be root user. Type 'su -' first.", "#d9534f");
+                    return;
+                }
+
+                // Flexible Dynamic Ping Validation Range Check
+                if (currentStep.isPingCheck && lower.startsWith('ping')) {
+                    const parts = cmd.trim().split(/\s+/);
+                    const targetIp = parts[parts.length - 1];
+
+                    if (targetIp === "192.168.1.10") {
+                        appendLog(`PING 192.168.1.10 (192.168.1.10) 56(84) bytes of data.\n64 bytes from 192.168.1.10: icmp_seq=1 ttl=64 time=0.08 ms\n64 bytes from 192.168.1.10: icmp_seq=2 ttl=64 time=0.05 ms\n--- 192.168.1.10 ping statistics ---\nLocal loopback test OK. Namun sila ping IP Client julat DHCP (cth: 192.168.1.20) untuk menguji sambungan LAN!`, "#f0ad4e");
+                        return;
+                    }
+
+                    const ipRegex = /^192\.168\.1\.([2-9]|[1-9][0-9]|1[0-9][0-9]|2[0-5][0-4])$/;
+                    if (ipRegex.test(targetIp) && targetIp !== "192.168.1.10") {
+                        appendLog(`PING ${targetIp} (${targetIp}) 56(84) bytes of data.\n64 bytes from ${targetIp}: icmp_seq=1 ttl=64 time=0.42 ms\n64 bytes from ${targetIp}: icmp_seq=2 ttl=64 time=0.38 ms\n64 bytes from ${targetIp}: icmp_seq=3 ttl=64 time=0.41 ms\n64 bytes from ${targetIp}: icmp_seq=4 ttl=64 time=0.39 ms\n--- ${targetIp} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss, time 3072ms`, "#26a269");
+                        currentStepIndex++;
+                        renderStepGuide();
+                        return;
+                    } else {
+                        appendLog(`PING ${targetIp} (${targetIp}) 56(84) bytes of data.\nFrom 192.168.1.10 icmp_seq=1 Destination Host Unreachable\n--- ${targetIp} ping statistics ---\n4 packets transmitted, 0 received, 100% packet loss.\n[ Ralat: IP ${targetIp} berada di luar julat LAN Debian Client! Sila guna IP julat 192.168.1.2 - 192.168.1.254 ]`, "#d9534f");
+                        return;
+                    }
+                }
+
+                // Strict Handling Restart Networking
+                if (currentStep.isNetworkingRestart && lower === 'systemctl restart networking') {
+                    const ifaceContent = fileSystem["/etc/network/interfaces"];
+
+                    if (ifaceContent.includes("192.168.1.0")) {
+                        appendLog("Job for networking.service failed: IP 192.168.1.0 is a Network Subnet Address, NOT a valid host IP!\nPlease reopen nano /etc/network/interfaces and change address to 192.168.1.10", "#d9534f");
+                        isNetworkConfiguredValid = false;
+                        return;
+                    } 
+                    else if (ifaceContent.includes("gateway 192.168.0.0") || ifaceContent.includes("gateway 192.168.1.0")) {
+                        appendLog("Job for networking.service failed: Invalid Gateway Address! (192.168.0.0/192.168.1.0 is a Network Address, not a Gateway Host IP).\nPlease set gateway to 192.168.1.1", "#d9534f");
+                        isNetworkConfiguredValid = false;
+                        return;
+                    }
+                    else if (!ifaceContent.includes("gateway 192.168.1.1")) {
+                        appendLog("Job for networking.service failed: Invalid Gateway specified! Gateway must be set to 192.168.1.1 for subnet 192.168.1.0/24.\nPlease reopen nano /etc/network/interfaces and fix gateway.", "#d9534f");
+                        isNetworkConfiguredValid = false;
+                        return;
+                    }
+                    else if (!ifaceContent.includes("192.168.1.10")) {
+                        appendLog("Job for networking.service failed: IP address 192.168.1.10 not found in /etc/network/interfaces!\nPlease set address 192.168.1.10", "#d9534f");
+                        isNetworkConfiguredValid = false;
+                        return;
+                    } 
+                    else {
+                        isNetworkConfiguredValid = true;
+                        appendLog("Applied static IP 192.168.1.10/24 on eth0 interface successfully. Default gateway 192.168.1.1 active.", "#26a269");
+                        currentStepIndex++;
+                        renderStepGuide();
+                        return;
+                    }
+                }
+
+                // Systemctl start service check
+                if (lower.startsWith('systemctl start')) {
+                    if (!isNetworkConfiguredValid && activeNode === 'server') {
+                        appendLog("Job for service failed: Cannot bind socket to 192.168.1.10. Network interface is DOWN or invalid IP/Gateway configured!", "#d9534f");
+                        return;
+                    }
+                }
+
+                // Cat Command Handling
+                if (currentStep.isCatCmd && lower.startsWith('cat')) {
+                    const targetFile = currentStep.fileTarget;
+                    const content = fileSystem[targetFile] || "# File empty.";
+                    if (activeNode === 'server') appendLog(content, "#0275d8");
+                    else appendClientLog(content, "#0275d8");
+
+                    currentStepIndex++;
+                    renderStepGuide();
+                    return;
+                }
+
+                // Nano Command Handling
+                if (currentStep.isFileEdit && lower.startsWith('nano')) {
+                    const targetFile = currentStep.fileTarget;
+                    openNanoEditor(targetFile);
+                    return;
+                }
+
+                // Standard command matching
+                const match1 = lower === currentStep.expectedCmd.toLowerCase();
+                const match2 = currentStep.altCmd && lower === currentStep.altCmd.toLowerCase();
+
+                if (match1 || match2) {
+                    if (currentStep.output) {
+                        if (activeNode === 'server') appendLog(currentStep.output, "#000000");
+                        else appendClientLog(currentStep.output, "#000000");
+                    }
+
+                    if (currentStep.step === 11) {
+                        clientStatus.dhcpLeased = true;
+                        document.getElementById('client-gui-ip').innerText = "IP: 192.168.1.20";
+                    }
+
+                    if (currentStep.renderOutput) {
+                        document.getElementById('inspector-output-box').innerHTML = currentStep.renderOutput();
+                    }
+
+                    currentStepIndex++;
+                    renderStepGuide();
+                } else {
+                    const errTxt = `bash: command syntax error or unexpected input for Step ${currentStep.step}.`;
+                    if (activeNode === 'server') appendLog(errTxt, "#d9534f");
+                    else appendClientLog(errTxt, "#d9534f");
+                }
+            }
+        }
+
+        // FULL INTERACTIVE NANO EDITOR LOGIC
+        function openNanoEditor(filePath) {
+            currentEditingFile = filePath;
+            document.getElementById('nano-filepath-header').innerText = `GNU nano 7.2 -- ${filePath}`;
+            document.getElementById('nano-textarea').value = fileSystem[filePath] || "";
+            document.getElementById('nano-status-msg').innerText = "";
+            document.getElementById('nano-editor-overlay').classList.remove('d-none');
+            document.getElementById('nano-textarea').focus();
+            nanoSavePending = false;
+        }
+
+        function setupNanoKeyBindings() {
+            const textarea = document.getElementById('nano-textarea');
+            textarea.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && (e.key === 'o' || e.key === 'O')) {
+                    e.preventDefault();
+                    nanoSavePending = true;
+                    document.getElementById('nano-status-msg').innerText = `File Name to Write: ${currentEditingFile} (Press Enter to Confirm)`;
+                    return;
+                }
+
+                if (e.key === 'Enter' && nanoSavePending) {
+                    e.preventDefault();
+                    fileSystem[currentEditingFile] = textarea.value;
+                    nanoSavePending = false;
+                    document.getElementById('nano-status-msg').innerText = `[ Wrote ${textarea.value.split('\n').length} lines ]`;
+                    return;
+                }
+
+                if (e.ctrlKey && (e.key === 'x' || e.key === 'X')) {
+                    e.preventDefault();
+                    fileSystem[currentEditingFile] = textarea.value;
+                    document.getElementById('nano-editor-overlay').classList.add('d-none');
+                    if (activeNode === 'server') document.getElementById('cli-input').focus();
+                    else document.getElementById('client-cli-input').focus();
+
+                    const currentStep = labSteps[currentStepIndex];
+                    let isValid = true;
+                    let errorMsg = "";
+
+                    if (currentStep && currentStep.requiredKeywords) {
+                        const content = textarea.value;
+                        for (let kw of currentStep.requiredKeywords) {
+                            if (!content.includes(kw)) {
+                                isValid = false;
+                                errorMsg = `Fail konfigurasi tidak mengandungi kata kunci/parameter yang diperlukan!`;
+                                break;
+                            }
+                        }
+
+                        if (currentStep.invalidKeywords) {
+                            for (let ikw of currentStep.invalidKeywords) {
+                                if (content.includes(ikw)) {
+                                    isValid = false;
+                                    errorMsg = `Terdapat ralat tetapan IP/Gateway: '${ikw}' adalah tidak sah!`;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!isValid) {
+                        const errTxt = `[ Error: ${errorMsg} Sila buka semula nano dan betulkan konfigurasi anda. ]`;
+                        if (activeNode === 'server') appendLog(errTxt, "#d9534f");
+                        else appendLog(errTxt, "#d9534f");
+                    } else {
+                        const okTxt = `[ Saved ${currentEditingFile} and exited nano ]`;
+                        if (activeNode === 'server') appendLog(okTxt, "#0275d8");
+                        else appendClientLog(okTxt, "#0275d8");
+
+                        if (currentStep && currentStep.isFileEdit) {
+                            currentStepIndex++;
+                            renderStepGuide();
+                        }
+                    }
+                    return;
+                }
+            });
+        }
+
+        function resetEnvironment() {
+            currentStepIndex = 0;
+            loginState = "AWAITING_USER";
+            isRoot = false;
+            isAwaitingSuPass = false;
+            isNetworkConfiguredValid = false;
+            clientStatus.dhcpLeased = false;
+            serverInitialized = false;
+            clientInitialized = false;
+            fileSystem = {
+                "/etc/network/interfaces": "",
+                "/var/www/html/index.html": "",
+                "/etc/dhcp/dhcpd.conf": "",
+                "/etc/bind/named.conf.local": "",
+                "/etc/bind/db.tkr.sandakan": "",
+                "/etc/resolv.conf": ""
+            };
+            document.getElementById('terminal-screen').innerHTML = "";
+            document.getElementById('client-terminal-screen').innerHTML = "";
+            switchNode('server');
+            renderTerminalWelcome();
+            renderStepGuide();
+            document.getElementById('inspector-output-box').innerHTML = `
+                <div class="text-white-50 text-center py-4">
+                    <div class="fs-2">🖥️</div>
+                    <small>Environment reset completed.</small>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

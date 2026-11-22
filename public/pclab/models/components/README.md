@@ -1,0 +1,1 @@
+Folder ini menyimpan model GLB individu komponen PC. Gunakan tools/register-component-glb.py untuk mendaftar fail dalam component-assets.json. Model PC lengkap seperti gaming-pc.glb tidak boleh digunakan sebagai model komponen individu.

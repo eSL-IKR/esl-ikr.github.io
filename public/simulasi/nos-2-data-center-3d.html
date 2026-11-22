@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Avatar Data Center - LAB LINUX TKR ADTEC SANDAKAN</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="../libs/bootstrap/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050508;
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        /* HUD UI Overlay */
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(10, 15, 25, 0.9);
+            border: 2px solid #0d6efd;
+            border-radius: 8px;
+            color: #ffffff !important;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        /* Terminal Window Styling */
+        .terminal-window {
+            background-color: #0c1017;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid #30363d;
+            color: #ffffff !important;
+        }
+        .terminal-body {
+            padding: 15px;
+            height: 330px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            color: #ffffff !important;
+        }
+        .cli-prompt {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: #ffffff !important;
+            font-family: 'Courier New', Courier, monospace;
+            width: 75%;
+            outline: none;
+            font-weight: bold;
+        }
+        .guide-box {
+            background: #1f242d;
+            border-left: 4px solid #f1e05a;
+            color: #ffffff !important;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+        
+        .cert-card {
+            background: #161b22;
+            border: 2px solid #238636;
+            color: #ffffff !important;
+        }
+
+        /* Lock Overlay Untuk Cheat Sheet Semasa Peperiksaan */
+        .locked-overlay {
+            background: rgba(15, 20, 30, 0.98);
+            backdrop-filter: blur(6px);
+            z-index: 5;
+            color: #ffffff !important;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #resultModal, #resultModal * { visibility: visible; }
+            #resultModal { position: absolute; left: 0; top: 0; width: 100%; }
+            .btn { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Container Utama Three.js -->
+    <div id="canvas-container"></div>
+
+    <!-- MODAL PENDAFTARAN & PILIHAN KARAKTER -->
+    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-primary fw-bold">🐧 LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN</h5>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <p class="small text-white-50">Sila masukkan maklumat dan pilih karakter 3D anda sebelum memulakan sesi amali/peperiksaan.</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Nama Penuh Pelajar / Angka Giliran:</label>
+                        <input type="text" id="student-name-input" class="form-control bg-black text-white border-secondary" placeholder="Contoh: Muhammad Ali Bin Ahmad" autofocus>
+                        <div id="name-error" class="text-danger small mt-1 d-none">Sila masukkan nama anda terlebih dahulu!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Karakter 3D TKR:</label>
+                        <select id="gender-select" class="form-select bg-black text-white border-secondary">
+                            <option value="male" selected>👨 Karakter Lelaki (Baju TKR Biru & Cap)</option>
+                            <option value="female">👩 Karakter Perempuan (Baju TKR Pink & Tudung)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Mod Pembelajaran:</label>
+                        <select id="mode-select" class="form-select bg-black text-white border-secondary">
+                            <option value="practice" selected>🟢 Mod Latihan (Nota & Panduan Arahan Disediakan)</option>
+                            <option value="exam">🔴 Mod Peperiksaan (Dikunci Nota & Tanpa Panduan Arahan)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary w-100 fw-bold text-white" onclick="registerStudent()">Mulakan Sesi Amali</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD Tajuk Utama -->
+    <div class="hud-overlay">
+        <div class="card bg-dark text-white border-primary shadow-lg p-3" style="width: 360px;">
+            <h5 class="card-title text-primary mb-1 fw-bold">🎮 3D AVATAR DATA CENTER</h5>
+            <p class="card-text text-white-50 small mb-0">IKR3103: Network Operating System (Debian 12)</p>
+            <hr class="border-secondary my-2">
+            
+            <button class="btn btn-primary btn-sm w-100 fw-bold mb-2 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNota">
+                📖 Tujuan Simulasi & Arahan CLI Pelayan
+            </button>
+            <div class="d-flex justify-content-between align-items-center small text-white-50">
+                <span id="hud-student-display">Pelajar: -</span>
+                <span class="badge bg-success" id="hud-mode-badge">Mod: Latihan</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center small text-white-50 mt-1">
+                <span>Kemajuan Rangkaian:</span>
+                <strong id="hud-progress-text" class="text-warning">0 / 4 Pelayan Dikonfigurasi</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panduan Kawalan Pelajar (Karakter 3D) -->
+    <div class="controls-info p-3 shadow">
+        <span class="fw-bold fs-6 d-block mb-1 text-warning">🎮 KAWALAN KARAKTER TKR 3D:</span>
+        <span class="d-block text-white">• <b>Kekunci W / S:</b> Karakter Bergerak Ke Depan / Belakang</span>
+        <span class="d-block text-white">• <b>Kekunci A / D:</b> Pusing Karakter Ke Kiri / Kanan</span>
+        <span class="d-block text-white">• <b>Tetikus Drag:</b> Orbit Pandangan Kamera 360°</span>
+        <span class="d-block text-white">• <b>Tekan Kekunci 'E' / Klik Meja PC:</b> Akses Terminal CLI Monitor</span>
+    </div>
+
+    <!-- SIDEBAR NOTA PEMBELAJARAN & TUJUAN SIMULASI -->
+    <div class="offcanvas offcanvas-end text-white w-50 bg-dark position-relative" tabindex="-1" id="offcanvasNota">
+        
+        <!-- OVERLAY KUNCI SEMASA PEPERIKSAAN -->
+        <div id="cheat-sheet-lock" class="locked-overlay position-absolute top-0 start-0 w-100 h-100 d-none d-flex flex-column justify-content-center align-items-center text-center p-4">
+            <div class="display-1 mb-2">🔒</div>
+            <h4 class="text-danger fw-bold mb-2">MOD PEPERIKSAAN DIKUNCI</h4>
+            <p class="small text-white-50 mb-0">Nota pembelajaran dikunci semasa Mod Peperiksaan. Sila laksanakan konfigurasi 4 pelayan berdasarkan ingatan dan kefahaman anda sendiri.</p>
+        </div>
+
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title text-primary fw-bold">📚 NOTA TUJUAN SIMULASI & ARAHAN CLI</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body text-white">
+            
+            <div class="p-3 mb-3 rounded bg-primary bg-opacity-10 border-start border-4 border-primary">
+                <h6 class="text-info mb-1 fw-bold">1. Kenapa Pelajar Perlu Buat Simulasi 3D Ini?</h6>
+                <p class="small text-white-50 mb-2">
+                    Dalam persekitaran sebenar, sistem pengoperasian rangkaian (NOS) seperti Debian 12 bersifat abstrak dan hanya dilihat sebagai skrin hitam terminal. Simulasi 3D ini dibina untuk:
+                </p>
+                <ul class="small text-white-50 mb-0 ps-3">
+                    <li><b>Visualisasi Fizikal & KVM Console:</b> Memberi gambaran sebenar bagaimana juruteknik bergerak di dalam bilik pelayan dan menggunakan stesen kerja PC (Monitor, Keyboard, Mouse) untuk mengawal pelayan.</li>
+                    <li><b>Menghubungkan Teori & Praktikal:</b> Supaya pelajar memahami bahawa setiap arahan CLI yang diketik mempunyai kesan langsung kepada perkakasan pelayan dan talian rangkaian.</li>
+                    <li><b>Persediaan Rangkaian Sebenar:</b> Memahami bagaimana 4 perkhidmatan utama (Main OS, DNS, DHCP, Web) berinteraksi antara satu sama lain.</li>
+                </ul>
+            </div>
+
+            <div class="p-3 mb-3 rounded bg-warning bg-opacity-10 border-start border-4 border-warning">
+                <h6 class="text-warning mb-1 fw-bold">2. Kenapa Pelayan Perlu Ditetapkan (Setup)?</h6>
+                <p class="small text-white-50 mb-0">
+                    Pelayan baharu yang baru tiba daripada kilang berada dalam keadaan **KOSONG / UNCONFIGURED** (IP: <code>0.0.0.0</code>). Pelajar perlu membuat penetapan IP Statik dan memasang servis supaya pelayan ini boleh dicapai oleh peranti pelanggan (*Client*) secara kekal dan stabil dalam rangkaian.
+                </p>
+            </div>
+
+            <!-- Senarai Arahan Lengkap Setiap Rak -->
+            <div class="card bg-dark border-secondary mb-3 text-white">
+                <div class="card-header text-success fw-bold small">
+                    📋 SENARAI ARAHAN CLI MENGIKUT RAK PELAYAN
+                </div>
+                <div class="card-body small text-white">
+                    <p class="fw-bold text-info mb-1">1. RACK 01 - MAIN SERVER OS (IP: 10.0.0.30):</p>
+                    <ul class="text-white-50 ps-3 mb-3">
+                        <li><code>adduser bookworm</code> : Mencipta akaun pengguna tempatan baharu `bookworm`.</li>
+                        <li><code>usermod -aG adm bookworm</code> : Memasukkan pengguna ke dalam kumpulan `adm`.</li>
+                        <li><code>nano /etc/network/interfaces</code> : Menetapkan IP Statik `10.0.0.30/24` pada antaramuka `enp1s0`.</li>
+                        <li><code>systemctl stop apparmor</code> : Hentikan perkhidmatan kawalan keselamatan AppArmor.</li>
+                        <li><code>systemctl disable apparmor</code> : Matikan keupayaan autostart AppArmor.</li>
+                    </ul>
+
+                    <p class="fw-bold text-info mb-1">2. RACK 02 - DNS PRIMARY SERVER (IP: 10.0.0.10):</p>
+                    <ul class="text-white-50 ps-3 mb-3">
+                        <li><code>nano /etc/network/interfaces</code> : Menetapkan IP Statik `10.0.0.10/24`.</li>
+                        <li><code>apt install bind9</code> : Memasang perisian pelayan BIND9.</li>
+                        <li><code>systemctl restart bind9</code> : Memuat semula perkhidmatan DNS.</li>
+                    </ul>
+
+                    <p class="fw-bold text-info mb-1">3. RACK 03 - DHCP SERVER (IP: 10.0.0.1):</p>
+                    <ul class="text-white-50 ps-3 mb-3">
+                        <li><code>nano /etc/network/interfaces</code> : Menetapkan IP Statik `10.0.0.1/24`.</li>
+                        <li><code>apt install isc-dhcp-server</code> : Memasang perisian ISC-DHCP.</li>
+                        <li><code>systemctl restart isc-dhcp-server</code> : Mengaktifkan kolam IP.</li>
+                    </ul>
+
+                    <p class="fw-bold text-info mb-1">4. RACK 04 - WEB SERVER (IP: 10.0.0.20):</p>
+                    <ul class="text-white-50 ps-3 mb-0">
+                        <li><code>nano /etc/network/interfaces</code> : Menetapkan IP Statik `10.0.0.20/24`.</li>
+                        <li><code>apt install apache2</code> : Memasang perisian pelayan web Apache2.</li>
+                        <li><code>systemctl restart apache2</code> : Mengaktifkan perkhidmatan HTTP Port 80.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL 1: STATUS FIZIKAL RAK PELAYAN -->
+    <div class="modal fade" id="serverInfoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-primary fw-bold" id="modal-rack-name">🖥️ Status Pelayan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-white text-center">
+                    <div id="modal-status-icon" class="display-1">🖥️</div>
+                    <h4 class="text-warning fw-bold mt-2" id="modal-server-title">Unconfigured Server</h4>
+                    <span class="badge bg-danger mb-3" id="modal-status-badge">BELUM DIKONFIGURASI / OFFLINE</span>
+
+                    <div class="border border-secondary rounded p-3 bg-black mb-3 small text-start">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-white-50">Sistem Pengoperasian:</span>
+                            <strong class="text-danger" id="modal-os-val">Belum Dipasang</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-white-50">Alamat IP Statik:</span>
+                            <strong class="text-danger" id="modal-ip-val">0.0.0.0</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-white-50">Status Stesen Kerja PC:</span>
+                            <strong class="text-success" id="modal-port-val">Monitor & Keyboard Ready</strong>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50 mb-0" id="modal-instruction-text">
+                        Pelayan ini belum mempunyai konfigurasi IP Statik dan perkhidmatan. Sila duduk di meja PC dan lancarkan terminal CLI.
+                    </p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary w-100 fw-bold text-white" id="modal-action-btn" onclick="startCliForSelectedRack()">
+                        💻 Duduk Di Meja PC & Buka Terminal CLI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: TERMINAL CLI AMALI -->
+    <div class="modal fade" id="cliModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content terminal-window border-0">
+                <div class="terminal-header d-flex justify-content-between align-items-center">
+                    <span class="small fw-bold text-white" id="terminal-header-title">root@localhost:~ (Debian 12 CLI)</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    
+                    <div class="guide-box" id="guide-box-container">
+                        <small class="fw-bold d-block text-warning" id="guide-step-title">📌 ARAHAN LANGKAH 1:</small>
+                        <small id="guide-text" class="text-white">Memuatkan arahan...</small>
+                    </div>
+
+                    <div class="terminal-body" id="terminal-screen">
+                        <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                        <div class="text-white-50">Log masuk stesen kerja pelayan berjaya. Sila lengkapkan amali.</div>
+                        <br>
+                    </div>
+
+                    <div class="d-flex align-items-center mt-2 border-top border-secondary pt-2">
+                        <span class="cli-prompt me-2">root@localhost:~#</span>
+                        <input type="text" id="cli-input-field" class="cli-input" placeholder="Taip arahan CLI di sini..." autofocus>
+                    </div>
+
+                </div>
+                <div class="modal-footer border-0 bg-dark py-2">
+                    <small class="text-white-50 me-auto">Pastikan sintaks arahan diketik secara tepat mengikut piawaian Linux.</small>
+                    <button type="button" class="btn btn-secondary btn-sm text-white" onclick="resetCurrentRackLab()">Reset CLI Rak Ini</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: LAPORAN KEPUTUSAN RANGKAIAN LENGKAP -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content cert-card text-white shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-success fw-bold">🏆 LAPORAN AMALI RANGKAIAN PELAYAN SELESAI</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center text-white">
+                    <div class="display-1 text-success mb-2">⚡ 🌐 ⚡</div>
+                    <h3 class="text-warning fw-bold mb-1">SEMUA 4 PELAYAN BERJAYA DIHUBUNGKAN!</h3>
+                    <p class="text-white-50 small mb-3">LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN</p>
+                    
+                    <div class="row g-2 text-start small mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">Rack-01 (Main Server OS):</b> <code>10.0.0.30</code><br>
+                                <span class="text-success">✔ Pengguna `bookworm` & AppArmor Dinyahaktifkan</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">Rack-02 (DNS Server):</b> <code>10.0.0.10</code><br>
+                                <span class="text-success">✔ Perkhidmatan BIND9 Aktif</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">Rack-03 (DHCP Server):</b> <code>10.0.0.1</code><br>
+                                <span class="text-success">✔ Perkhidmatan ISC-DHCP Aktif</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">Rack-04 (Web Server):</b> <code>10.0.0.20</code><br>
+                                <span class="text-success">✔ Perkhidmatan Apache2 Port 80 Aktif</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50">Sila cetak laporan rasmi ini sebagai bukti penyelesaian amali IKR3103 anda.</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary btn-sm text-white w-100" onclick="window.print()">🖨️ Cetak / Simpan PDF Laporan Amali Pelayan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="../libs/bootstrap/bootstrap.bundle.min.js"></script><script>window.bootstrap||document.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>')</script>
+    <script src="../libs/three/three.min.js"></script><script>window.THREE||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>')</script>
+
+    <script>
+        // --- 1. GLOBAL VARIABLES & CONFIG ---
+        let studentName = "";
+        let currentMode = "practice";
+        let selectedGender = "male";
+
+        const racksData = [
+            {
+                id: "rack1",
+                labelTitle: "RACK 01 - MAIN SERVER OS",
+                name: "Rack-01 (Main Server OS)",
+                targetIp: "10.0.0.30",
+                pos: [-3.5, 0, -2],
+                completed: false,
+                currentStep: 1,
+                steps: [
+                    { cmd: "adduser bookworm", guide: "Sila taip arahan <b class='text-info'>adduser bookworm</b> untuk mencipta akaun pengguna tempatan baharu.", out: "Adding user 'bookworm' ... User created successfully!" },
+                    { cmd: "usermod -ag adm bookworm", altCmd: "usermod -aG adm bookworm", guide: "Sila taip arahan <b class='text-info'>usermod -aG adm bookworm</b> untuk memasukkan pengguna ke kumpulan adm.", out: "[OK] Pengguna 'bookworm' dimasukkan ke kumpulan adm." },
+                    { cmd: "nano /etc/network/interfaces", altCmd: "vi /etc/network/interfaces", guide: "Sila taip arahan <b class='text-info'>nano /etc/network/interfaces</b> untuk menetapkan IP Statik 10.0.0.30.", out: "iface enp1s0 inet static\n  address 10.0.0.30\n[FILE SAVED]" },
+                    { cmd: "systemctl stop apparmor", guide: "Sila taip arahan <b class='text-info'>systemctl stop apparmor</b> untuk menghentikan perkhidmatan kawalan AppArmor.", out: "[OK] AppArmor service stopped." },
+                    { cmd: "systemctl disable apparmor", guide: "Sila taip arahan <b class='text-info'>systemctl disable apparmor</b> untuk mematikan keupayaan autostart AppArmor.", out: "[OK] AppArmor service disabled!" }
+                ]
+            },
+            {
+                id: "rack2",
+                labelTitle: "RACK 02 - DNS SERVER",
+                name: "Rack-02 (DNS Primary Server)",
+                targetIp: "10.0.0.10",
+                pos: [-3.5, 0, -6],
+                completed: false,
+                currentStep: 1,
+                steps: [
+                    { cmd: "nano /etc/network/interfaces", altCmd: "vi /etc/network/interfaces", guide: "Sila taip arahan <b class='text-info'>nano /etc/network/interfaces</b> untuk menetapkan IP Statik 10.0.0.10.", out: "iface enp1s0 inet static\n  address 10.0.0.10\n[FILE SAVED]" },
+                    { cmd: "apt install bind9", guide: "Sila taip arahan <b class='text-info'>apt install bind9</b> untuk memasang perisian pelayan BIND9.", out: "[OK] BIND9 DNS Server installed successfully." },
+                    { cmd: "systemctl restart bind9", guide: "Sila taip arahan <b class='text-info'>systemctl restart bind9</b> untuk memuat semula perkhidmatan DNS.", out: "[OK] BIND9 DNS Service active and running!" }
+                ]
+            },
+            {
+                id: "rack3",
+                labelTitle: "RACK 03 - DHCP SERVER",
+                name: "Rack-03 (DHCP Server)",
+                targetIp: "10.0.0.1",
+                pos: [3.5, 0, -2],
+                completed: false,
+                currentStep: 1,
+                steps: [
+                    { cmd: "nano /etc/network/interfaces", altCmd: "vi /etc/network/interfaces", guide: "Sila taip arahan <b class='text-info'>nano /etc/network/interfaces</b> untuk menetapkan IP Statik 10.0.0.1.", out: "iface enp1s0 inet static\n  address 10.0.0.1\n[FILE SAVED]" },
+                    { cmd: "apt install isc-dhcp-server", guide: "Sila taip arahan <b class='text-info'>apt install isc-dhcp-server</b> untuk memasang perisian ISC-DHCP.", out: "[OK] ISC-DHCP Server installed successfully." },
+                    { cmd: "systemctl restart isc-dhcp-server", guide: "Sila taip arahan <b class='text-info'>systemctl restart isc-dhcp-server</b> untuk mengaktifkan perkhidmatan pengagihan IP.", out: "[OK] DHCP Server active and assigning IP Pool!" }
+                ]
+            },
+            {
+                id: "rack4",
+                labelTitle: "RACK 04 - WEB SERVER",
+                name: "Rack-04 (Web Server)",
+                targetIp: "10.0.0.20",
+                pos: [3.5, 0, -6],
+                completed: false,
+                currentStep: 1,
+                steps: [
+                    { cmd: "nano /etc/network/interfaces", altCmd: "vi /etc/network/interfaces", guide: "Sila taip arahan <b class='text-info'>nano /etc/network/interfaces</b> untuk menetapkan IP Statik 10.0.0.20.", out: "iface enp1s0 inet static\n  address 10.0.0.20\n[FILE SAVED]" },
+                    { cmd: "apt install apache2", guide: "Sila taip arahan <b class='text-info'>apt install apache2</b> untuk memasang perisian pelayan web Apache2.", out: "[OK] Apache2 Web Server installed successfully." },
+                    { cmd: "systemctl restart apache2", guide: "Sila taip arahan <b class='text-info'>systemctl restart apache2</b> untuk memuat semula perkhidmatan HTTP Port 80.", out: "[OK] Apache2 Web Service Live on Port 80!" }
+                ]
+            }
+        ];
+
+        let selectedRackObj = null;
+
+        // MODAL INSTANCES
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        const serverInfoModal = new bootstrap.Modal(document.getElementById('serverInfoModal'));
+        const cliModal = new bootstrap.Modal(document.getElementById('cliModal'));
+        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+
+        window.onload = function() {
+            loginModal.show();
+        };
+
+        function registerStudent() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (!nameInput) {
+                document.getElementById('name-error').classList.remove('d-none');
+                return;
+            }
+
+            studentName = nameInput;
+            selectedGender = document.getElementById('gender-select').value;
+            currentMode = document.getElementById('mode-select').value;
+
+            document.getElementById('hud-student-display').innerText = `Pelajar: ${studentName}`;
+            
+            if (currentMode === 'exam') {
+                document.getElementById('hud-mode-badge').className = "badge bg-danger";
+                document.getElementById('hud-mode-badge').innerText = "Mod: PEPERIKSAAN";
+                document.getElementById('guide-box-container').classList.add('d-none');
+                document.getElementById('cheat-sheet-lock').classList.remove('d-none');
+            } else {
+                document.getElementById('hud-mode-badge').className = "badge bg-success";
+                document.getElementById('hud-mode-badge').innerText = "Mod: LATIHAN";
+                document.getElementById('guide-box-container').classList.remove('d-none');
+                document.getElementById('cheat-sheet-lock').classList.add('d-none');
+            }
+
+            build3DPlayerAvatar(selectedGender);
+            loginModal.hide();
+        }
+
+        // --- 2. THREE.JS SCENE SETUP & SUASANA DATA CENTER ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0a0f18, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        // PENCAHAYAAN VIVID & HIDUP
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const ceilingLight1 = new THREE.PointLight(0x00d2ff, 2.5, 25);
+        ceilingLight1.position.set(0, 4.5, -2);
+        scene.add(ceilingLight1);
+
+        const ceilingLight2 = new THREE.PointLight(0x00ff88, 2, 20);
+        ceilingLight2.position.set(0, 4.5, -7);
+        scene.add(ceilingLight2);
+
+        // LANTAI REFLAKTIF & GRID NEON
+        const floorGeo = new THREE.PlaneGeometry(35, 35);
+        const floorMat = new THREE.MeshPhongMaterial({ color: 0x0a0d14, specular: 0x223344, shininess: 30 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        const grid = new THREE.GridHelper(35, 35, 0x00d2ff, 0x15202d);
+        grid.position.y = 0.01;
+        scene.add(grid);
+
+        // DINDING BELAKANG BERSELANG-SELI NEON
+        const wallMat = new THREE.MeshPhongMaterial({ color: 0x0d1320, specular: 0x111111 });
+        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(35, 12), wallMat);
+        backWall.position.set(0, 5, -12);
+        scene.add(backWall);
+
+        // PAPAN TANDA DINDING 3D: LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN
+        function createLabWallSignTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = "rgba(10, 20, 35, 0.9)";
+            ctx.roundRect(10, 10, 1004, 108, 15);
+            ctx.fill();
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#00d2ff";
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 32px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.shadowColor = "#00d2ff";
+            ctx.shadowBlur = 15;
+            ctx.fillText("LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN", 512, 64);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const wallSignGeo = new THREE.PlaneGeometry(10, 1.25);
+        const wallSignMat = new THREE.MeshBasicMaterial({
+            map: createLabWallSignTexture(),
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const wallSignMesh = new THREE.Mesh(wallSignGeo, wallSignMat);
+        wallSignMesh.position.set(0, 6.2, -11.9);
+        scene.add(wallSignMesh);
+
+        // --- BINA TEXTURE TULISAN BELAKANG BAJU KARAKTER ---
+        function createShirtBackTexture(shirtColorHex) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = shirtColorHex;
+            ctx.fillRect(0, 0, 256, 256);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 22px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("TKR ADTEC", 128, 100);
+            ctx.fillText("SANDAKAN", 128, 140);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        // --- BINA KARAKTER 3D (AVATAR LELAKI VS PEREMPUAN) ---
+        const playerGroup = new THREE.Group();
+
+        function build3DPlayerAvatar(gender) {
+            // Bersihkan objek lama jika ada
+            while(playerGroup.children.length > 0){ 
+                playerGroup.remove(playerGroup.children[0]); 
+            }
+
+            const shirtColor = gender === 'female' ? '#ff66aa' : '#0d6efd';
+            const shirtTexture = createShirtBackTexture(shirtColor);
+
+            // Kepala
+            const headGeo = new THREE.SphereGeometry(0.25, 16, 16);
+            const headMat = new THREE.MeshPhongMaterial({ color: 0xffccaa });
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.position.y = 1.35;
+            playerGroup.add(head);
+
+            if (gender === 'male') {
+                // Topi Cap Biru
+                const capGeo = new THREE.CylinderGeometry(0.27, 0.27, 0.1, 16);
+                const capMat = new THREE.MeshPhongMaterial({ color: 0x0d6efd });
+                const cap = new THREE.Mesh(capGeo, capMat);
+                cap.position.y = 1.5;
+                playerGroup.add(cap);
+            } else {
+                // Tudung Perempuan (Pink Hijab)
+                const hijabGeo = new THREE.SphereGeometry(0.3, 16, 16);
+                const hijabMat = new THREE.MeshPhongMaterial({ color: 0xff66aa });
+                const hijab = new THREE.Mesh(hijabGeo, hijabMat);
+                hijab.position.y = 1.37;
+                playerGroup.add(hijab);
+            }
+
+            // Badan / Baju TKR (Dengan Tulisan Di Belakang)
+            const bodyGeo = new THREE.BoxGeometry(0.5, 0.6, 0.3);
+            const bodyMaterials = [
+                new THREE.MeshPhongMaterial({ color: shirtColor }), // Right
+                new THREE.MeshPhongMaterial({ color: shirtColor }), // Left
+                new THREE.MeshPhongMaterial({ color: shirtColor }), // Top
+                new THREE.MeshPhongMaterial({ color: shirtColor }), // Bottom
+                new THREE.MeshPhongMaterial({ map: shirtTexture }), // Back (Tulisan TKR ADTEC SANDAKAN)
+                new THREE.MeshPhongMaterial({ color: shirtColor })  // Front
+            ];
+            const body = new THREE.Mesh(bodyGeo, bodyMaterials);
+            body.position.y = 0.9;
+            playerGroup.add(body);
+
+            // Kaki Kiri & Kanan
+            const legGeo = new THREE.BoxGeometry(0.18, 0.6, 0.2);
+            const legMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const leftLeg = new THREE.Mesh(legGeo, legMat);
+            leftLeg.position.set(-0.13, 0.3, 0);
+            playerGroup.add(leftLeg);
+
+            const rightLeg = new THREE.Mesh(legGeo, legMat);
+            rightLeg.position.set(0.13, 0.3, 0);
+            playerGroup.add(rightLeg);
+
+            playerGroup.position.set(0, 0, 4);
+            scene.add(playerGroup);
+        }
+
+        // --- BINA 4 RAK PELAYAN & SET MEJA PC (KVM WORKSTATION) ---
+        const clickableRacks = [];
+        const blinkingLeds = [];
+        const rackLedsMap = {};
+
+        function create3DTextTexture(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = "rgba(13, 110, 253, 0.9)";
+            ctx.roundRect(10, 10, 492, 108, 20);
+            ctx.fill();
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 28px 'Segoe UI', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, 256, 64);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function createKvmWorkstation(x, z, side) {
+            const kvmGroup = new THREE.Group();
+
+            const deskGeo = new THREE.BoxGeometry(1.2, 0.75, 0.7);
+            const deskMat = new THREE.MeshPhongMaterial({ color: 0x22252a });
+            const desk = new THREE.Mesh(deskGeo, deskMat);
+            desk.position.y = 0.375;
+            kvmGroup.add(desk);
+
+            const monStandGeo = new THREE.BoxGeometry(0.1, 0.3, 0.1);
+            const monStandMat = new THREE.MeshPhongMaterial({ color: 0x444444 });
+            const monStand = new THREE.Mesh(monStandGeo, monStandMat);
+            monStand.position.set(0, 0.9, -0.1);
+            kvmGroup.add(monStand);
+
+            const monScreenGeo = new THREE.BoxGeometry(0.8, 0.5, 0.05);
+            const monScreenMat = new THREE.MeshBasicMaterial({ color: 0x00ff66 });
+            const monScreen = new THREE.Mesh(monScreenGeo, monScreenMat);
+            monScreen.position.set(0, 1.25, -0.1);
+            kvmGroup.add(monScreen);
+
+            const kbGeo = new THREE.BoxGeometry(0.5, 0.02, 0.2);
+            const kbMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const kb = new THREE.Mesh(kbGeo, kbMat);
+            kb.position.set(0, 0.76, 0.1);
+            kvmGroup.add(kb);
+
+            const mouseGeo = new THREE.BoxGeometry(0.08, 0.03, 0.12);
+            const mouseMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const pcMouse = new THREE.Mesh(mouseGeo, mouseMat);
+            pcMouse.position.set(0.35, 0.76, 0.1);
+            kvmGroup.add(pcMouse);
+
+            const offsetX = side === 'left' ? 1.2 : -1.2;
+            kvmGroup.position.set(x + offsetX, 0, z);
+            return kvmGroup;
+        }
+
+        racksData.forEach(data => {
+            const rackGroup = new THREE.Group();
+
+            const frameGeo = new THREE.BoxGeometry(1.2, 3, 1.2);
+            const frameMat = new THREE.MeshPhongMaterial({ color: 0x1a1a1a });
+            const frame = new THREE.Mesh(frameGeo, frameMat);
+            frame.position.y = 1.5;
+            rackGroup.add(frame);
+
+            rackLedsMap[data.id] = [];
+
+            for (let i = 0; i < 5; i++) {
+                const bladeGeo = new THREE.BoxGeometry(1.0, 0.4, 1.1);
+                const bladeMat = new THREE.MeshPhongMaterial({ color: 0x2a2a2a });
+                const blade = new THREE.Mesh(bladeGeo, bladeMat);
+                blade.position.set(0, 0.5 + (i * 0.5), 0.05);
+                rackGroup.add(blade);
+
+                const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+                const ledMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+                const led = new THREE.Mesh(ledGeo, ledMat);
+                led.position.set(-0.3 + (i * 0.15), 0.5 + (i * 0.5), 0.61);
+                
+                rackGroup.add(led);
+                rackLedsMap[data.id].push({ mesh: led });
+            }
+
+            const labelGeo = new THREE.PlaneGeometry(2.2, 0.6);
+            const labelMat = new THREE.MeshBasicMaterial({
+                map: create3DTextTexture(data.labelTitle),
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+            const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+            labelMesh.position.set(0, 3.4, 0);
+            rackGroup.add(labelMesh);
+
+            rackGroup.position.set(data.pos[0], data.pos[1], data.pos[2]);
+            frame.userData = data;
+            clickableRacks.push(frame);
+
+            scene.add(rackGroup);
+
+            const side = data.pos[0] < 0 ? 'left' : 'right';
+            const kvm = createKvmWorkstation(data.pos[0], data.pos[2], side);
+            scene.add(kvm);
+        });
+
+        // BINA KABEL RANGKAIAN 3D
+        let networkLines = [];
+        function createNetworkCables() {
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x333333, linewidth: 2 });
+            
+            const cablePoints = [
+                [racksData[0].pos, racksData[1].pos],
+                [racksData[0].pos, racksData[2].pos],
+                [racksData[1].pos, racksData[3].pos],
+                [racksData[2].pos, racksData[3].pos]
+            ];
+
+            cablePoints.forEach(pair => {
+                const p1 = new THREE.Vector3(pair[0][0], 0.1, pair[0][2]);
+                const p2 = new THREE.Vector3(pair[1][0], 0.1, pair[1][2]);
+                
+                const geo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+                const line = new THREE.Line(geo, lineMat.clone());
+                scene.add(line);
+                networkLines.push(line);
+            });
+        }
+
+        createNetworkCables();
+
+        // --- 3. LOGIK INTERAKTIF KLIK RAK / MEJA PC ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        window.addEventListener('click', (event) => {
+            if (document.querySelector('.modal.show')) return;
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(clickableRacks);
+
+            if (intersects.length > 0) {
+                selectedRackObj = intersects[0].object.userData;
+                openRackDialog(selectedRackObj);
+            }
+        });
+
+        function openRackDialog(rackObj) {
+            if (!rackObj.completed) {
+                document.getElementById('modal-rack-name').innerText = rackObj.name;
+                document.getElementById('modal-status-icon').innerText = "🖥️";
+                document.getElementById('modal-server-title').innerText = rackObj.name;
+                document.getElementById('modal-status-badge').className = "badge bg-danger mb-3";
+                document.getElementById('modal-status-badge').innerText = "BELUM DIKONFIGURASI / OFFLINE";
+                document.getElementById('modal-os-val').className = "text-danger";
+                document.getElementById('modal-os-val').innerText = "Belum Dipasang";
+                document.getElementById('modal-ip-val').className = "text-danger";
+                document.getElementById('modal-ip-val').innerText = "0.0.0.0";
+                
+                document.getElementById('modal-instruction-text').innerHTML = `Pelayan ${rackObj.name} ini belum dikonfigurasi. Sila duduk di meja PC & gunakan keyboard untuk melancarkan CLI!`;
+                document.getElementById('modal-action-btn').innerHTML = "💻 Duduk Di Meja PC & Buka Terminal CLI";
+                document.getElementById('modal-action-btn').onclick = function() {
+                    serverInfoModal.hide();
+                    setTimeout(() => openCliForRack(rackObj), 300);
+                };
+
+                serverInfoModal.show();
+            } else {
+                document.getElementById('modal-rack-name').innerText = rackObj.name;
+                document.getElementById('modal-status-icon').innerText = "🖥️";
+                document.getElementById('modal-server-title').innerText = rackObj.name;
+                document.getElementById('modal-status-badge').className = "badge bg-success mb-3";
+                document.getElementById('modal-status-badge').innerText = "ACTIVE & RUNNING";
+                document.getElementById('modal-os-val').className = "text-info";
+                document.getElementById('modal-os-val').innerText = "Debian 12 (Bookworm)";
+                document.getElementById('modal-ip-val').className = "text-warning";
+                document.getElementById('modal-ip-val').innerText = rackObj.targetIp + " /24";
+
+                document.getElementById('modal-instruction-text').innerHTML = `<b class='text-success'>✅ KONFIGURASI SELESAI:</b> Pelayan ${rackObj.name} telah sedia dan beroperasi pada IP Statik ${rackObj.targetIp}.`;
+                document.getElementById('modal-action-btn').innerHTML = "💻 Semak Terminal CLI Semula";
+                document.getElementById('modal-action-btn').onclick = function() {
+                    serverInfoModal.hide();
+                    setTimeout(() => openCliForRack(rackObj), 300);
+                };
+
+                serverInfoModal.show();
+            }
+        }
+
+        // --- 4. TERMINAL CLI LOGIK ---
+        const terminalScreen = document.getElementById('terminal-screen');
+        const cliInput = document.getElementById('cli-input-field');
+        const guideText = document.getElementById('guide-text');
+        const guideStepTitle = document.getElementById('guide-step-title');
+
+        function openCliForRack(rack) {
+            document.getElementById('terminal-header-title').innerText = `root@${rack.id}-debian:~ (Debian 12 CLI Monitor)`;
+            
+            terminalScreen.innerHTML = `
+                <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                <div class="text-white-50">Log masuk stesen kerja PC ${rack.name} berjaya.</div>
+                <br>
+            `;
+
+            updateStepGuide(rack);
+            cliModal.show();
+        }
+
+        function updateStepGuide(rack) {
+            const stepObj = rack.steps[rack.currentStep - 1];
+            if (stepObj && currentMode === 'practice') {
+                guideStepTitle.innerText = `📌 ARAHAN LANGKAH ${rack.currentStep} (${rack.name}):`;
+                guideText.innerHTML = stepObj.guide;
+            }
+        }
+
+        cliInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && selectedRackObj) {
+                const command = this.value.trim().toLowerCase();
+                appendTerminalLine(`root@${selectedRackObj.id}:~# ${this.value}`, '#58a6ff');
+                this.value = '';
+
+                const stepObj = selectedRackObj.steps[selectedRackObj.currentStep - 1];
+
+                if (stepObj) {
+                    const validCmd = stepObj.cmd.toLowerCase();
+                    const validAlt = stepObj.altCmd ? stepObj.altCmd.toLowerCase() : null;
+
+                    if (command === validCmd || (validAlt && command === validAlt)) {
+                        appendTerminalLine(stepObj.out, '#00ff66');
+                        selectedRackObj.currentStep++;
+
+                        if (selectedRackObj.currentStep > selectedRackObj.steps.length) {
+                            selectedRackObj.completed = true;
+                            appendTerminalLine(`[OK] Konfigurasi Pelayan ${selectedRackObj.name} Selesai!`, '#00ffff');
+                            
+                            rackLedsMap[selectedRackObj.id].forEach((item, i) => {
+                                const color = (i % 2 === 0 ? 0x00ff00 : 0x0088ff);
+                                item.mesh.material.color.setHex(color);
+                                blinkingLeds.push({ mesh: item.mesh, originalColor: color });
+                            });
+
+                            checkOverallProgress();
+                            cliModal.hide();
+                        } else {
+                            updateStepGuide(selectedRackObj);
+                        }
+                    } else {
+                        appendTerminalLine(`Ralat sintaks! Sila taip arahan yang betul mengikut piawaian.`, '#ff5555');
+                    }
+                }
+
+                terminalScreen.scrollTop = terminalScreen.scrollHeight;
+            }
+        });
+
+        function checkOverallProgress() {
+            const completedCount = racksData.filter(r => r.completed).length;
+            document.getElementById('hud-progress-text').innerText = `${completedCount} / 4 Pelayan Dikonfigurasi`;
+
+            if (completedCount === 4) {
+                networkLines.forEach(line => {
+                    line.material.color.setHex(0x00ffcc);
+                });
+
+                document.getElementById('hud-progress-text').className = "text-success fw-bold";
+                document.getElementById('hud-progress-text').innerText = "4 / 4 SEMUA TERHUBUNG! ⚡";
+
+                setTimeout(() => {
+                    resultModal.show();
+                }, 800);
+            }
+        }
+
+        function appendTerminalLine(text, color) {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerText = text;
+            terminalScreen.appendChild(div);
+        }
+
+        function resetCurrentRackLab() {
+            if (selectedRackObj) {
+                selectedRackObj.currentStep = 1;
+                selectedRackObj.completed = false;
+                openCliForRack(selectedRackObj);
+            }
+        }
+
+        // --- 5. KAWALAN KARAKTER 3D & THIRD-PERSON CAMERA ---
+        const keys = { w: false, a: false, s: false, d: false, e: false };
+
+        window.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = true;
+
+            if (k === 'e' && !document.querySelector('.modal.show')) {
+                checkProximityToRacks();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = false;
+        });
+
+        function updatePlayerMovement() {
+            if (document.querySelector('.modal.show')) return;
+
+            const moveSpeed = 0.07;
+            const rotSpeed = 0.04;
+
+            if (keys.w) playerGroup.translateZ(-moveSpeed);
+            if (keys.s) playerGroup.translateZ(moveSpeed);
+            if (keys.a) playerGroup.rotation.y += rotSpeed;
+            if (keys.d) playerGroup.rotation.y -= rotSpeed;
+
+            const cameraOffset = new THREE.Vector3(0, 1.8, 3.5);
+            cameraOffset.applyQuaternion(playerGroup.quaternion);
+            camera.position.copy(playerGroup.position).add(cameraOffset);
+            camera.lookAt(playerGroup.position.x, playerGroup.position.y + 1.2, playerGroup.position.z);
+        }
+
+        function checkProximityToRacks() {
+            racksData.forEach(rack => {
+                const dist = playerGroup.position.distanceTo(new THREE.Vector3(rack.pos[0], 0, rack.pos[2]));
+                if (dist < 2.5) {
+                    selectedRackObj = rack;
+                    openRackDialog(rack);
+                }
+            });
+        }
+
+        // --- 6. ANIMASI LOOP ---
+        let clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            updatePlayerMovement();
+
+            const elapsedTime = clock.getElapsedTime();
+            blinkingLeds.forEach((item, index) => {
+                if (Math.sin(elapsedTime * 5 + index) > 0.5) {
+                    item.mesh.material.color.setHex(0x000000);
+                } else {
+                    item.mesh.material.color.setHex(item.originalColor);
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+/* v5 — full-size logo is always motionless; small logo has separate animation in studio.css. */
+.studio-portal .esl-logo-button { cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.studio-portal .esl-logo-button:focus-visible { outline:2px solid #62d2fa; outline-offset:3px; }
+.studio-portal .esl-logo-static, .studio-portal .esl-logo-image { animation:none!important; transform:none!important; transition:none!important; }

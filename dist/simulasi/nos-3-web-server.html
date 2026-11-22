@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Avatar Data Center - LAB LINUX TKR ADTEC SANDAKAN (LA 2)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="../libs/bootstrap/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1e29;
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(10, 15, 25, 0.9);
+            border: 2px solid #0d6efd;
+            border-radius: 8px;
+            color: #ffffff !important;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+        .terminal-window {
+            background-color: #0c1017;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid #30363d;
+            color: #ffffff !important;
+        }
+        .terminal-body {
+            padding: 15px;
+            height: 330px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            color: #ffffff !important;
+        }
+        .cli-prompt {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: #ffffff !important;
+            font-family: 'Courier New', Courier, monospace;
+            width: 75%;
+            outline: none;
+            font-weight: bold;
+        }
+        .guide-box {
+            background: #1f242d;
+            border-left: 4px solid #f1e05a;
+            color: #ffffff !important;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        /* Simulated Web Browser Display */
+        .web-browser-container {
+            background-color: #ffffff;
+            color: #000000 !important;
+            border-radius: 8px;
+            border: 2px solid #30363d;
+            height: 100%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .browser-toolbar {
+            background-color: #e1e4e8;
+            padding: 6px 12px;
+            border-bottom: 1px solid #d1d5da;
+            display: flex;
+            align-items: center;
+        }
+        .browser-address-bar {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 12px;
+            padding: 2px 12px;
+            font-size: 0.85rem;
+            width: 100%;
+            color: #333333;
+            font-family: monospace;
+        }
+        .browser-content {
+            padding: 20px;
+            height: 380px;
+            overflow-y: auto;
+            background-color: #ffffff;
+            color: #222222;
+        }
+
+        .cert-card {
+            background: #161b22;
+            border: 2px solid #238636;
+            color: #ffffff !important;
+        }
+        .locked-overlay {
+            background: rgba(15, 20, 30, 0.98);
+            backdrop-filter: blur(6px);
+            z-index: 5;
+            color: #ffffff !important;
+        }
+
+        /* Tab Navigation Styling */
+        .nav-tabs .nav-link {
+            color: #a0aec0 !important;
+            border-color: #30363d !important;
+        }
+        .nav-tabs .nav-link.active {
+            color: #ffffff !important;
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            font-weight: bold;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #resultModal, #resultModal * { visibility: visible; }
+            #resultModal { position: absolute; left: 0; top: 0; width: 100%; }
+            .btn { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <div id="canvas-container"></div>
+
+    <!-- MODAL PENDAFTARAN -->
+    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-primary fw-bold">🐧 LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN</h5>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <p class="small text-white-50">Sila masukkan maklumat anda sebelum memulakan amali Kertas Kerja LA 2 (Visual Output Web Server).</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Nama Penuh Pelajar / Angka Giliran:</label>
+                        <input type="text" id="student-name-input" class="form-control bg-black text-white border-secondary" placeholder="Contoh: Muhammad Ali Bin Ahmad" autofocus>
+                        <div id="name-error" class="text-danger small mt-1 d-none">Sila masukkan nama anda terlebih dahulu!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Karakter 3D TKR:</label>
+                        <select id="gender-select" class="form-select bg-black text-white border-secondary">
+                            <option value="male" selected>👨 Karakter Lelaki (Baju TKR Biru & Cap)</option>
+                            <option value="female">👩 Karakter Perempuan (Baju TKR Pink & Tudung)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Mod Pembelajaran:</label>
+                        <select id="mode-select" class="form-select bg-black text-white border-secondary">
+                            <option value="practice" selected>🟢 Mod Latihan (Nota & Panduan Disediakan)</option>
+                            <option value="exam">🔴 Mod Peperiksaan (Dikunci Nota & Tanpa Panduan Arahan)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary w-100 fw-bold text-white" onclick="registerStudent()">Mulakan Karakter 3D & Amali LA 2</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD OVERLAY -->
+    <div class="hud-overlay">
+        <div class="card bg-dark text-white border-primary shadow-lg p-3" style="width: 360px;">
+            <h5 class="card-title text-primary mb-1 fw-bold">🎮 AMALI LA 2: WEB SERVER</h5>
+            <p class="card-text text-white-50 small mb-0">IKR3103/KK(2/5) - Visual Output Simulation</p>
+            <hr class="border-secondary my-2">
+            
+            <button class="btn btn-primary btn-sm w-100 fw-bold mb-2 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNota">
+                📖 Terperinci: Tujuan Simulasi & Penggunaan VI
+            </button>
+            <div class="d-flex justify-content-between align-items-center small text-white-50">
+                <span id="hud-student-display">Pelajar: -</span>
+                <span class="badge bg-success" id="hud-mode-badge">Mod: Latihan</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center small text-white-50 mt-1">
+                <span>Kemajuan Amali LA 2:</span>
+                <strong id="hud-progress-text" class="text-warning">0 / 20 Langkah Selesai</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANDUAN KAWALAN -->
+    <div class="controls-info p-3 shadow">
+        <span class="fw-bold fs-6 d-block mb-1 text-warning">🎮 KAWALAN KARAKTER TKR 3D:</span>
+        <span class="d-block text-white">• <b>Kekunci W / S:</b> Karakter Bergerak Ke Depan / Belakang</span>
+        <span class="d-block text-white">• <b>Kekunci A / D:</b> Pusing Karakter Ke Kiri / Kanan</span>
+        <span class="d-block text-white">• <b>Tekan Kekunci 'E' / Klik Meja PC:</b> Akses Console CLI & Web Output</span>
+    </div>
+
+    <!-- SIDEBAR NOTA BERPERINGKAT (2 TAB / PAGE) -->
+    <div class="offcanvas offcanvas-end text-white w-50 bg-dark position-relative" tabindex="-1" id="offcanvasNota">
+        <div id="cheat-sheet-lock" class="locked-overlay position-absolute top-0 start-0 w-100 h-100 d-none d-flex flex-column justify-content-center align-items-center text-center p-4">
+            <div class="display-1 mb-2">🔒</div>
+            <h4 class="text-danger fw-bold mb-2">MOD PEPERIKSAAN DIKUNCI</h4>
+            <p class="small text-white-50 mb-0">Nota pembelajaran dikunci semasa Mod Peperiksaan. Sila laksanakan 20 langkah LA 2 berdasarkan kefahaman anda sendiri.</p>
+        </div>
+
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title text-primary fw-bold">📚 NOTA TERPERINCI KERTAS KERJA LA 2</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body text-white">
+            
+            <!-- TAB NAVIGATION -->
+            <ul class="nav nav-tabs mb-3 border-secondary" id="notaTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="page1-tab" data-bs-toggle="tab" data-bs-target="#page1" type="button" role="tab">PAGE 1: Tujuan & Editor VI</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="page2-tab" data-bs-toggle="tab" data-bs-target="#page2" type="button" role="tab">PAGE 2: Penerangan 20 Arahan</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="notaTabContent">
+                
+                <!-- PAGE 1: KENAPA SIMULASI & PENERANGAN ARAHAN VI -->
+                <div class="tab-pane fade show active" id="page1" role="tabpanel">
+                    
+                    <div class="p-3 mb-3 rounded bg-primary bg-opacity-10 border-start border-4 border-primary">
+                        <h6 class="text-info mb-1 fw-bold">1. Mengapa Pelajar Wajib Buat Simulasi Ini?</h6>
+                        <p class="small text-white-50 mb-2">
+                            Sistem Pengoperasian Rangkaian (NOS) Linux Debian 12 secara hakikatnya bersifat abstrak kerana ia tidak mempunyai antaramuka grafik bercetak (*GUI*) pada pelayan sebenar. Simulasi 3D ini direka khas untuk:
+                        </p>
+                        <ul class="small text-white-50 mb-0 ps-3">
+                            <li><b>Menghubungkan Fizikal & Maya:</b> Pelajar nampak susun atur bilik pelayan (*Data Center*), stesen kerja PC (KVM), dan bagaimana baris arahan diketik pada skrin pelayan sebenar.</li>
+                            <li><b>Menilai Hasil Visual Web (*Live Output*):</b> Dalam latihan amali biasa, pelajar tidak nampak impak perubahan fail konfigurasi. Simulasi ini menyediakan tetingkap penjelajah web (*Live Browser View*) yang menunjukkan perubahan serta-merta.</li>
+                            <li><b>Pengukuhan Kemahiran Industri:</b> Melatih ketelitian pelajar menaip laluan direktori (*file path*) dan fail konfigurasi tanpa typo.</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-3 mb-3 rounded bg-warning bg-opacity-10 border-start border-4 border-warning">
+                        <h6 class="text-warning mb-1 fw-bold">2. Mengapa Pelayan Perlu Dikonfigurasi?</h6>
+                        <p class="small text-white-50 mb-0">
+                            Apabila perisian Apache2 baru dipasang, ia berada dalam keadaan *Default* (Lalai). Ia belum selamat, belum ada sijil SSL, dan tidak menyokong bahasa pengaturcaraan dinamik. Konfigurasi ini dilakukan untuk membolehkan pelayan mengendalikan laman web HTTPS, skrip PHP, direktori pengguna, dan perkongsian fail WebDAV.
+                        </p>
+                    </div>
+
+                    <div class="p-3 mb-3 rounded bg-secondary bg-opacity-25 border-start border-4 border-info">
+                        <h6 class="text-info mb-1 fw-bold">3. Apakah Itu Arahan `vi` Dalam Kertas Kerja LA 2?</h6>
+                        <p class="small text-white-50 mb-2">
+                            Dalam dokumentasi Kertas Kerja LA 2 (contoh: <code>vi /etc/apache2/apache2.conf</code>), arahan <b>`vi`</b> (atau **`vim`**) ialah *Command-Line Text Editor* standard dalam sistem Linux. 
+                        </p>
+                        <p class="small text-white-50 mb-0">
+                            <b>Kenapa ia kelihatan "tidak nampak" atau mengelirukan pelajar?</b><br>
+                            Kerana editor `vi` tidak menggunakan tetikus. Ia mempunyai mod khas:<br>
+                            • Tekan <code>i</code> : Masuk mod *Insert* untuk mula menaip teks.<br>
+                            • Tekan <code>Esc</code> lalu taip <code>:wq</code> : Menyimpan (*Write*) dan keluar (*Quit*).<br>
+                            <i>Nota: Dalam simulasi ini, anda juga boleh menggunakan editor <code>nano</code> sebagai alternatif yang lebih mesra pengguna.</i>
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- PAGE 2: PENERANGAN DETAILED 20 ARAHAN LA 2 -->
+                <div class="tab-pane fade" id="page2" role="tabpanel">
+                    
+                    <div class="card bg-dark border-secondary mb-3 text-white">
+                        <div class="card-header text-success fw-bold small">
+                            📋 PENERANGAN DETAILED 20 ARAHAN LA 2
+                        </div>
+                        <div class="card-body small text-white">
+                            
+                            <p class="fw-bold text-info mb-1">A. Pemasangan & Konfigurasi Apache2:</p>
+                            <ul class="text-white-50 ps-3 mb-2">
+                                <li><code>apt -y install apache2</code> : Memasang perisian pelayan HTTP Apache2.</li>
+                                <li><code>vi /etc/apache2/conf-enabled/security.conf</code> : Menyunting tetapan <code>ServerTokens Prod</code> untuk menyembunyikan maklumat versi OS daripada penceroboh.</li>
+                                <li><code>vi /etc/apache2/mods-enabled/dir.conf</code> : Menyusun keutamaan fail indeks (<code>index.html</code>).</li>
+                                <li><code>vi /etc/apache2/apache2.conf</code> : Menetapkan <code>ServerName www.srv.world</code> untuk mengelakkan amaran pautan domain.</li>
+                                <li><code>vi /etc/apache2/sites-enabled/000-default.conf</code> : Mengemaskini alamat emel pentadbir (<code>ServerAdmin</code>).</li>
+                                <li><code>systemctl reload apache2</code> : Memuat semula perkhidmatan Apache2 untuk mengaktifkan semua perubahan di atas.</li>
+                            </ul>
+
+                            <p class="fw-bold text-info mb-1">B. Keselamatan SSL/TLS & Certbot (HTTPS):</p>
+                            <ul class="text-white-50 ps-3 mb-2">
+                                <li><code>apt -y install certbot</code> : Memasang alat bantuan penjanaan sijil SSL automatik.</li>
+                                <li><code>certbot certonly ...</code> : Memohon sijil keselamatan terenkripsi daripada Let's Encrypt bagi domain <code>dns.srv.world</code>.</li>
+                                <li><code>a2ensite default-ssl</code> : Mengaktifkan konfigurasi tapak selamat HTTPS pada Port 443.</li>
+                                <li><code>a2enmod ssl</code> : Mengaktifkan enjin pemprosesan penyulitan SSL/TLS.</li>
+                            </ul>
+
+                            <p class="fw-bold text-info mb-1">C. Skrip Userdir, CGI & PHP 8.2:</p>
+                            <ul class="text-white-50 ps-3 mb-2">
+                                <li><code>a2enmod userdir</code> : Membenarkan pengguna sistem *host* web dalam folder <code>public_html</code> masing-masing.</li>
+                                <li><code>mkdir ~/public_html</code> : Mencipta direktori kandungan laman web peribadi pengguna.</li>
+                                <li><code>a2enmod cgid</code> : Mengaktifkan sokongan pemprosesan skrip CGI (Perl/Python).</li>
+                                <li><code>apt -y install php8.2 libapache2-mod-php</code> : Memasang enjin pengaturcaraan web dinamik PHP 8.2.</li>
+                                <li><code>vi /etc/php/8.2/apache2/php.ini</code> : Menetapkan zon masa rasmi pelayan kepada <code>Asia/Kuala_Lumpur</code>.</li>
+                            </ul>
+
+                            <p class="fw-bold text-info mb-1">D. Basic Authentication & WebDAV:</p>
+                            <ul class="text-white-50 ps-3 mb-0">
+                                <li><code>apt -y install apache2-utils</code> : Memasang utiliti pengurusan kata laluan terenkripsi.</li>
+                                <li><code>htpasswd -c /etc/apache2/.htpasswd debian</code> : Mencipta akaun keselamatan Basic Authentication.</li>
+                                <li><code>mkdir /home/webdav</code> : Menyediakan ruang direktori kongsi WebDAV.</li>
+                                <li><code>chown www-data:www-data /home/webdav</code> : Menetapkan hak milik kebenaran kepada perkhidmatan Apache2.</li>
+                                <li><code>a2enmod dav</code> : Mengaktifkan modul perkongsian fail WebDAV melalui protokol HTTP/HTTPS.</li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL CLI TERMINAL BERSEBELAHAN BROWSER VISUAL OUTPUT -->
+    <div class="modal fade" id="cliModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border-secondary">
+                <div class="modal-header bg-secondary bg-opacity-25 border-secondary">
+                    <h5 class="modal-title text-info fw-bold">💻 KVM WORKSTATION: TERMINAL CLI & VISUAL OUTPUT WEB BROWSER</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row g-3">
+                        
+                        <!-- SEKSYEN KIRI: TERMINAL CLI -->
+                        <div class="col-lg-6">
+                            <div class="terminal-window h-100 p-2">
+                                <div class="terminal-header d-flex justify-content-between align-items-center">
+                                    <span class="small fw-bold text-white">root@www:~ (Debian 12 Console)</span>
+                                </div>
+                                <div class="p-2">
+                                    <div class="guide-box" id="guide-box-container">
+                                        <small class="fw-bold d-block text-warning" id="guide-step-title">📌 LANGKAH 1 (LA 2):</small>
+                                        <small id="guide-text" class="text-white">Memuatkan arahan...</small>
+                                    </div>
+
+                                    <div class="terminal-body" id="terminal-screen">
+                                        <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                                        <div class="text-white-50">Log masuk pelayan web (www.srv.world) berjaya. Sila lengkapkan amali.</div>
+                                        <br>
+                                    </div>
+
+                                    <div class="d-flex align-items-center mt-2 border-top border-secondary pt-2">
+                                        <span class="cli-prompt me-2">root@www:~#</span>
+                                        <input type="text" id="cli-input-field" class="cli-input" placeholder="Taip arahan CLI di sini..." autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SEKSYEN KANAN: PAPARAN BROWSER WEBPAGE OUTPUT -->
+                        <div class="col-lg-6">
+                            <div class="web-browser-container">
+                                <div class="browser-toolbar">
+                                    <span class="me-2 text-dark">🔴 🟡 🟢</span>
+                                    <div class="browser-address-bar" id="browser-url-bar">
+                                        http://www.srv.world (Web Server Offline)
+                                    </div>
+                                </div>
+                                <div class="browser-content" id="browser-viewport">
+                                    <div class="text-center mt-5 text-muted">
+                                        <div class="display-3 mb-2">🌐</div>
+                                        <h5>Pelayan Web Belum Beraktifan</h5>
+                                        <p class="small">Sila taip arahan <code>apt -y install apache2</code> pada terminal CLI di sebelah kiri untuk memasangkan pelayan HTTP Apache2.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary py-2">
+                    <small class="text-white-50 me-auto">Hasil paparan web di sebelah kanan akan bertukar mengikut arahan CLI yang anda taip.</small>
+                    <button type="button" class="btn btn-secondary btn-sm text-white" onclick="resetLa2Lab()">Reset Amali LA 2</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RESULT DENGAN NAMA PELAJAR RASMI -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content cert-card text-white shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-success fw-bold">🏆 LAPORAN RASMI PENILAIAN AMALI LA 2</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <div class="text-center mb-4">
+                        <h4 class="text-info fw-bold mb-1">JABATAN TENAGA MANUSIA (JTM)</h4>
+                        <h5 class="text-warning fw-bold mb-0">ADTEC KAMPUS SANDAKAN, SABAH</h5>
+                        <p class="small text-white-50">SIJIL TEKNOLOGI RANGKAIAN (IKR 3103 - NETWORK OPERATING SYSTEM)</p>
+                        <hr class="border-secondary">
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">NAMA PELAJAR:</small>
+                                <strong class="text-warning fs-5" id="cert-student-name">Muhammad Ali Bin Ahmad</strong>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">KERTAS KERJA:</small>
+                                <strong class="text-info fs-6">IKR3103/KK(2/5) (LA 2 Web Server)</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 text-start small mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">1. Apache2 & Configurations:</b><br>
+                                <span class="text-success">✔ All 6 Config Steps Passed</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">2. SSL/TLS Certbot:</b><br>
+                                <span class="text-success">✔ Certbot & HTTPS Configured</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">3. Userdir, CGI & PHP 8.2:</b><br>
+                                <span class="text-success">✔ UserDir, Perl CGI & PHP Info Live</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">4. Basic Auth & WebDAV:</b><br>
+                                <span class="text-success">✔ `.htpasswd` Auth & WebDAV Ready</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50 text-center mb-0">Sila cetak atau simpan fail PDF laporan ini untuk dimuatkan dalam fail Penilaian Kerja Kursus (PKK) anda.</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary btn-sm text-white w-100" onclick="window.print()">🖨️ Cetak / Simpan PDF Laporan Amali Pelajar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script src="../libs/bootstrap/bootstrap.bundle.min.js"></script><script>window.bootstrap||document.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>')</script>
+    <script src="../libs/three/three.min.js"></script><script>window.THREE||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>')</script>
+
+    <script>
+        let studentName = "";
+        let currentMode = "practice";
+        let selectedGender = "male";
+
+        // SENARAI LENGKAP 20 LANGKAH LA 2 BESERTA PAPARAN BROWSER VISUAL OUTPUT
+        let currentLa2Step = 1;
+        const la2Steps = [
+            { 
+                step: 1, cmd: "apt -y install apache2", 
+                guide: "Langkah 1 (LA 2 - 1.1): Taip <b class='text-info'>apt -y install apache2</b> untuk memasang Apache2.", 
+                out: "Setting up apache2 ... Done",
+                url: "http://www.srv.world/",
+                render: `
+                    <div style="font-family:sans-serif; text-align:center; padding:10px;">
+                        <h2 style="color:#d9534f;">Debian Default Page</h2>
+                        <h1 style="color:#5cb85c;">It works!</h1>
+                        <p style="font-size:12px; color:#666;">This is the default welcome page used to test the correct operation of the Apache2 server on Debian systems.</p>
+                        <div style="background:#f8f9fa; border:1px solid #ddd; padding:10px; font-size:11px; text-align:left;">
+                            <b>Configuration Layout:</b> /etc/apache2/apache2.conf, ports.conf, mods-enabled, sites-enabled.
+                        </div>
+                    </div>
+                `
+            },
+            { 
+                step: 2, cmd: "vi /etc/apache2/conf-enabled/security.conf", altCmd: "nano /etc/apache2/conf-enabled/security.conf", 
+                guide: "Langkah 2 (LA 2 - 1.2): Taip <b class='text-info'>vi /etc/apache2/conf-enabled/security.conf</b> (Set ServerTokens Prod).", 
+                out: "ServerTokens Prod configured",
+                url: "http://www.srv.world/ [Security Token Hidden]",
+                render: `<div class="alert alert-info small"><b>Security Config Updated:</b> ServerTokens Prod set. Server header details hidden from external scanners.</div>`
+            },
+            { 
+                step: 3, cmd: "vi /etc/apache2/mods-enabled/dir.conf", altCmd: "nano /etc/apache2/mods-enabled/dir.conf", 
+                guide: "Langkah 3 (LA 2 - 1.2): Taip <b class='text-info'>vi /etc/apache2/mods-enabled/dir.conf</b> (Set DirectoryIndex).", 
+                out: "DirectoryIndex index.html index.htm set",
+                url: "http://www.srv.world/ [DirectoryIndex Set]",
+                render: `<div class="alert alert-info small"><b>DirectoryIndex Configured:</b> Apache2 will now prioritize index.html and index.htm files.</div>`
+            },
+            { 
+                step: 4, cmd: "vi /etc/apache2/apache2.conf", altCmd: "nano /etc/apache2/apache2.conf", 
+                guide: "Langkah 4 (LA 2 - 1.2): Taip <b class='text-info'>vi /etc/apache2/apache2.conf</b> (Set ServerName www.srv.world).", 
+                out: "ServerName www.srv.world added",
+                url: "http://www.srv.world/",
+                render: `<div class="alert alert-success small"><b>ServerName Verified:</b> Hostname resolving to www.srv.world.</div>`
+            },
+            { 
+                step: 5, cmd: "vi /etc/apache2/sites-enabled/000-default.conf", altCmd: "nano /etc/apache2/sites-enabled/000-default.conf", 
+                guide: "Langkah 5 (LA 2 - 1.2): Taip <b class='text-info'>vi /etc/apache2/sites-enabled/000-default.conf</b> (Set ServerAdmin).", 
+                out: "ServerAdmin webmaster@srv.world set",
+                url: "http://www.srv.world/",
+                render: `<div class="alert alert-success small"><b>ServerAdmin Updated:</b> webmaster@srv.world configured for site notifications.</div>`
+            },
+            { 
+                step: 6, cmd: "systemctl reload apache2", 
+                guide: "Langkah 6 (LA 2 - 1.2): Taip <b class='text-info'>systemctl reload apache2</b> untuk memuat semula tetapan.", 
+                out: "[OK] Reloaded Apache2",
+                url: "http://www.srv.world/",
+                render: `<div style="text-align:center; padding:20px;"><h2 style="color:green;">Apache2 Service Reloaded & Live!</h2></div>`
+            },
+            { 
+                step: 7, cmd: "apt -y install certbot", 
+                guide: "Langkah 7 (LA 2 - 2.4): Taip <b class='text-info'>apt -y install certbot</b> untuk memasang Certbot SSL Client.", 
+                out: "Certbot installed successfully",
+                url: "http://www.srv.world/ [Certbot Ready]",
+                render: `<div class="alert alert-warning small"><b>Certbot SSL Tool Installed:</b> Ready to request SSL certificates from Let's Encrypt.</div>`
+            },
+            { 
+                step: 8, cmd: "certbot certonly --webroot -w /var/www/html -d dns.srv.world", altCmd: "certbot certonly", 
+                guide: "Langkah 8 (LA 2 - 2.6): Taip <b class='text-info'>certbot certonly --webroot -w /var/www/html -d dns.srv.world</b> untuk jana SSL.", 
+                out: "Successfully received certificate!",
+                url: "http://dns.srv.world/ [SSL Certificate Received]",
+                render: `<div style="background:#e8f5e9; border:1px solid #4caf50; padding:10px; border-radius:5px; font-size:12px;">
+                    <b style="color:#2e7d32;">SSL Certificate Obtained:</b><br>
+                    Cert Path: /etc/letsencrypt/live/dns.srv.world/fullchain.pem<br>
+                    PrivKey Path: /etc/letsencrypt/live/dns.srv.world/privkey.pem
+                </div>`
+            },
+            { 
+                step: 9, cmd: "a2ensite default-ssl", 
+                guide: "Langkah 9 (LA 2 - 4.6): Taip <b class='text-info'>a2ensite default-ssl</b> untuk mengaktifkan tapak HTTPS selamat.", 
+                out: "Enabling site default-ssl",
+                url: "https://www.srv.world/ (SSL Enabled)",
+                render: `<div style="text-align:center; padding:15px; border:2px solid #00ff66;">
+                    <h3 style="color:#00bb22;">🔒 HTTPS Secure Connection Active</h3>
+                    <p class="small text-muted">SSL/TLS VirtualHost Enabled on Port 443.</p>
+                </div>`
+            },
+            { 
+                step: 10, cmd: "a2enmod ssl", 
+                guide: "Langkah 10 (LA 2 - 4.6): Taip <b class='text-info'>a2enmod ssl</b> untuk mengaktifkan modul SSL.", 
+                out: "Enabling module ssl",
+                url: "https://www.srv.world/",
+                render: `<div class="alert alert-success small"><b>SSL Engine Module Loaded:</b> Apache2 is now fully supporting SSL/TLS encryption.</div>`
+            },
+            { 
+                step: 11, cmd: "a2enmod userdir", 
+                guide: "Langkah 11 (LA 2 - 3.1): Taip <b class='text-info'>a2enmod userdir</b> untuk mengaktifkan direktori pengguna.", 
+                out: "Enabling module userdir",
+                url: "http://www.srv.world/~debian/",
+                render: `<div class="alert alert-info small"><b>UserDir Module Enabled:</b> Users can now host websites under their ~/public_html directories.</div>`
+            },
+            { 
+                step: 12, cmd: "mkdir ~/public_html", altCmd: "mkdir /home/debian/public_html", 
+                guide: "Langkah 12 (LA 2 - 3.2): Taip <b class='text-info'>mkdir ~/public_html</b> untuk cipta folder web pengguna.", 
+                out: "Directory ~/public_html created",
+                url: "http://www.srv.world/~debian/",
+                render: `<div style="text-align:center; padding:20px; font-size:24px; font-weight:bold; color:#0055cc; border:1px solid #ccc;">
+                    UserDir Test Page
+                </div>`
+            },
+            { 
+                step: 13, cmd: "a2enmod cgid", 
+                guide: "Langkah 13 (LA 2 - 3.4): Taip <b class='text-info'>a2enmod cgid</b> untuk mengaktifkan skrip CGI.", 
+                out: "Enabling module cgid",
+                url: "http://www.srv.world/cgi-bin/index.cgi",
+                render: `<div style="text-align:center; padding:20px; font-size:24px; font-weight:bold; color:#222; border:1px solid #999;">
+                    CGI Script Test Page (Hello CGI)
+                </div>`
+            },
+            { 
+                step: 14, cmd: "apt -y install php8.2 libapache2-mod-php", altCmd: "apt install php8.2 libapache2-mod-php", 
+                guide: "Langkah 14 (LA 2 - 3.8): Taip <b class='text-info'>apt -y install php8.2 libapache2-mod-php</b> untuk pasang PHP 8.2.", 
+                out: "PHP 8.2 installed",
+                url: "http://www.srv.world/info.php",
+                render: `<div style="background:#6a73a5; color:#fff; padding:8px; font-size:18px; font-weight:bold; text-align:center;">
+                    PHP Version 8.2.7 Info Page
+                </div>
+                <div style="font-size:11px; padding:10px; background:#f4f4f4; color:#333;">
+                    <b>System:</b> Linux debian 6.1.0-9-amd64 x86_64<br>
+                    <b>Server API:</b> Apache2 Handler<br>
+                    <b>Loaded Configuration:</b> /etc/php/8.2/apache2/php.ini
+                </div>`
+            },
+            { 
+                step: 15, cmd: "vi /etc/php/8.2/apache2/php.ini", altCmd: "nano /etc/php/8.2/apache2/php.ini", 
+                guide: "Langkah 15 (LA 2 - 3.9): Taip <b class='text-info'>vi /etc/php/8.2/apache2/php.ini</b> untuk set timezone.", 
+                out: "date.timezone = Asia/Kuala_Lumpur configured",
+                url: "http://www.srv.world/info.php",
+                render: `<div class="alert alert-success small"><b>PHP Timezone Updated:</b> date.timezone set to Asia/Kuala_Lumpur.</div>`
+            },
+            { 
+                step: 16, cmd: "apt -y install apache2-utils", 
+                guide: "Langkah 16 (LA 2 - 4.10): Taip <b class='text-info'>apt -y install apache2-utils</b> untuk utiliti keselamatan.", 
+                out: "apache2-utils installed",
+                url: "http://www.srv.world/auth-basic/",
+                render: `<div class="alert alert-warning small"><b>Apache2 Utilities Ready:</b> htpasswd tool available to manage encrypted passwords.</div>`
+            },
+            { 
+                step: 17, cmd: "htpasswd -c /etc/apache2/.htpasswd debian", 
+                guide: "Langkah 17 (LA 2 - 4.10): Taip <b class='text-info'>htpasswd -c /etc/apache2/.htpasswd debian</b> untuk Basic Auth.", 
+                out: "Password for user debian created",
+                url: "http://www.srv.world/auth-basic/ (Authentication Prompt)",
+                render: `<div style="background:#fff3cd; border:1px solid #ffeeba; padding:15px; border-radius:5px; text-align:center;">
+                    <h5 style="color:#856404;">🔒 Sign In Required</h5>
+                    <p style="font-size:12px; color:#856404;">http://www.srv.world requires a username and password.</p>
+                    <input type="text" value="debian" disabled style="margin-bottom:5px; padding:2px;"><br>
+                    <input type="password" value="********" disabled style="margin-bottom:5px; padding:2px;"><br>
+                    <button class="btn btn-primary btn-sm disabled">Sign In</button>
+                    <div style="font-size:18px; font-weight:bold; margin-top:15px; color:#155724;">Test Page For Basic Authentication</div>
+                </div>`
+            },
+            { 
+                step: 18, cmd: "mkdir /home/webdav", 
+                guide: "Langkah 18 (LA 2 - 5.1): Taip <b class='text-info'>mkdir /home/webdav</b> untuk folder kongsi WebDAV.", 
+                out: "Directory /home/webdav created",
+                url: "https://www.srv.world/webdav/",
+                render: `<div class="alert alert-info small"><b>WebDAV Shared Folder Created:</b> /home/webdav directory ready.</div>`
+            },
+            { 
+                step: 19, cmd: "chown www-data:www-data /home/webdav", 
+                guide: "Langkah 19 (LA 2 - 5.1): Taip <b class='text-info'>chown www-data:www-data /home/webdav</b> untuk hak milik WebDAV.", 
+                out: "Permissions set to www-data",
+                url: "https://www.srv.world/webdav/",
+                render: `<div class="alert alert-info small"><b>Ownership Assigned:</b> www-data web server user given full access to /home/webdav.</div>`
+            },
+            { 
+                step: 20, cmd: "a2enmod dav", altCmd: "a2enmod dav_fs", 
+                guide: "Langkah 20 (LA 2 - 5.1): Taip <b class='text-info'>a2enmod dav</b> untuk mengaktifkan modul WebDAV.", 
+                out: "Enabling module dav & dav_fs [OK]",
+                url: "https://www.srv.world/webdav/ (Windows File Explorer Connected)",
+                render: `<div style="background:#e3f2fd; border:1px solid #90caf9; padding:15px; border-radius:5px; font-size:12px;">
+                    <b style="color:#1565c0;">📁 WebDAV Shared Folder Successfully Accessed!</b><br>
+                    Connected via Windows File Explorer [Add Network Location].<br>
+                    Status: Read & Write Permissions Active over HTTPS.
+                </div>`
+            }
+        ];
+
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        const cliModal = new bootstrap.Modal(document.getElementById('cliModal'));
+        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+
+        window.onload = function() {
+            loginModal.show();
+        };
+
+        function registerStudent() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (!nameInput) {
+                document.getElementById('name-error').classList.remove('d-none');
+                return;
+            }
+
+            studentName = nameInput;
+            selectedGender = document.getElementById('gender-select').value;
+            currentMode = document.getElementById('mode-select').value;
+
+            document.getElementById('hud-student-display').innerText = `Pelajar: ${studentName}`;
+            document.getElementById('cert-student-name').innerText = studentName;
+            
+            if (currentMode === 'exam') {
+                document.getElementById('hud-mode-badge').className = "badge bg-danger";
+                document.getElementById('hud-mode-badge').innerText = "Mod: PEPERIKSAAN";
+                document.getElementById('guide-box-container').classList.add('d-none');
+                document.getElementById('cheat-sheet-lock').classList.remove('d-none');
+            } else {
+                document.getElementById('hud-mode-badge').className = "badge bg-success";
+                document.getElementById('hud-mode-badge').innerText = "Mod: LATIHAN";
+                document.getElementById('guide-box-container').classList.remove('d-none');
+                document.getElementById('cheat-sheet-lock').classList.add('d-none');
+            }
+
+            build3DPlayerAvatar(selectedGender);
+            loginModal.hide();
+        }
+
+        // THREE.JS SETUP
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x1a233a, 0.012);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(5, 12, 8);
+        scene.add(dirLight);
+
+        const floorGeo = new THREE.PlaneGeometry(35, 35);
+        const floorMat = new THREE.MeshPhongMaterial({ color: 0x1f293d, specular: 0x445577, shininess: 20 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        const grid = new THREE.GridHelper(35, 35, 0x00d2ff, 0x2d3f56);
+        grid.position.y = 0.01;
+        scene.add(grid);
+
+        const wallMat = new THREE.MeshPhongMaterial({ color: 0x223048, specular: 0x222222 });
+        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(35, 12), wallMat);
+        backWall.position.set(0, 5, -12);
+        scene.add(backWall);
+
+        function createLabWallSignTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "rgba(13, 110, 253, 0.95)";
+            ctx.roundRect(10, 10, 1004, 108, 15);
+            ctx.fill();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 32px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN", 512, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const wallSignGeo = new THREE.PlaneGeometry(10, 1.25);
+        const wallSignMat = new THREE.MeshBasicMaterial({ map: createLabWallSignTexture(), transparent: true, side: THREE.DoubleSide });
+        const wallSignMesh = new THREE.Mesh(wallSignGeo, wallSignMat);
+        wallSignMesh.position.set(0, 6.2, -11.9);
+        scene.add(wallSignMesh);
+
+        function createShirtBackTexture(shirtColorHex) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = shirtColorHex;
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 22px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("TKR ADTEC", 128, 100);
+            ctx.fillText("SANDAKAN", 128, 140);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const playerGroup = new THREE.Group();
+
+        function build3DPlayerAvatar(gender) {
+            while(playerGroup.children.length > 0){ playerGroup.remove(playerGroup.children[0]); }
+            const shirtColor = gender === 'female' ? '#ff66aa' : '#0d6efd';
+            const shirtTexture = createShirtBackTexture(shirtColor);
+
+            const headGeo = new THREE.SphereGeometry(0.25, 16, 16);
+            const headMat = new THREE.MeshPhongMaterial({ color: 0xffccaa });
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.position.y = 1.35;
+            playerGroup.add(head);
+
+            if (gender === 'male') {
+                const capGeo = new THREE.CylinderGeometry(0.27, 0.27, 0.1, 16);
+                const capMat = new THREE.MeshPhongMaterial({ color: 0x0d6efd });
+                const cap = new THREE.Mesh(capGeo, capMat);
+                cap.position.y = 1.5;
+                playerGroup.add(cap);
+            } else {
+                const hijabGeo = new THREE.SphereGeometry(0.3, 16, 16);
+                const hijabMat = new THREE.MeshPhongMaterial({ color: 0xff66aa });
+                const hijab = new THREE.Mesh(hijabGeo, hijabMat);
+                hijab.position.y = 1.37;
+                playerGroup.add(hijab);
+            }
+
+            const bodyGeo = new THREE.BoxGeometry(0.5, 0.6, 0.3);
+            const bodyMaterials = [
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ map: shirtTexture }),
+                new THREE.MeshPhongMaterial({ color: shirtColor })
+            ];
+            const body = new THREE.Mesh(bodyGeo, bodyMaterials);
+            body.position.y = 0.9;
+            playerGroup.add(body);
+
+            const legGeo = new THREE.BoxGeometry(0.18, 0.6, 0.2);
+            const legMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const leftLeg = new THREE.Mesh(legGeo, legMat);
+            leftLeg.position.set(-0.13, 0.3, 0);
+            playerGroup.add(leftLeg);
+
+            const rightLeg = new THREE.Mesh(legGeo, legMat);
+            rightLeg.position.set(0.13, 0.3, 0);
+            playerGroup.add(rightLeg);
+
+            playerGroup.position.set(0, 0, 4);
+            scene.add(playerGroup);
+        }
+
+        let webRackMesh = null;
+        let webRackLedMesh = null;
+
+        function create3DTextTexture(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "rgba(13, 110, 253, 0.95)";
+            ctx.roundRect(10, 10, 492, 108, 20);
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 26px 'Segoe UI', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, 256, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function buildWebRackAndWorkstation() {
+            const rackGroup = new THREE.Group();
+            const frameGeo = new THREE.BoxGeometry(1.2, 3, 1.2);
+            const frameMat = new THREE.MeshPhongMaterial({ color: 0x2a2a2a });
+            const frame = new THREE.Mesh(frameGeo, frameMat);
+            frame.position.y = 1.5;
+            rackGroup.add(frame);
+
+            for (let i = 0; i < 5; i++) {
+                const bladeGeo = new THREE.BoxGeometry(1.0, 0.4, 1.1);
+                const bladeMat = new THREE.MeshPhongMaterial({ color: 0x444444 });
+                const blade = new THREE.Mesh(bladeGeo, bladeMat);
+                blade.position.set(0, 0.5 + (i * 0.5), 0.05);
+                rackGroup.add(blade);
+
+                const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+                const ledMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+                const led = new THREE.Mesh(ledGeo, ledMat);
+                led.position.set(-0.3 + (i * 0.15), 0.5 + (i * 0.5), 0.61);
+                rackGroup.add(led);
+                if (i === 2) webRackLedMesh = led;
+            }
+
+            const labelGeo = new THREE.PlaneGeometry(2.4, 0.6);
+            const labelMat = new THREE.MeshBasicMaterial({ map: create3DTextTexture("LA 2 - APACHE2 WEB SERVER"), transparent: true, side: THREE.DoubleSide });
+            const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+            labelMesh.position.set(0, 3.4, 0);
+            rackGroup.add(labelMesh);
+
+            rackGroup.position.set(0, 0, -3);
+            webRackMesh = frame;
+            scene.add(rackGroup);
+
+            const deskGeo = new THREE.BoxGeometry(1.4, 0.75, 0.7);
+            const deskMat = new THREE.MeshPhongMaterial({ color: 0x3a4454 });
+            const desk = new THREE.Mesh(deskGeo, deskMat);
+            desk.position.set(1.5, 0.375, -3);
+            scene.add(desk);
+
+            const monScreenGeo = new THREE.BoxGeometry(0.9, 0.55, 0.05);
+            const monScreenMat = new THREE.MeshBasicMaterial({ color: 0x00ff66 });
+            const monScreen = new THREE.Mesh(monScreenGeo, monScreenMat);
+            monScreen.position.set(1.5, 1.25, -3.1);
+            scene.add(monScreen);
+        }
+
+        buildWebRackAndWorkstation();
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        window.addEventListener('click', (event) => {
+            if (document.querySelector('.modal.show')) return;
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(webRackMesh);
+
+            if (intersects.length > 0) {
+                openWebCliConsole();
+            }
+        });
+
+        function openWebCliConsole() {
+            updateStepGuide();
+            cliModal.show();
+        }
+
+        const terminalScreen = document.getElementById('terminal-screen');
+        const cliInput = document.getElementById('cli-input-field');
+        const guideText = document.getElementById('guide-text');
+        const guideStepTitle = document.getElementById('guide-step-title');
+        const browserUrlBar = document.getElementById('browser-url-bar');
+        const browserViewport = document.getElementById('browser-viewport');
+
+        function updateStepGuide() {
+            const stepObj = la2Steps[currentLa2Step - 1];
+            if (stepObj && currentMode === 'practice') {
+                guideStepTitle.innerText = `📌 LANGKAH KERJA ${stepObj.step} DARI 20 (LA 2 WEB SERVER):`;
+                guideText.innerHTML = stepObj.guide;
+            }
+        }
+
+        cliInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+                appendTerminalLine(`root@www:~# ${this.value}`, '#58a6ff');
+                this.value = '';
+
+                const stepObj = la2Steps[currentLa2Step - 1];
+
+                if (stepObj) {
+                    const validCmd = stepObj.cmd.toLowerCase();
+                    const validAlt = stepObj.altCmd ? stepObj.altCmd.toLowerCase() : null;
+
+                    if (command === validCmd || (validAlt && command === validAlt)) {
+                        appendTerminalLine(stepObj.out, '#00ff66');
+                        
+                        if (stepObj.url) browserUrlBar.innerText = stepObj.url;
+                        if (stepObj.render) browserViewport.innerHTML = stepObj.render;
+
+                        currentLa2Step++;
+                        document.getElementById('hud-progress-text').innerText = `${currentLa2Step - 1} / 20 Langkah Selesai`;
+
+                        if (currentLa2Step > la2Steps.length) {
+                            appendTerminalLine(`[OK] Semua 20 Langkah Kertas Kerja LA 2 Web Server Selesai!`, '#00ffff');
+                            if (webRackLedMesh) webRackLedMesh.material.color.setHex(0x00ff00);
+
+                            document.getElementById('hud-progress-text').className = "text-success fw-bold";
+                            document.getElementById('hud-progress-text').innerText = "20 / 20 LA 2 SELESAI! ⚡";
+
+                            cliModal.hide();
+                            setTimeout(() => resultModal.show(), 500);
+                        } else {
+                            updateStepGuide();
+                        }
+                    } else {
+                        appendTerminalLine(`Ralat sintaks! Sila taip arahan LA 2 yang betul.`, '#ff5555');
+                    }
+                }
+
+                terminalScreen.scrollTop = terminalScreen.scrollHeight;
+            }
+        });
+
+        function appendTerminalLine(text, color) {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerText = text;
+            terminalScreen.appendChild(div);
+        }
+
+        function resetLa2Lab() {
+            currentLa2Step = 1;
+            document.getElementById('hud-progress-text').innerText = "0 / 20 Langkah Selesai";
+            terminalScreen.innerHTML = `
+                <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                <div class="text-white-50">Log masuk pelayan web (www.srv.world) berjaya. Sila lengkapkan 20 amali LA 2.</div>
+                <br>
+            `;
+            browserUrlBar.innerText = "http://www.srv.world (Web Server Offline)";
+            browserViewport.innerHTML = `
+                <div class="text-center mt-5 text-muted">
+                    <div class="display-3 mb-2">🌐</div>
+                    <h5>Pelayan Web Belum Beraktifan</h5>
+                    <p class="small">Sila taip arahan <code>apt -y install apache2</code> pada terminal CLI untuk memulakan amali.</p>
+                </div>
+            `;
+            updateStepGuide();
+        }
+
+        const keys = { w: false, a: false, s: false, d: false, e: false };
+
+        window.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = true;
+
+            if (k === 'e' && !document.querySelector('.modal.show')) {
+                const dist = playerGroup.position.distanceTo(new THREE.Vector3(0, 0, -3));
+                if (dist < 3.0) {
+                    openWebCliConsole();
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = false;
+        });
+
+        function updatePlayerMovement() {
+            if (document.querySelector('.modal.show')) return;
+
+            const moveSpeed = 0.07;
+            const rotSpeed = 0.04;
+
+            if (keys.w) playerGroup.translateZ(-moveSpeed);
+            if (keys.s) playerGroup.translateZ(moveSpeed);
+            if (keys.a) playerGroup.rotation.y += rotSpeed;
+            if (keys.d) playerGroup.rotation.y -= rotSpeed;
+
+            const cameraOffset = new THREE.Vector3(0, 1.8, 3.5);
+            cameraOffset.applyQuaternion(playerGroup.quaternion);
+            camera.position.copy(playerGroup.position).add(cameraOffset);
+            camera.lookAt(playerGroup.position.x, playerGroup.position.y + 1.2, playerGroup.position.z);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            updatePlayerMovement();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

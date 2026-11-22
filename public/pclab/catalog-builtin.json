@@ -1,0 +1,2028 @@
+{
+  "meta": {
+    "name": "eSL-IKR built-in component catalog",
+    "source": "Data komponen asas dalam public/pclab/pembina.html",
+    "count": 138,
+    "baseProductCount": 42,
+    "generatedVisualVariantCount": 96,
+    "note": "Varian warna yang dijana untuk visual 3D dilabel Model 3D rekaan; bukan SKU produk berasingan yang disahkan."
+  },
+  "db": {
+    "case": [
+      {
+        "id": "foifkin-f600",
+        "n": "FOIFKIN F600 (7 kipas ARGB, data OpenDB)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          41.910000000000004,
+          43.94,
+          28.45
+        ],
+        "gpu": 400,
+        "cool": 170,
+        "rad": null,
+        "psu": [
+          "ATX"
+        ],
+        "psuLen": 220,
+        "b35": 2,
+        "b25": 1,
+        "exp": 7,
+        "fans": [
+          3,
+          12
+        ],
+        "fansTotal": 7,
+        "col": 2106153,
+        "price": null,
+        "opendb": "b31fbaa1-108d-4189-85ba-0b523e09b1ff",
+        "src": "BuildCores OpenDB"
+      },
+      {
+        "id": "l216",
+        "n": "Lian Li Lancool 216",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          47,
+          46,
+          23
+        ],
+        "gpu": 392,
+        "cool": 180,
+        "rad": [
+          120,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          16
+        ],
+        "col": 1908515,
+        "price": 430
+      },
+      {
+        "id": "h5b",
+        "n": "NZXT H5 Flow (hitam)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 2434859,
+        "price": 380
+      },
+      {
+        "id": "h5w",
+        "n": "NZXT H5 Flow (putih)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 15132906,
+        "price": 390
+      },
+      {
+        "id": "north",
+        "n": "Fractal Design North",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          44,
+          46,
+          21
+        ],
+        "gpu": 355,
+        "cool": 170,
+        "rad": [
+          120,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          14
+        ],
+        "col": 3422012,
+        "price": 700
+      },
+      {
+        "id": "q300",
+        "n": "Cooler Master MasterBox Q300L",
+        "ff": "mATX",
+        "sup": [
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          38,
+          38.4,
+          23
+        ],
+        "gpu": 360,
+        "cool": 159,
+        "rad": [
+          120,
+          240
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          0,
+          12
+        ],
+        "col": 2105893,
+        "price": 230
+      },
+      {
+        "id": "nr200",
+        "n": "Cooler Master NR200P",
+        "ff": "ITX",
+        "sup": [
+          "ITX"
+        ],
+        "dim": [
+          37.5,
+          25.8,
+          18.5
+        ],
+        "gpu": 330,
+        "cool": 155,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "SFX"
+        ],
+        "fans": [
+          0,
+          12
+        ],
+        "col": 2763824,
+        "price": 420
+      },
+      {
+        "id": "hytey70",
+        "n": "HYTE Y70 Snow White",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          47,
+          47,
+          32
+        ],
+        "gpu": 422,
+        "cool": 180,
+        "rad": [
+          120,
+          140,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          0,
+          16
+        ],
+        "col": 15265268,
+        "price": 950
+      },
+      {
+        "id": "foifkin-f600_v01",
+        "n": "3D Stealth Black · FOIFKIN F600 (7 kipas ARGB, data OpenDB)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          41.910000000000004,
+          43.94,
+          28.45
+        ],
+        "gpu": 400,
+        "cool": 170,
+        "rad": null,
+        "psu": [
+          "ATX"
+        ],
+        "psuLen": 220,
+        "b35": 2,
+        "b25": 1,
+        "exp": 7,
+        "fans": [
+          3,
+          12
+        ],
+        "fansTotal": 7,
+        "col": 2106410,
+        "price": null,
+        "src": "",
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "l216_v02",
+        "n": "3D Snow White · Lian Li Lancool 216",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          47,
+          46,
+          23
+        ],
+        "gpu": 392,
+        "cool": 180,
+        "rad": [
+          120,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          16
+        ],
+        "col": 15263976,
+        "price": 430,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h5b_v03",
+        "n": "3D Graphite · NZXT H5 Flow (hitam)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 3422790,
+        "price": 380,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h5w_v04",
+        "n": "3D Titanium · NZXT H5 Flow (putih)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 1382687,
+        "price": 390,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "north_v05",
+        "n": "3D Arctic Silver · Fractal Design North",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          44,
+          46,
+          21
+        ],
+        "gpu": 355,
+        "cool": 170,
+        "rad": [
+          120,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          14
+        ],
+        "col": 4937059,
+        "price": 700,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "q300_v06",
+        "n": "3D Midnight Blue · Cooler Master MasterBox Q300L",
+        "ff": "mATX",
+        "sup": [
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          38,
+          38.4,
+          23
+        ],
+        "gpu": 360,
+        "cool": 159,
+        "rad": [
+          120,
+          240
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          0,
+          12
+        ],
+        "col": 2831685,
+        "price": 230,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nr200_v07",
+        "n": "3D Violet · Cooler Master NR200P",
+        "ff": "ITX",
+        "sup": [
+          "ITX"
+        ],
+        "dim": [
+          37.5,
+          25.8,
+          18.5
+        ],
+        "gpu": 330,
+        "cool": 155,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "SFX"
+        ],
+        "fans": [
+          0,
+          12
+        ],
+        "col": 5978708,
+        "price": 420,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "hytey70_v08",
+        "n": "3D Emerald · HYTE Y70 Snow White",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          47,
+          47,
+          32
+        ],
+        "gpu": 422,
+        "cool": 180,
+        "rad": [
+          120,
+          140,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          0,
+          16
+        ],
+        "col": 3035467,
+        "price": 950,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "foifkin-f600_v09",
+        "n": "3D Storm Grey · FOIFKIN F600 (7 kipas ARGB, data OpenDB)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          41.910000000000004,
+          43.94,
+          28.45
+        ],
+        "gpu": 400,
+        "cool": 170,
+        "rad": null,
+        "psu": [
+          "ATX"
+        ],
+        "psuLen": 220,
+        "b35": 2,
+        "b25": 1,
+        "exp": 7,
+        "fans": [
+          3,
+          12
+        ],
+        "fansTotal": 7,
+        "col": 9146264,
+        "price": null,
+        "src": "",
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "l216_v10",
+        "n": "3D Champagne · Lian Li Lancool 216",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          47,
+          46,
+          23
+        ],
+        "gpu": 392,
+        "cool": 180,
+        "rad": [
+          120,
+          240,
+          280,
+          360
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          16
+        ],
+        "col": 11766610,
+        "price": 430,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h5b_v11",
+        "n": "3D Navy · NZXT H5 Flow (hitam)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 2569290,
+        "price": 380,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h5w_v12",
+        "n": "3D Carbon · NZXT H5 Flow (putih)",
+        "ff": "ATX",
+        "sup": [
+          "ATX",
+          "mATX",
+          "ITX"
+        ],
+        "dim": [
+          46,
+          46.5,
+          23
+        ],
+        "gpu": 365,
+        "cool": 165,
+        "rad": [
+          120,
+          240,
+          280
+        ],
+        "psu": [
+          "ATX",
+          "SFX"
+        ],
+        "fans": [
+          2,
+          12
+        ],
+        "col": 4276545,
+        "price": 390,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "mobo": [
+      {
+        "id": "b650",
+        "n": "ASUS TUF Gaming B650-Plus WiFi",
+        "ff": "ATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "B650",
+        "pcb": 1513757,
+        "price": 900
+      },
+      {
+        "id": "b650m",
+        "n": "MSI MAG B650M Mortar WiFi",
+        "ff": "mATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 1513757,
+        "price": 850
+      },
+      {
+        "id": "b650i",
+        "n": "ASRock B650I Lightning WiFi",
+        "ff": "ITX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 2,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 1382170,
+        "price": 1000
+      },
+      {
+        "id": "z790",
+        "n": "MSI PRO Z790-P WiFi",
+        "ff": "ATX",
+        "sock": "LGA1700",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "Z790",
+        "pcb": 1513757,
+        "price": 950
+      },
+      {
+        "id": "b760",
+        "n": "Gigabyte B760M DS3H DDR4",
+        "ff": "mATX",
+        "sock": "LGA1700",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B760",
+        "pcb": 1710102,
+        "price": 450
+      },
+      {
+        "id": "z170",
+        "n": "ASUS Z170-P (makmal)",
+        "ff": "ATX",
+        "sock": "LGA1151",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 1,
+        "chip": "Z170",
+        "pcb": 1776411,
+        "price": 300
+      },
+      {
+        "id": "b650_v01",
+        "n": "3D Stealth Black · ASUS TUF Gaming B650-Plus WiFi",
+        "ff": "ATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "B650",
+        "pcb": 1382687,
+        "price": 900,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b650m_v02",
+        "n": "3D Snow White · MSI MAG B650M Mortar WiFi",
+        "ff": "mATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 4937059,
+        "price": 850,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b650i_v03",
+        "n": "3D Graphite · ASRock B650I Lightning WiFi",
+        "ff": "ITX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 2,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 2831685,
+        "price": 1000,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "z790_v04",
+        "n": "3D Titanium · MSI PRO Z790-P WiFi",
+        "ff": "ATX",
+        "sock": "LGA1700",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "Z790",
+        "pcb": 5978708,
+        "price": 950,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b760_v05",
+        "n": "3D Arctic Silver · Gigabyte B760M DS3H DDR4",
+        "ff": "mATX",
+        "sock": "LGA1700",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B760",
+        "pcb": 3035467,
+        "price": 450,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "z170_v06",
+        "n": "3D Midnight Blue · ASUS Z170-P (makmal)",
+        "ff": "ATX",
+        "sock": "LGA1151",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 1,
+        "chip": "Z170",
+        "pcb": 9146264,
+        "price": 300,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b650_v07",
+        "n": "3D Violet · ASUS TUF Gaming B650-Plus WiFi",
+        "ff": "ATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "B650",
+        "pcb": 11766610,
+        "price": 900,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b650m_v08",
+        "n": "3D Emerald · MSI MAG B650M Mortar WiFi",
+        "ff": "mATX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 2569290,
+        "price": 850,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b650i_v09",
+        "n": "3D Storm Grey · ASRock B650I Lightning WiFi",
+        "ff": "ITX",
+        "sock": "AM5",
+        "mem": "DDR5",
+        "slots": 2,
+        "m2": 2,
+        "chip": "B650",
+        "pcb": 4276545,
+        "price": 1000,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "z790_v10",
+        "n": "3D Champagne · MSI PRO Z790-P WiFi",
+        "ff": "ATX",
+        "sock": "LGA1700",
+        "mem": "DDR5",
+        "slots": 4,
+        "m2": 3,
+        "chip": "Z790",
+        "pcb": 2106410,
+        "price": 950,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "b760_v11",
+        "n": "3D Navy · Gigabyte B760M DS3H DDR4",
+        "ff": "mATX",
+        "sock": "LGA1700",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 2,
+        "chip": "B760",
+        "pcb": 15263976,
+        "price": 450,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "z170_v12",
+        "n": "3D Carbon · ASUS Z170-P (makmal)",
+        "ff": "ATX",
+        "sock": "LGA1151",
+        "mem": "DDR4",
+        "slots": 4,
+        "m2": 1,
+        "chip": "Z170",
+        "pcb": 3422790,
+        "price": 300,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "cpu": [
+      {
+        "id": "r5",
+        "n": "AMD Ryzen 5 7600",
+        "sock": "AM5",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "3.8 - 5.1 GHz",
+        "igpu": true,
+        "price": 800
+      },
+      {
+        "id": "r7x3d",
+        "n": "AMD Ryzen 7 7800X3D",
+        "sock": "AM5",
+        "tdp": 120,
+        "cores": 8,
+        "thr": 16,
+        "clk": "4.2 - 5.0 GHz",
+        "igpu": true,
+        "price": 1700
+      },
+      {
+        "id": "i5f",
+        "n": "Intel Core i5-12400F",
+        "sock": "LGA1700",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "2.5 - 4.4 GHz",
+        "igpu": false,
+        "price": 650
+      },
+      {
+        "id": "i5k",
+        "n": "Intel Core i5-14600K",
+        "sock": "LGA1700",
+        "tdp": 125,
+        "cores": 14,
+        "thr": 20,
+        "clk": "3.5 - 5.3 GHz",
+        "igpu": true,
+        "price": 1350
+      },
+      {
+        "id": "i56",
+        "n": "Intel Core i5-6600K",
+        "sock": "LGA1151",
+        "tdp": 91,
+        "cores": 4,
+        "thr": 4,
+        "clk": "3.5 - 3.9 GHz",
+        "igpu": true,
+        "price": 200
+      },
+      {
+        "id": "r5_v01",
+        "n": "3D Stealth Black · AMD Ryzen 5 7600",
+        "sock": "AM5",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "3.8 - 5.1 GHz",
+        "igpu": true,
+        "price": 800,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "r7x3d_v02",
+        "n": "3D Snow White · AMD Ryzen 7 7800X3D",
+        "sock": "AM5",
+        "tdp": 120,
+        "cores": 8,
+        "thr": 16,
+        "clk": "4.2 - 5.0 GHz",
+        "igpu": true,
+        "price": 1700,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i5f_v03",
+        "n": "3D Graphite · Intel Core i5-12400F",
+        "sock": "LGA1700",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "2.5 - 4.4 GHz",
+        "igpu": false,
+        "price": 650,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i5k_v04",
+        "n": "3D Titanium · Intel Core i5-14600K",
+        "sock": "LGA1700",
+        "tdp": 125,
+        "cores": 14,
+        "thr": 20,
+        "clk": "3.5 - 5.3 GHz",
+        "igpu": true,
+        "price": 1350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i56_v05",
+        "n": "3D Arctic Silver · Intel Core i5-6600K",
+        "sock": "LGA1151",
+        "tdp": 91,
+        "cores": 4,
+        "thr": 4,
+        "clk": "3.5 - 3.9 GHz",
+        "igpu": true,
+        "price": 200,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "r5_v06",
+        "n": "3D Midnight Blue · AMD Ryzen 5 7600",
+        "sock": "AM5",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "3.8 - 5.1 GHz",
+        "igpu": true,
+        "price": 800,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "r7x3d_v07",
+        "n": "3D Violet · AMD Ryzen 7 7800X3D",
+        "sock": "AM5",
+        "tdp": 120,
+        "cores": 8,
+        "thr": 16,
+        "clk": "4.2 - 5.0 GHz",
+        "igpu": true,
+        "price": 1700,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i5f_v08",
+        "n": "3D Emerald · Intel Core i5-12400F",
+        "sock": "LGA1700",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "2.5 - 4.4 GHz",
+        "igpu": false,
+        "price": 650,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i5k_v09",
+        "n": "3D Storm Grey · Intel Core i5-14600K",
+        "sock": "LGA1700",
+        "tdp": 125,
+        "cores": 14,
+        "thr": 20,
+        "clk": "3.5 - 5.3 GHz",
+        "igpu": true,
+        "price": 1350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "i56_v10",
+        "n": "3D Champagne · Intel Core i5-6600K",
+        "sock": "LGA1151",
+        "tdp": 91,
+        "cores": 4,
+        "thr": 4,
+        "clk": "3.5 - 3.9 GHz",
+        "igpu": true,
+        "price": 200,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "r5_v11",
+        "n": "3D Navy · AMD Ryzen 5 7600",
+        "sock": "AM5",
+        "tdp": 65,
+        "cores": 6,
+        "thr": 12,
+        "clk": "3.8 - 5.1 GHz",
+        "igpu": true,
+        "price": 800,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "r7x3d_v12",
+        "n": "3D Carbon · AMD Ryzen 7 7800X3D",
+        "sock": "AM5",
+        "tdp": 120,
+        "cores": 8,
+        "thr": 16,
+        "clk": "4.2 - 5.0 GHz",
+        "igpu": true,
+        "price": 1700,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "cooler": [
+      {
+        "id": "pa120",
+        "n": "Thermalright Peerless Assassin 120 SE",
+        "type": "air",
+        "h": 155,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 245,
+        "col": 2829617,
+        "dual": true,
+        "price": 120
+      },
+      {
+        "id": "h212",
+        "n": "Cooler Master Hyper 212",
+        "type": "air",
+        "h": 158,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 150,
+        "col": 2040100,
+        "price": 110
+      },
+      {
+        "id": "d15",
+        "n": "Noctua NH-D15",
+        "type": "air",
+        "h": 165,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 9075298,
+        "dual": true,
+        "price": 430
+      },
+      {
+        "id": "lf240",
+        "n": "Arctic Liquid Freezer II 240",
+        "type": "aio",
+        "rad": 240,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 1776928,
+        "price": 380
+      },
+      {
+        "id": "lt360",
+        "n": "DeepCool LT720 360",
+        "type": "aio",
+        "rad": 360,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 300,
+        "col": 2105894,
+        "price": 420
+      },
+      {
+        "id": "pa120_v01",
+        "n": "3D Stealth Black · Thermalright Peerless Assassin 120 SE",
+        "type": "air",
+        "h": 155,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 245,
+        "col": 15263976,
+        "dual": true,
+        "price": 120,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h212_v02",
+        "n": "3D Snow White · Cooler Master Hyper 212",
+        "type": "air",
+        "h": 158,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 150,
+        "col": 3422790,
+        "price": 110,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d15_v03",
+        "n": "3D Graphite · Noctua NH-D15",
+        "type": "air",
+        "h": 165,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 1382687,
+        "dual": true,
+        "price": 430,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "lf240_v04",
+        "n": "3D Titanium · Arctic Liquid Freezer II 240",
+        "type": "aio",
+        "rad": 240,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 4937059,
+        "price": 380,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "lt360_v05",
+        "n": "3D Arctic Silver · DeepCool LT720 360",
+        "type": "aio",
+        "rad": 360,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 300,
+        "col": 2831685,
+        "price": 420,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "pa120_v06",
+        "n": "3D Midnight Blue · Thermalright Peerless Assassin 120 SE",
+        "type": "air",
+        "h": 155,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 245,
+        "col": 5978708,
+        "dual": true,
+        "price": 120,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h212_v07",
+        "n": "3D Violet · Cooler Master Hyper 212",
+        "type": "air",
+        "h": 158,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 150,
+        "col": 3035467,
+        "price": 110,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d15_v08",
+        "n": "3D Emerald · Noctua NH-D15",
+        "type": "air",
+        "h": 165,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 9146264,
+        "dual": true,
+        "price": 430,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "lf240_v09",
+        "n": "3D Storm Grey · Arctic Liquid Freezer II 240",
+        "type": "aio",
+        "rad": 240,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 250,
+        "col": 11766610,
+        "price": 380,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "lt360_v10",
+        "n": "3D Champagne · DeepCool LT720 360",
+        "type": "aio",
+        "rad": 360,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 300,
+        "col": 2569290,
+        "price": 420,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "pa120_v11",
+        "n": "3D Navy · Thermalright Peerless Assassin 120 SE",
+        "type": "air",
+        "h": 155,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 245,
+        "col": 4276545,
+        "dual": true,
+        "price": 120,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "h212_v12",
+        "n": "3D Carbon · Cooler Master Hyper 212",
+        "type": "air",
+        "h": 158,
+        "sock": [
+          "AM5",
+          "LGA1700",
+          "LGA1151"
+        ],
+        "tdp": 150,
+        "col": 2106410,
+        "price": 110,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "ram": [
+      {
+        "id": "d5k",
+        "n": "Kingston Fury Beast DDR5 32GB (2x16GB) 5600",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 5600,
+        "rgb": false,
+        "col": 1842207,
+        "price": 450
+      },
+      {
+        "id": "d5v",
+        "n": "Corsair Vengeance RGB DDR5 32GB (2x16GB) 6000",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 6000,
+        "rgb": true,
+        "col": 2105894,
+        "price": 520
+      },
+      {
+        "id": "d4k",
+        "n": "Kingston Fury Beast DDR4 16GB (2x8GB) 3200",
+        "mem": "DDR4",
+        "gb": 16,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": false,
+        "col": 1842207,
+        "price": 190
+      },
+      {
+        "id": "d4l",
+        "n": "Corsair Vengeance LPX DDR4 32GB (2x16GB) 3200",
+        "mem": "DDR4",
+        "gb": 32,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": false,
+        "col": 2763310,
+        "price": 300
+      },
+      {
+        "id": "d4s",
+        "n": "Kad RAM DDR4 8GB (1x8GB) 2400",
+        "mem": "DDR4",
+        "gb": 8,
+        "mods": 1,
+        "spd": 2400,
+        "rgb": false,
+        "col": 2972221,
+        "price": 60
+      },
+      {
+        "id": "d5k_v01",
+        "n": "3D Stealth Black · Kingston Fury Beast DDR5 32GB (2x16GB) 5600",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 5600,
+        "rgb": true,
+        "col": 2106410,
+        "price": 450,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d5v_v02",
+        "n": "3D Snow White · Corsair Vengeance RGB DDR5 32GB (2x16GB) 6000",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 6000,
+        "rgb": false,
+        "col": 15263976,
+        "price": 520,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4k_v03",
+        "n": "3D Graphite · Kingston Fury Beast DDR4 16GB (2x8GB) 3200",
+        "mem": "DDR4",
+        "gb": 16,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": true,
+        "col": 3422790,
+        "price": 190,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4l_v04",
+        "n": "3D Titanium · Corsair Vengeance LPX DDR4 32GB (2x16GB) 3200",
+        "mem": "DDR4",
+        "gb": 32,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": false,
+        "col": 1382687,
+        "price": 300,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4s_v05",
+        "n": "3D Arctic Silver · Kad RAM DDR4 8GB (1x8GB) 2400",
+        "mem": "DDR4",
+        "gb": 8,
+        "mods": 1,
+        "spd": 2400,
+        "rgb": true,
+        "col": 4937059,
+        "price": 60,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d5k_v06",
+        "n": "3D Midnight Blue · Kingston Fury Beast DDR5 32GB (2x16GB) 5600",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 5600,
+        "rgb": false,
+        "col": 2831685,
+        "price": 450,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d5v_v07",
+        "n": "3D Violet · Corsair Vengeance RGB DDR5 32GB (2x16GB) 6000",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 6000,
+        "rgb": true,
+        "col": 5978708,
+        "price": 520,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4k_v08",
+        "n": "3D Emerald · Kingston Fury Beast DDR4 16GB (2x8GB) 3200",
+        "mem": "DDR4",
+        "gb": 16,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": false,
+        "col": 3035467,
+        "price": 190,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4l_v09",
+        "n": "3D Storm Grey · Corsair Vengeance LPX DDR4 32GB (2x16GB) 3200",
+        "mem": "DDR4",
+        "gb": 32,
+        "mods": 2,
+        "spd": 3200,
+        "rgb": true,
+        "col": 9146264,
+        "price": 300,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d4s_v10",
+        "n": "3D Champagne · Kad RAM DDR4 8GB (1x8GB) 2400",
+        "mem": "DDR4",
+        "gb": 8,
+        "mods": 1,
+        "spd": 2400,
+        "rgb": false,
+        "col": 11766610,
+        "price": 60,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d5k_v11",
+        "n": "3D Navy · Kingston Fury Beast DDR5 32GB (2x16GB) 5600",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 5600,
+        "rgb": true,
+        "col": 2569290,
+        "price": 450,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "d5v_v12",
+        "n": "3D Carbon · Corsair Vengeance RGB DDR5 32GB (2x16GB) 6000",
+        "mem": "DDR5",
+        "gb": 32,
+        "mods": 2,
+        "spd": 6000,
+        "rgb": false,
+        "col": 4276545,
+        "price": 520,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "gpu": [
+      {
+        "id": "gt1030",
+        "n": "NVIDIA GeForce GT 1030",
+        "len": 150,
+        "tdp": 30,
+        "slots": 2,
+        "fans": 1,
+        "acc": 7780608,
+        "price": 350
+      },
+      {
+        "id": "4060",
+        "n": "NVIDIA GeForce RTX 4060",
+        "len": 240,
+        "tdp": 115,
+        "slots": 2,
+        "fans": 2,
+        "acc": 7780608,
+        "price": 1300
+      },
+      {
+        "id": "4070s",
+        "n": "NVIDIA GeForce RTX 4070 Super",
+        "len": 300,
+        "tdp": 220,
+        "slots": 2.5,
+        "fans": 2,
+        "acc": 7780608,
+        "price": 2800
+      },
+      {
+        "id": "7800xt",
+        "n": "AMD Radeon RX 7800 XT",
+        "len": 320,
+        "tdp": 263,
+        "slots": 2.5,
+        "fans": 3,
+        "acc": 14942251,
+        "price": 2400
+      },
+      {
+        "id": "4090",
+        "n": "NVIDIA GeForce RTX 4090",
+        "len": 358,
+        "tdp": 450,
+        "slots": 3,
+        "fans": 3,
+        "acc": 7780608,
+        "price": 8500
+      },
+      {
+        "id": "gt1030_v01",
+        "n": "3D Stealth Black · NVIDIA GeForce GT 1030",
+        "len": 150,
+        "tdp": 30,
+        "slots": 2,
+        "fans": 1,
+        "acc": 7780608,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4060_v02",
+        "n": "3D Snow White · NVIDIA GeForce RTX 4060",
+        "len": 240,
+        "tdp": 115,
+        "slots": 2,
+        "fans": 2,
+        "acc": 14942251,
+        "price": 1300,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4070s_v03",
+        "n": "3D Graphite · NVIDIA GeForce RTX 4070 Super",
+        "len": 300,
+        "tdp": 220,
+        "slots": 2.5,
+        "fans": 2,
+        "acc": 3900150,
+        "price": 2800,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "7800xt_v04",
+        "n": "3D Titanium · AMD Radeon RX 7800 XT",
+        "len": 320,
+        "tdp": 263,
+        "slots": 2.5,
+        "fans": 3,
+        "acc": 11032055,
+        "price": 2400,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4090_v05",
+        "n": "3D Arctic Silver · NVIDIA GeForce RTX 4090",
+        "len": 358,
+        "tdp": 450,
+        "slots": 3,
+        "fans": 3,
+        "acc": 440020,
+        "price": 8500,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "gt1030_v06",
+        "n": "3D Midnight Blue · NVIDIA GeForce GT 1030",
+        "len": 150,
+        "tdp": 30,
+        "slots": 2,
+        "fans": 1,
+        "acc": 16347926,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4060_v07",
+        "n": "3D Violet · NVIDIA GeForce RTX 4060",
+        "len": 240,
+        "tdp": 115,
+        "slots": 2,
+        "fans": 2,
+        "acc": 7780608,
+        "price": 1300,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4070s_v08",
+        "n": "3D Emerald · NVIDIA GeForce RTX 4070 Super",
+        "len": 300,
+        "tdp": 220,
+        "slots": 2.5,
+        "fans": 2,
+        "acc": 14942251,
+        "price": 2800,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "7800xt_v09",
+        "n": "3D Storm Grey · AMD Radeon RX 7800 XT",
+        "len": 320,
+        "tdp": 263,
+        "slots": 2.5,
+        "fans": 3,
+        "acc": 3900150,
+        "price": 2400,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4090_v10",
+        "n": "3D Champagne · NVIDIA GeForce RTX 4090",
+        "len": 358,
+        "tdp": 450,
+        "slots": 3,
+        "fans": 3,
+        "acc": 11032055,
+        "price": 8500,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "gt1030_v11",
+        "n": "3D Navy · NVIDIA GeForce GT 1030",
+        "len": 150,
+        "tdp": 30,
+        "slots": 2,
+        "fans": 1,
+        "acc": 440020,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "4060_v12",
+        "n": "3D Carbon · NVIDIA GeForce RTX 4060",
+        "len": 240,
+        "tdp": 115,
+        "slots": 2,
+        "fans": 2,
+        "acc": 16347926,
+        "price": 1300,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "storage": [
+      {
+        "id": "nv1",
+        "n": "Samsung 980 NVMe M.2 1TB",
+        "kind": "nvme",
+        "gb": 1000,
+        "price": 350
+      },
+      {
+        "id": "nv2",
+        "n": "WD Black SN770 NVMe M.2 2TB",
+        "kind": "nvme",
+        "gb": 2000,
+        "price": 600
+      },
+      {
+        "id": "ssd",
+        "n": "Crucial MX500 SATA SSD 500GB",
+        "kind": "ssd",
+        "gb": 500,
+        "price": 220
+      },
+      {
+        "id": "hdd",
+        "n": "Seagate Barracuda 2TB HDD",
+        "kind": "hdd",
+        "gb": 2000,
+        "price": 280
+      },
+      {
+        "id": "nv1_v01",
+        "n": "3D Stealth Black · Samsung 980 NVMe M.2 1TB",
+        "kind": "nvme",
+        "gb": 1000,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nv2_v02",
+        "n": "3D Snow White · WD Black SN770 NVMe M.2 2TB",
+        "kind": "nvme",
+        "gb": 2000,
+        "price": 600,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "ssd_v03",
+        "n": "3D Graphite · Crucial MX500 SATA SSD 500GB",
+        "kind": "ssd",
+        "gb": 500,
+        "price": 220,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "hdd_v04",
+        "n": "3D Titanium · Seagate Barracuda 2TB HDD",
+        "kind": "hdd",
+        "gb": 2000,
+        "price": 280,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nv1_v05",
+        "n": "3D Arctic Silver · Samsung 980 NVMe M.2 1TB",
+        "kind": "nvme",
+        "gb": 1000,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nv2_v06",
+        "n": "3D Midnight Blue · WD Black SN770 NVMe M.2 2TB",
+        "kind": "nvme",
+        "gb": 2000,
+        "price": 600,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "ssd_v07",
+        "n": "3D Violet · Crucial MX500 SATA SSD 500GB",
+        "kind": "ssd",
+        "gb": 500,
+        "price": 220,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "hdd_v08",
+        "n": "3D Emerald · Seagate Barracuda 2TB HDD",
+        "kind": "hdd",
+        "gb": 2000,
+        "price": 280,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nv1_v09",
+        "n": "3D Storm Grey · Samsung 980 NVMe M.2 1TB",
+        "kind": "nvme",
+        "gb": 1000,
+        "price": 350,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "nv2_v10",
+        "n": "3D Champagne · WD Black SN770 NVMe M.2 2TB",
+        "kind": "nvme",
+        "gb": 2000,
+        "price": 600,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "ssd_v11",
+        "n": "3D Navy · Crucial MX500 SATA SSD 500GB",
+        "kind": "ssd",
+        "gb": 500,
+        "price": 220,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "hdd_v12",
+        "n": "3D Carbon · Seagate Barracuda 2TB HDD",
+        "kind": "hdd",
+        "gb": 2000,
+        "price": 280,
+        "modelTag": "Model 3D rekaan"
+      }
+    ],
+    "psu": [
+      {
+        "id": "cx550",
+        "n": "Corsair CX550 550W 80+ Bronze",
+        "w": 550,
+        "ff": "ATX",
+        "eff": "Bronze",
+        "len": 14,
+        "price": 230
+      },
+      {
+        "id": "rm750",
+        "n": "Corsair RM750e 750W 80+ Gold",
+        "w": 750,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 16,
+        "price": 480
+      },
+      {
+        "id": "gx850",
+        "n": "Seasonic Focus GX-850 850W 80+ Gold",
+        "w": 850,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 14,
+        "price": 620
+      },
+      {
+        "id": "sf750",
+        "n": "Corsair SF750 750W SFX 80+ Platinum",
+        "w": 750,
+        "ff": "SFX",
+        "eff": "Platinum",
+        "len": 12.5,
+        "price": 700
+      },
+      {
+        "id": "cx550_v01",
+        "n": "3D Stealth Black · Corsair CX550 550W 80+ Bronze",
+        "w": 550,
+        "ff": "ATX",
+        "eff": "Bronze",
+        "len": 14,
+        "price": 230,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "rm750_v02",
+        "n": "3D Snow White · Corsair RM750e 750W 80+ Gold",
+        "w": 750,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 16,
+        "price": 480,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "gx850_v03",
+        "n": "3D Graphite · Seasonic Focus GX-850 850W 80+ Gold",
+        "w": 850,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 14,
+        "price": 620,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "sf750_v04",
+        "n": "3D Titanium · Corsair SF750 750W SFX 80+ Platinum",
+        "w": 750,
+        "ff": "SFX",
+        "eff": "Platinum",
+        "len": 12.5,
+        "price": 700,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "cx550_v05",
+        "n": "3D Arctic Silver · Corsair CX550 550W 80+ Bronze",
+        "w": 550,
+        "ff": "ATX",
+        "eff": "Bronze",
+        "len": 14,
+        "price": 230,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "rm750_v06",
+        "n": "3D Midnight Blue · Corsair RM750e 750W 80+ Gold",
+        "w": 750,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 16,
+        "price": 480,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "gx850_v07",
+        "n": "3D Violet · Seasonic Focus GX-850 850W 80+ Gold",
+        "w": 850,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 14,
+        "price": 620,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "sf750_v08",
+        "n": "3D Emerald · Corsair SF750 750W SFX 80+ Platinum",
+        "w": 750,
+        "ff": "SFX",
+        "eff": "Platinum",
+        "len": 12.5,
+        "price": 700,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "cx550_v09",
+        "n": "3D Storm Grey · Corsair CX550 550W 80+ Bronze",
+        "w": 550,
+        "ff": "ATX",
+        "eff": "Bronze",
+        "len": 14,
+        "price": 230,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "rm750_v10",
+        "n": "3D Champagne · Corsair RM750e 750W 80+ Gold",
+        "w": 750,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 16,
+        "price": 480,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "gx850_v11",
+        "n": "3D Navy · Seasonic Focus GX-850 850W 80+ Gold",
+        "w": 850,
+        "ff": "ATX",
+        "eff": "Gold",
+        "len": 14,
+        "price": 620,
+        "modelTag": "Model 3D rekaan"
+      },
+      {
+        "id": "sf750_v12",
+        "n": "3D Carbon · Corsair SF750 750W SFX 80+ Platinum",
+        "w": 750,
+        "ff": "SFX",
+        "eff": "Platinum",
+        "len": 12.5,
+        "price": 700,
+        "modelTag": "Model 3D rekaan"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FOIFKIN F600 — Casing PC 3D GLB</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#0b1019;color:#eff7ff;font:14px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}
+#view{width:100%;height:100%;display:block;touch-action:none;cursor:grab}#view:active{cursor:grabbing}
+.top{position:absolute;top:18px;left:20px;right:20px;pointer-events:none;z-index:2}.top b{font-size:20px;font-weight:800}.top small{display:block;color:#a6bdcc;margin-top:5px}.top .k{display:inline-block;font:700 10px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#a4f0fb;background:#062b36;padding:4px 8px;border:1px solid #2c6d77;border-radius:5px;margin-bottom:10px}
+.tools{position:absolute;bottom:20px;left:0;right:0;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;padding:0 12px;z-index:2}
+button{padding:9px 12px;border:1px solid #3b5365;background:#172633;color:#e3edf4;border-radius:8px;cursor:pointer;font:600 12px system-ui}
+button:hover,button:focus-visible{background:#235072;border-color:#4ebadd;outline:0}button.on{background:#1f5b84;border-color:#7bdded}
+.hint{position:absolute;right:17px;bottom:83px;pointer-events:none;text-align:right;color:#8da6b5;font-size:11px;z-index:1}
+#status{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:min(85%,500px);text-align:center;z-index:3;pointer-events:none;color:#d8f5ff}
+#status.error{color:#ffd2cf;background:#5f1d1eab;padding:14px;border-radius:12px}
+@media(max-width:650px){.top{top:10px;left:12px}.top b{font-size:15px}.top small{font-size:11px}.tools{bottom:10px;gap:5px}button{font-size:11px;padding:7px 9px}.hint{display:none}}
+</style></head><body>
+<div class="top"><span class="k">Model 3D prosedural · Fail tempatan .GLB</span><div><b>FOIFKIN F600 — Panoramic 270°</b></div><small>ATX Mid Tower · 419 × 284 × 439 mm · 7 kipas ARGB</small></div>
+<canvas id="view" aria-label="Model FOIFKIN F600 3D interaktif; seret untuk putar dan skrol untuk zum"></canvas>
+<div class="hint">Seret untuk putar · Skrol/cubit untuk zum · Klik kanan untuk alih</div>
+<div class="tools">
+  <button type="button" data-view="iso" class="on">3D</button>
+  <button type="button" data-view="front">Depan</button>
+  <button type="button" data-view="side">Sisi</button>
+  <button type="button" data-view="back">Belakang</button>
+  <button type="button" data-view="top">Atas</button>
+  <button type="button" id="glass" class="on" aria-pressed="true">Kaca: ON</button>
+  <button type="button" id="rgb" class="on" aria-pressed="true">ARGB: ON</button>
+  <button type="button" id="spin" aria-pressed="false">Putar auto</button>
+  <button type="button" id="reset">Set semula</button>
+</div>
+<div id="status" role="status" aria-live="polite">Memuatkan FOIFKIN_F600.glb...</div>
+<script src="../libs/three/three.min.js"></script>
+<script src="../libs/three/OrbitControls.js"></script>
+<script src="../libs/three/GLTFLoader.js"></script>
+<script>
+(function(){'use strict';
+ var status=document.getElementById('status'),cv=document.getElementById('view');
+ function fail(msg,err){status.className='error';status.textContent=msg;if(err)console.error('[F600]',err);}
+ if(!window.THREE||!THREE.GLTFLoader||!THREE.OrbitControls){fail('Pustaka Three.js tempatan tidak ditemui. Semak folder public/libs/three/.');return;}
+ var renderer;try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false,powerPreference:'high-performance'});}catch(e){fail('WebGL tidak tersedia. Cuba Chrome/Edge dengan hardware acceleration aktif.',e);return;}
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputEncoding=THREE.sRGBEncoding;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
+ var scene=new THREE.Scene();scene.background=new THREE.Color(0x101922);
+ var camera=new THREE.PerspectiveCamera(38,1,.005,25);
+ var controls=new THREE.OrbitControls(camera,cv);controls.enableDamping=true;controls.dampingFactor=.07;controls.enablePan=true;controls.minDistance=.31;controls.maxDistance=2.4;
+ scene.add(new THREE.HemisphereLight(0xd1e9ff,0x1a273e,1.55));
+ var key=new THREE.DirectionalLight(0xffffff,2.1);key.position.set(.5,.8,1.0);scene.add(key);
+ var rim=new THREE.DirectionalLight(0x69ccff,1.5);rim.position.set(-.7,.2,-.5);scene.add(rim);
+ var fill=new THREE.DirectionalLight(0xb8a0ff,.7);fill.position.set(.4,-.3,.6);scene.add(fill);
+ var plane=new THREE.Mesh(new THREE.PlaneGeometry(1.1,1.1),new THREE.MeshStandardMaterial({color:0x1a2835,roughness:.8,metalness:.15}));plane.rotation.x=-Math.PI/2;plane.position.y=-.242;scene.add(plane);
+ var mdl=null,glass=[],rgb=[],lights=[],spinning=false,glassOn=true,rgbOn=true,halfSize=.5;
+ function view(x,y,z){camera.position.set(x,y,z);controls.target.set(0,-.009,0);controls.update();}
+ function initView(){view(.55,.34,.62);}
+ initView();
+ new THREE.GLTFLoader().load('./models/FOIFKIN_F600.glb',function(gl){
+   mdl=gl.scene;scene.add(mdl);
+   var box=new THREE.Box3().setFromObject(mdl),center=new THREE.Vector3();box.getCenter(center);mdl.position.sub(center);
+   // Shift back slightly to preserve physical base level for shadow/ground.
+   mdl.position.y+=.008;mdl.traverse(function(n){
+     if(!n.isMesh)return;
+     if(/MATERIAL_GLASS/.test(n.name))glass.push(n);
+     if(/MATERIAL_(CYAN|AZURE|PURPLE|GREEN)$/.test(n.name)){rgb.push(n);n.userData.rgbColor=n.material.color.clone();}
+     if(n.material){n.material.side=THREE.DoubleSide;}
+   });
+   var size=new THREE.Vector3();box.getSize(size);halfSize=Math.max(size.x,size.y,size.z);
+   controls.minDistance=halfSize*.78;controls.maxDistance=halfSize*5;
+   initView();status.textContent='';
+ },function(xhr){if(xhr.total>0)status.textContent='Memuatkan model... '+Math.round(xhr.loaded/xhr.total*100)+'%';},function(e){fail('Model GLB gagal dimuatkan. Buka projek menggunakan localhost (npm run dev), bukan file://.',e);});
+ function selBtn(name){document.querySelectorAll('[data-view]').forEach(function(b){b.classList.toggle('on',b.dataset.view===name);});}
+ document.querySelectorAll('[data-view]').forEach(function(b){b.addEventListener('click',function(){if(!mdl)return;selBtn(b.dataset.view);var a=halfSize*1.30;var positions={iso:[a*1.1,a*.68,a*1.22],front:[a,0,0],side:[0,0,a*1.38],back:[-a,0,0],top:[.02,a*1.40,.03]};var p=positions[b.dataset.view];view(p[0],p[1],p[2]);});});
+ document.getElementById('glass').onclick=function(){glassOn=!glassOn;glass.forEach(function(n){n.visible=glassOn;});this.classList.toggle('on',glassOn);this.setAttribute('aria-pressed',glassOn);this.textContent='Kaca: '+(glassOn?'ON':'OFF');};
+ document.getElementById('rgb').onclick=function(){rgbOn=!rgbOn;rgb.forEach(function(n){if(n.material){if(n.material.emissive)n.material.emissiveIntensity=rgbOn?1:0;n.material.color.copy(rgbOn?n.userData.rgbColor:new THREE.Color(0x3c4655));}});this.classList.toggle('on',rgbOn);this.setAttribute('aria-pressed',rgbOn);this.textContent='ARGB: '+(rgbOn?'ON':'OFF');};
+ document.getElementById('spin').onclick=function(){spinning=!spinning;controls.autoRotate=spinning;controls.autoRotateSpeed=1.5;this.setAttribute('aria-pressed',spinning);this.classList.toggle('on',spinning);this.textContent=spinning?'Hentikan putaran':'Putar auto';};
+ document.getElementById('reset').onclick=function(){if(!mdl)return;initView();selBtn('iso');};
+ function resize(){var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;if(cv.width!==Math.round(w*renderer.getPixelRatio())||cv.height!==Math.round(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}}
+ function tick(){requestAnimationFrame(tick);resize();controls.update();renderer.render(scene,camera);}tick();
+})();
+</script></body></html>

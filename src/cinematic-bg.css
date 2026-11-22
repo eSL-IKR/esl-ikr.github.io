@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Latar sinematik (hiasan sahaja) — gelap & terang, bertukar mengikut
+   html[data-theme="dark"|"light"].  Pembolehubah dipasang pada setiap lapisan
+   tema supaya crossfade dua lapisan berfungsi; canvas bintang membacanya.
+   ========================================================================== */
+
+/* ---------- Palet ---------- */
+html[data-theme="dark"],
+.cbg-theme--dark {
+  --bg-top: #050a1a;
+  --bg-mid: #142145;
+  --bg-bottom: #040812;
+  --horizon-glow: rgba(47, 91, 214, .35);
+  --horizon-line: rgba(120, 160, 255, .16);
+  --floor-shade: rgba(4, 8, 20, .62);
+  --grid-line: rgba(74, 123, 216, .17);
+  --star-color-1: #ffffff;
+  --star-color-2: #dbe7ff;
+  --star-color-3: #b9d0ff;
+  --aurora-1: rgba(38, 154, 255, .15);
+  --aurora-2: rgba(25, 203, 177, .11);
+  --aurora-3: rgba(165, 117, 255, .14);
+  --vignette: rgba(2, 5, 14, .45);
+}
+html[data-theme="light"],
+.cbg-theme--light {
+  --bg-top: #eef4ff;
+  --bg-mid: #dfe9fb;
+  --bg-bottom: #f6f9ff;
+  --horizon-glow: rgba(143, 180, 255, .30);
+  --horizon-line: rgba(91, 130, 214, .34);
+  --floor-shade: rgba(246, 249, 255, .55);
+  --grid-line: rgba(91, 130, 214, .22);
+  --star-color-1: #3b5bdb;
+  --star-color-2: #6a4fd8;
+  --star-color-3: #12a594;
+  --aurora-1: rgba(125, 180, 255, .26);
+  --aurora-2: rgba(127, 227, 207, .22);
+  --aurora-3: rgba(196, 168, 255, .24);
+  --vignette: rgba(214, 228, 255, .15);
+}
+
+/* ---------- Asas halaman: tiada kelip putih/hitam semasa reload ---------- */
+html[data-theme="dark"] { background-color: #050a1a; }
+html[data-theme="light"] { background-color: #eef4ff; }
+
+/* ---------- Bekas tetap di belakang semua kandungan ---------- */
+#cinematic-root { position: static; }
+.cbg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint style;
+}
+.cbg-theme, .cbg-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cbg-stars { display: block; }
+
+/* Crossfade: lapisan terang sentiasa di bawah; lapisan gelap di atas dan
+   memudar masuk/keluar -> tiada "lopak" kosong di tengah peralihan. */
+.cbg-theme--light { opacity: 1; }
+.cbg-theme--dark { opacity: 0; transition: opacity .5s ease; }
+html[data-theme="dark"] .cbg-theme--dark { opacity: 1; }
+
+/* Kandungan portal di atas langit dan bintang. */
+#root { position:relative; z-index:1; }
+
+/* ---------- 1. Gradien menegak ---------- */
+.cbg-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 54%, var(--bg-bottom) 100%);
+}
+
+/* ---------- 2. Jalur cahaya ufuk (pra-kabur melalui gradien, tiada filter) ---------- */
+.cbg-glow {
+  position: absolute; left: -10%; right: -10%;
+  top: calc(54% - 17vh); height: 34vh;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, var(--horizon-glow) 0%, transparent 100%);
+  will-change: transform;
+}
+
+/* ---------- 3. Aurora: tiga blob pra-kabur, hanyut 40-70s ---------- */
+.cbg-aurora {
+  position: absolute; inset: 0;
+  /* aurora kekal di langit; lantai kekal biru gelap seperti gambar sasaran */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 48%, transparent 64%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 48%, transparent 64%);
+}
+.cbg-blob {
+  position: absolute; display: block; border-radius: 50%;
+  width: 62vmax; height: 62vmax;
+  will-change: transform;
+}
+.cbg-blob--1 { left: -14vmax; top: -10vmax; background: radial-gradient(closest-side, var(--aurora-1), transparent); animation: cbg-drift-1 46s ease-in-out infinite alternate; }
+.cbg-blob--2 { right: -16vmax; top: 4vmax; background: radial-gradient(closest-side, var(--aurora-2), transparent); animation: cbg-drift-2 58s ease-in-out infinite alternate; }
+.cbg-blob--3 { left: 22%; top: 20vh; background: radial-gradient(closest-side, var(--aurora-3), transparent); animation: cbg-drift-3 70s ease-in-out infinite alternate; }
+@keyframes cbg-drift-1 { from { transform: translate3d(0, 0, 0) scale(.95); } to { transform: translate3d(14vw, 10vh, 0) scale(1.12); } }
+@keyframes cbg-drift-2 { from { transform: translate3d(0, 0, 0) scale(1.05); } to { transform: translate3d(-16vw, 8vh, 0) scale(.9); } }
+@keyframes cbg-drift-3 { from { transform: translate3d(-8vw, 0, 0) scale(.9); } to { transform: translate3d(10vw, -8vh, 0) scale(1.1); } }
+
+/* ---------- 5. Lantai berperspektif + garis ufuk ---------- */
+.cbg-ground { position: absolute; inset: 0; will-change: transform; }
+.cbg-floor {
+  position: absolute; left: 0; right: 0; top: 54%; bottom: -8vh;
+  overflow: hidden;
+  perspective: calc(54vh * 2.1445);        /* titik lenyap di garis ufuk (tinggi lantai 46% + 8vh lebihan, rotateX 65deg) */
+  perspective-origin: 50% 0;
+  background: linear-gradient(180deg, var(--floor-shade) 0%, transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 62%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 62%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  mask-composite: intersect;
+}
+.cbg-grid {
+  position: absolute; left: -100%; right: -100%; bottom: 0; height: 600%;
+  transform-origin: 50% 100%;
+  transform: rotateX(65deg);
+  /* kepingan tinggi diputar di sekeliling dasar; bahagian jauh menumpu ke ufuk dan dipotong oleh bekas */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center bottom;
+}
+.cbg-horizon-line {
+  position: absolute; left: 0; right: 0; top: 54%; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--horizon-line) 30%, var(--horizon-line) 70%, transparent 100%);
+}
+
+/* ---------- 6. Vignette ---------- */
+.cbg-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 120% 105% at 50% 48%, transparent 55%, var(--vignette) 100%);
+}
+
+/* ---------- Prestasi & aksesibiliti ---------- */
+.cbg.is-paused .cbg-blob { animation-play-state: paused; }
+.cbg.is-reduced .cbg-blob { animation: none; }
+.cbg.is-reduced .cbg-theme--dark { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .cbg-blob { animation: none; }
+  .cbg-theme--dark { transition: none; }
+}
+@media (max-width: 700px) {
+  .cbg-blob { width: 90vmax; height: 90vmax; }
+  .cbg-grid { background-size: 56px 56px; }
+}
+
+/* ==========================================================================
+   Penutup pepejal -> lutsinar, supaya latar kelihatan di belakang kandungan.
+   Hanya pembungkus halaman. Kad, navbar dan hero tidak disentuh.
+   Selector diambil daripada CSS binaan portal (dist): `html[data-theme=dark] body`
+   dan `.studio-portal` memakai warna pepejal.
+   ========================================================================== */
+@media screen {
+  html[data-theme] body,
+  #root {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  html[data-theme] .studio-portal,
+  #root > .min-h-screen,
+  #root > .bg-slate-50,
+  #root > .bg-gray-50,
+  #root > div > .min-h-screen.bg-slate-50,
+  #root > div > .min-h-screen.bg-gray-50 {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}

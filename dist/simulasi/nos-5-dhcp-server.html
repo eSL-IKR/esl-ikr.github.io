@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Avatar Data Center - LAB LINUX TKR ADTEC SANDAKAN (LA 4 DHCP)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="../libs/bootstrap/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1e29;
+            color: #ffffff !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(10, 15, 25, 0.9);
+            border: 2px solid #0d6efd;
+            border-radius: 8px;
+            color: #ffffff !important;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        /* Terminal Window Styling */
+        .terminal-window {
+            background-color: #0c1017;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .terminal-header {
+            background-color: #161b22;
+            padding: 10px 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid #30363d;
+            color: #ffffff !important;
+        }
+        .terminal-body {
+            padding: 15px;
+            height: 330px;
+            overflow-y: auto;
+            font-size: 0.88rem;
+            color: #ffffff !important;
+        }
+        .cli-prompt {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: #ffffff !important;
+            font-family: 'Courier New', Courier, monospace;
+            width: 75%;
+            outline: none;
+            font-weight: bold;
+        }
+        .guide-box {
+            background: #1f242d;
+            border-left: 4px solid #f1e05a;
+            color: #ffffff !important;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        /* DHCP Output Visual Display */
+        .dhcp-visual-container {
+            background-color: #0f141d;
+            color: #ffffff !important;
+            border-radius: 8px;
+            border: 2px solid #30363d;
+            height: 100%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .dhcp-toolbar {
+            background-color: #161b22;
+            padding: 6px 12px;
+            border-bottom: 1px solid #30363d;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #58a6ff;
+        }
+        .dhcp-viewport {
+            padding: 15px;
+            height: 380px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .cert-card {
+            background: #161b22;
+            border: 2px solid #238636;
+            color: #ffffff !important;
+        }
+        .locked-overlay {
+            background: rgba(15, 20, 30, 0.98);
+            backdrop-filter: blur(6px);
+            z-index: 5;
+            color: #ffffff !important;
+        }
+
+        /* Tab Navigation Styling */
+        .nav-tabs .nav-link {
+            color: #a0aec0 !important;
+            border-color: #30363d !important;
+            font-size: 0.82rem;
+            padding: 8px 12px;
+        }
+        .nav-tabs .nav-link.active {
+            color: #ffffff !important;
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            font-weight: bold;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #resultModal, #resultModal * { visibility: visible; }
+            #resultModal { position: absolute; left: 0; top: 0; width: 100%; }
+            .btn { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <div id="canvas-container"></div>
+
+    <!-- MODAL PENDAFTARAN -->
+    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-primary fw-bold">🐧 LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN</h5>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <p class="small text-white-50">Sila masukkan maklumat anda sebelum memulakan amali Kertas Kerja LA 4 (DHCP Server & Pajakan IP).</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Nama Penuh Pelajar / Angka Giliran:</label>
+                        <input type="text" id="student-name-input" class="form-control bg-black text-white border-secondary" placeholder="Contoh: Muhammad Ali Bin Ahmad" autofocus>
+                        <div id="name-error" class="text-danger small mt-1 d-none">Sila masukkan nama anda terlebih dahulu!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Karakter 3D TKR:</label>
+                        <select id="gender-select" class="form-select bg-black text-white border-secondary">
+                            <option value="male" selected>👨 Karakter Lelaki (Baju TKR Biru & Cap)</option>
+                            <option value="female">👩 Karakter Perempuan (Baju TKR Pink & Tudung)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-warning fw-bold">Pilih Mod Pembelajaran:</label>
+                        <select id="mode-select" class="form-select bg-black text-white border-secondary">
+                            <option value="practice" selected>🟢 Mod Latihan (Nota & Panduan Disediakan)</option>
+                            <option value="exam">🔴 Mod Peperiksaan (Dikunci Nota & Tanpa Panduan Arahan)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary w-100 fw-bold text-white" onclick="registerStudent()">Mulakan Amali LA 4 DHCP Server</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD OVERLAY -->
+    <div class="hud-overlay">
+        <div class="card bg-dark text-white border-primary shadow-lg p-3" style="width: 360px;">
+            <h5 class="card-title text-primary mb-1 fw-bold">🎮 AMALI LA 4: DHCP SERVER</h5>
+            <p class="card-text text-white-50 small mb-0">IKR3103/KK(4/5) - ISC-DHCP-Server & Pajakan IP</p>
+            <hr class="border-secondary my-2">
+            
+            <button class="btn btn-primary btn-sm w-100 fw-bold mb-2 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNota">
+                📖 Nota Terperinci 3 Halaman
+            </button>
+            <div class="d-flex justify-content-between align-items-center small text-white-50">
+                <span id="hud-student-display">Pelajar: -</span>
+                <span class="badge bg-success" id="hud-mode-badge">Mod: Latihan</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center small text-white-50 mt-1">
+                <span>Kemajuan Amali LA 4:</span>
+                <strong id="hud-progress-text" class="text-warning">0 / 12 Langkah Selesai</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANDUAN KAWALAN -->
+    <div class="controls-info p-3 shadow">
+        <span class="fw-bold fs-6 d-block mb-1 text-warning">🎮 KAWALAN KARAKTER TKR 3D:</span>
+        <span class="d-block text-white">• <b>Kekunci W / S:</b> Karakter Bergerak Ke Depan / Belakang</span>
+        <span class="d-block text-white">• <b>Kekunci A / D:</b> Pusing Karakter Ke Kiri / Kanan</span>
+        <span class="d-block text-white">• <b>Tekan Kekunci 'E' / Klik Meja PC:</b> Akses Console CLI DHCP Server</span>
+    </div>
+
+    <!-- SIDEBAR NOTA BERPERINGKAT (3 TAB / PAGES) -->
+    <div class="offcanvas offcanvas-end text-white w-50 bg-dark position-relative" tabindex="-1" id="offcanvasNota">
+        <div id="cheat-sheet-lock" class="locked-overlay position-absolute top-0 start-0 w-100 h-100 d-none d-flex flex-column justify-content-center align-items-center text-center p-4">
+            <div class="display-1 mb-2">🔒</div>
+            <h4 class="text-danger fw-bold mb-2">MOD PEPERIKSAAN DIKUNCI</h4>
+            <p class="small text-white-50 mb-0">Nota pembelajaran dikunci semasa Mod Peperiksaan. Sila laksanakan 12 langkah LA 4 berdasarkan kefahaman anda sendiri.</p>
+        </div>
+
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title text-primary fw-bold">📚 NOTA TERPERINCI KERTAS KERJA LA 4</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body text-white">
+            
+            <!-- TAB NAVIGATION (3 PAGES) -->
+            <ul class="nav nav-tabs mb-3 border-secondary" id="notaTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="page1-tab" data-bs-toggle="tab" data-bs-target="#page1" type="button" role="tab">PAGE 1: Tujuan LA 4</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="page2-tab" data-bs-toggle="tab" data-bs-target="#page2" type="button" role="tab">PAGE 2: Konsep Pajakan IP</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="page3-tab" data-bs-toggle="tab" data-bs-target="#page3" type="button" role="tab">PAGE 3: 12 Arahan LA 4</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="notaTabContent">
+                
+                <!-- PAGE 1: KENAPA KENE TAHU PASAL LA 4 & APA PELAJAR MESTI TAHU -->
+                <div class="tab-pane fade show active" id="page1" role="tabpanel">
+                    
+                    <div class="p-3 mb-3 rounded bg-primary bg-opacity-10 border-start border-4 border-primary">
+                        <h6 class="text-info mb-1 fw-bold">1. Kenapa Pelajar Mesti Tahu Pasal Kertas Kerja LA 4 Ini?</h6>
+                        <p class="small text-white-50 mb-2">
+                            Dalam dunia perangkaian enterprise yang sebenar, sesebuah organisasi atau data center mungkin mempunyai ratusan hingga ribuan peranti (*Klien, Laptop, Telefon Pintar, Printer*) yang menyertai rangkaian pada satu-satu masa. 
+                        </p>
+                        <p class="small text-white-50 mb-0">
+                            <b>Tanpa Pelayan DHCP:</b> Juruteknik TKR terpaksa pergi ke setiap komputer klien secara manual untuk menaip Alamat IP, Subnet Mask, Default Gateway, dan DNS Server. Ini bukan sahaja membuang masa yang sangat banyak, malah berisiko tinggi menyebabkan ralat pertindihan IP (*IP Address Conflict*) yang boleh melumpuhkan seluruh rangkaian!
+                        </p>
+                    </div>
+
+                    <div class="p-3 mb-3 rounded bg-warning bg-opacity-10 border-start border-4 border-warning">
+                        <h6 class="text-warning mb-1 fw-bold">2. Apa Yang Pelajar Mesti Tahu & Kuasai Sebenarnya?</h6>
+                        <ul class="small text-white-50 mb-0 ps-3">
+                            <li><b>Pengurusan Berpusat:</b> Memahami cara mengkonfigurasi satu Pelayan DHCP Utama (`isc-dhcp-server`)[cite: 4] untuk mengawal selia penetapan parameter rangkaian secara automatik bagi seluruh blok premis.</li>
+                            <li><b>Skop Subnet Rangkaian:</b> Tahu cara menetapkan skop alamat (*Subnet Scope* `10.0.0.0/24`)[cite: 4], alamat Gateway (`10.0.0.1`)[cite: 4], dan DNS Utama (`dlp.srv.world` / `10.0.0.30`)[cite: 4].</li>
+                            <li><b>Pengagihan Julat IP (*IP Range Pool*):</b> Menentukan julat khas yang dibenarkan untuk diagih automatik (contoh: `10.0.0.200` hingga `10.0.0.254`)[cite: 4] bagi memelihara ruang IP statik pelayan lain.</li>
+                            <li><b>Pengujian Pada Pelbagai Klien:</b> Kebolehan mengkonfigurasi dan menguji agihan IP automatik pada klien sistem operasi Linux (Debian)[cite: 4] serta Windows 11[cite: 4].</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- PAGE 2: PENERANGAN KONSEP PAJAKAN IP (IP LEASE) & PROSES DORA -->
+                <div class="tab-pane fade" id="page2" role="tabpanel">
+                    
+                    <div class="p-3 mb-3 rounded bg-primary bg-opacity-10 border-start border-4 border-primary">
+                        <h6 class="text-info mb-1 fw-bold">1. Apa Itu Pajakan IP (IP Lease)?</h6>
+                        <p class="small text-white-50 mb-2">
+                            <b>Pajakan IP (*IP Lease*)</b> ialah konsep di mana Pelayan DHCP **"meminjamkan atau menyewakan"** satu alamat IP daripada kolam (*pool*) kepada komputer Klien bagi satu **tempoh masa tertentu** (contoh: 10 minit, 8 jam, atau 1 hari)[cite: 4].
+                        </p>
+                        <p class="small text-white-50 mb-0">
+                            <b>Alamat IP tidak diberikan secara kekal!</b> Apabila tempoh pajakan tamat (*expired*), alamat IP tersebut akan ditarik balik dan boleh diberikan kepada peranti baharu jika peranti asal tidak memohon pembaharuan (*renew*)[cite: 4].
+                        </p>
+                    </div>
+
+                    <div class="p-3 mb-3 rounded bg-warning bg-opacity-10 border-start border-4 border-warning">
+                        <h6 class="text-warning mb-1 fw-bold">2. Kenapa Pelayan DHCP Menggunakan Sistem Pajakan?</h6>
+                        <ul class="small text-white-50 mb-0 ps-3">
+                            <li><b>Mengelakkan Pembaziran IP:</b> Mengelakkan IP terkunci secara kekal pada peranti yang sudah tidak lagi berada dalam rangkaian (seperti laptop pelawat)[cite: 4].</li>
+                            <li><b>Menampung Klien Berbilang:</b> Julat IP LA 4 adalah terhad (<code>10.0.0.200</code> hingga <code>10.0.0.254</code> = 55 IP)[cite: 4]. Pajakan membolehkan ratusan peranti berkongsi julat ini secara berperingkat[cite: 4].</li>
+                            <li><b>Proses DORA (Discover, Offer, Request, Acknowledge):</b> Protokol komunikasi 4 langkah untuk merundingkan pajakan IP antara Klien dan Pelayan[cite: 4].</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-3 mb-3 rounded bg-success bg-opacity-10 border-start border-4 border-success">
+                        <h6 class="text-success mb-1 fw-bold">3. Memahami Fail Pajakan `dhcpd.leases`</h6>
+                        <p class="small text-white-50 mb-1">
+                            Dalam Langkah 5 amali LA 4, apabila anda menyemak fail <code>/var/lib/dhcp/dhcpd.leases</code>[cite: 4], anda dapat melihat maklumat pajakan aktif:
+                        </p>
+                        <ul class="small text-white-50 mb-0 ps-3">
+                            <li><code>lease 10.0.0.200</code> : Alamat IP yang sedang disewa oleh klien[cite: 4].</li>
+                            <li><code>starts</code> & <code>ends</code> : Waktu pajakan bermula dan waktu ia luput[cite: 4].</li>
+                            <li><code>hardware ethernet</code> : Alamat MAC fizikal kad rangkaian peranti penyewa[cite: 4].</li>
+                            <li><code>binding state active</code> : Status sewaan IP sedang sah digunakan[cite: 4].</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- PAGE 3: PENERANGAN DETAILED ARAHAN LA 4 -->
+                <div class="tab-pane fade" id="page3" role="tabpanel">
+                    
+                    <div class="card bg-dark border-secondary mb-3 text-white">
+                        <div class="card-header text-success fw-bold small">
+                            📋 SENARAI LANGKAH KERJA KERTAS KERJA LA 4[cite: 4]
+                        </div>
+                        <div class="card-body small text-white">
+                            
+                            <p class="fw-bold text-info mb-1">A. Pemasangan & Konfigurasi Pelayan DHCP:</p>
+                            <ul class="text-white-50 ps-3 mb-2">
+                                <li><code>apt -y install isc-dhcp-server</code> : Memasang perisian pelayan ISC-DHCP[cite: 4].</li>
+                                <li><code>vi /etc/default/isc-dhcp-server</code> : Menetapkan kad antaramuka pendengar (<code>INTERFACESv4="enp1s0"</code>)[cite: 4].</li>
+                                <li><code>vi /etc/dhcp/dhcpd.conf</code> : Menetapkan domain <code>srv.world</code>, DNS <code>dlp.srv.world</code>, <code>authoritative;</code>, serta subnet <code>10.0.0.0/24</code> dengan julat <code>10.0.0.200 - 10.0.0.254</code>[cite: 4].</li>
+                                <li><code>systemctl restart isc-dhcp-server</code> : Memuat semula perkhidmatan DHCP[cite: 4].</li>
+                                <li><code>cat /var/lib/dhcp/dhcpd.leases</code> : Memeriksa senarai IP yang telah dipajak kepada klien[cite: 4].</li>
+                            </ul>
+
+                            <p class="fw-bold text-info mb-1">B. Konfigurasi Klien Debian & Windows 11:</p>
+                            <ul class="text-white-50 ps-3 mb-2">
+                                <li><code>iface enp1s0 inet dhcp</code> : Menetapkan kad rangkaian Debian Klien kepada mod DHCP[cite: 4].</li>
+                                <li><code>systemctl restart ifup@enp1s0</code> : Memuat semula kad rangkaian Klien untuk memohon pajakan IP[cite: 4].</li>
+                            </ul>
+
+                            <p class="fw-bold text-info mb-1">C. Ujian Kefungsian Rangkaian DHCP:</p>
+                            <ul class="text-white-50 ps-3 mb-0">
+                                <li><code>ping 10.0.0.1</code> : Menguji sambungan fizikal dari klien ke pelayan gateway[cite: 4].</li>
+                                <li><code>ipconfig /release</code> : Membatalkan dan memulangkan pajakan IP Klien kepada pelayan[cite: 4].</li>
+                                <li><code>ipconfig /renew</code> : Memohon semula pajakan IP baharu daripada pelayan DHCP[cite: 4].</li>
+                                <li><code>ipconfig /all</code> : Memeriksa maklumat terperinci IP, Gateway, dan DNS Klien[cite: 4].</li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL CLI TERMINAL BERSEBELAHAN VISUAL OUTPUT DHCP -->
+    <div class="modal fade" id="cliModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border-secondary">
+                <div class="modal-header bg-secondary bg-opacity-25 border-secondary">
+                    <h5 class="modal-title text-info fw-bold">💻 KVM WORKSTATION: ISC-DHCP-SERVER CLI & CLIENT NETWORK TESTER</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row g-3">
+                        
+                        <!-- SEKSYEN KIRI: TERMINAL CLI -->
+                        <div class="col-lg-6">
+                            <div class="terminal-window h-100 p-2">
+                                <div class="terminal-header d-flex justify-content-between align-items-center">
+                                    <span class="small fw-bold text-white">root@dlp:~ (Debian 12 DHCP Console)</span>
+                                </div>
+                                <div class="p-2">
+                                    <div class="guide-box" id="guide-box-container">
+                                        <small class="fw-bold d-block text-warning" id="guide-step-title">📌 LANGKAH 1 (LA 4):</small>
+                                        <small id="guide-text" class="text-white">Memuatkan arahan...</small>
+                                    </div>
+
+                                    <div class="terminal-body" id="terminal-screen">
+                                        <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                                        <div class="text-white-50">Log masuk pelayan DHCP (dlp.srv.world) berjaya. Sila lengkapkan amali.</div>
+                                        <br>
+                                    </div>
+
+                                    <div class="d-flex align-items-center mt-2 border-top border-secondary pt-2">
+                                        <span class="cli-prompt me-2">root@dlp:~#</span>
+                                        <input type="text" id="cli-input-field" class="cli-input" placeholder="Taip arahan CLI di sini..." autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SEKSYEN KANAN: PAPARAN VISUAL OUTPUT AGIHAN IP & CLIENT TEST -->
+                        <div class="col-lg-6">
+                            <div class="dhcp-visual-container">
+                                <div class="dhcp-toolbar">
+                                    🔍 STATUS AGIHAN IP KLIEN & NETWORK SETTINGS
+                                </div>
+                                <div class="dhcp-viewport" id="dhcp-viewport">
+                                    <div class="text-center mt-5 text-muted">
+                                        <div class="display-3 mb-2">⚡</div>
+                                        ##### Perkhidmatan DHCP Server Belum Aktif
+                                        <p class="small">Sila taip arahan <code>apt -y install isc-dhcp-server</code>[cite: 4] pada terminal CLI di sebelah kiri untuk memulakan amali LA 4.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary py-2">
+                    <small class="text-white-50 me-auto">Hasil ujian agihan IP pada tetingkap kanan akan bertukar mengikut arahan CLI yang anda taip.</small>
+                    <button type="button" class="btn btn-secondary btn-sm text-white" onclick="resetLa4Lab()">Reset Amali LA 4</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RESULT DENGAN NAMA PELAJAR RASMI -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content cert-card text-white shadow-lg">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-success fw-bold">🏆 LAPORAN RASMI PENILAIAN AMALI LA 4</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <div class="text-center mb-4">
+                        <h4 class="text-info fw-bold mb-1">JABATAN TENAGA MANUSIA (JTM)</h4>
+                        <h5 class="text-warning fw-bold mb-0">ADTEC KAMPUS SANDAKAN, SABAH</h5>
+                        <p class="small text-white-50">SIJIL TEKNOLOGI RANGKAIAN (IKR 3103 - NETWORK OPERATING SYSTEM)</p>
+                        <hr class="border-secondary">
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">NAMA PELAJAR:</small>
+                                <strong class="text-warning fs-5" id="cert-student-name">Muhammad Ali Bin Ahmad</strong>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <small class="text-white-50 d-block">KERTAS KERJA:</small>
+                                <strong class="text-info fs-6">IKR3103/KK(4/5) (LA 4 DHCP Server)[cite: 4]</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 text-start small mb-3">
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">1. ISC-DHCP Server Config:</b><br>
+                                <span class="text-success">✔ Interface enp1s0 & Subnet 10.0.0.0/24 Configured[cite: 4]</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">2. IP Lease Range:</b><br>
+                                <span class="text-success">✔ Julat IP 10.0.0.200 - 10.0.0.254 Active[cite: 4]</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">3. Debian & Windows Client:</b><br>
+                                <span class="text-success">✔ Automatic (DHCP) Interface Configured[cite: 4]</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 border border-secondary rounded bg-dark">
+                                <b class="text-info">4. Network Verification:</b><br>
+                                <span class="text-success">✔ Ping, Release/Renew & ipconfig /all Passed[cite: 4]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50 text-center mb-0">Sila cetak atau simpan fail PDF laporan ini untuk dimuatkan dalam fail Penilaian Kerja Kursus (PKK) anda.</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary btn-sm text-white w-100" onclick="window.print()">🖨️ Cetak / Simpan PDF Laporan Amali Pelajar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script src="../libs/bootstrap/bootstrap.bundle.min.js"></script><script>window.bootstrap||document.write('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>')</script>
+    <script src="../libs/three/three.min.js"></script><script>window.THREE||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>')</script>
+
+    <script>
+        let studentName = "";
+        let currentMode = "practice";
+        let selectedGender = "male";
+
+        // SENARAI LENGKAP 12 LANGKAH LA 4 (IKR3103/KK(4/5))[cite: 4]
+        let currentLa4Step = 1;
+        const la4Steps = [
+            { 
+                step: 1, cmd: "apt -y install isc-dhcp-server", altCmd: "apt install isc-dhcp-server",
+                guide: "Langkah 1 (LA 4 - 1.1): Taip <b class='text-info'>apt -y install isc-dhcp-server</b> untuk memasang pelayan DHCP[cite: 4].", 
+                out: "Setting up isc-dhcp-server (4.4.1) ... Done",
+                render: `<div class="alert alert-info small"><b>ISC-DHCP-Server Installed:</b> DHCP daemon service loaded into Debian 12.</div>`
+            },
+            { 
+                step: 2, cmd: "vi /etc/default/isc-dhcp-server", altCmd: "nano /etc/default/isc-dhcp-server", 
+                guide: "Langkah 2 (LA 4 - 1.1): Taip <b class='text-info'>vi /etc/default/isc-dhcp-server</b> (Set INTERFACESv4=\"enp1s0\")[cite: 4].", 
+                out: "DHCPDv4_CONF=/etc/dhcp/dhcpd.conf & INTERFACESv4=\"enp1s0\" configured",
+                render: `<div class="alert alert-info small"><b>Listening Interface Set:</b> DHCP service mapped to enp1s0 network adapter.</div>`
+            },
+            { 
+                step: 3, cmd: "vi /etc/dhcp/dhcpd.conf", altCmd: "nano /etc/dhcp/dhcpd.conf", 
+                guide: "Langkah 3 (LA 4 - 1.1): Taip <b class='text-info'>vi /etc/dhcp/dhcpd.conf</b> (Set Subnet 10.0.0.0 & Range 10.0.0.200 - 10.0.0.254)[cite: 4].", 
+                out: "Subnet 10.0.0.0/24, Gateway 10.0.0.1, Lease Range 10.0.0.200-254 configured",
+                render: `<div style="background:#111827; border:1px solid #1f2937; padding:10px; border-radius:5px; font-size:11px;">
+                    <b style="color:#10b981;">dhcpd.conf Scope Configured:</b><br>
+                    domain-name: "srv.world"<br>
+                    domain-name-servers: dlp.srv.world (10.0.0.30)<br>
+                    routers: 10.0.0.1<br>
+                    range: 10.0.0.200 10.0.0.254
+                </div>`
+            },
+            { 
+                step: 4, cmd: "systemctl restart isc-dhcp-server", 
+                guide: "Langkah 4 (LA 4 - 1.1): Taip <b class='text-info'>systemctl restart isc-dhcp-server</b> untuk memuat semula DHCP[cite: 4].", 
+                out: "[OK] isc-dhcp-server service active and running",
+                render: `<div class="alert alert-success small"><b>DHCP Server Active:</b> Now broadcasting IP leases on 10.0.0.0/24 subnet.</div>`
+            },
+            { 
+                step: 5, cmd: "cat /var/lib/dhcp/dhcpd.leases", altCmd: "ll /var/lib/dhcp", 
+                guide: "Langkah 5 (LA 4 - 1.2): Taip <b class='text-info'>cat /var/lib/dhcp/dhcpd.leases</b> untuk menyemak senarai pajakan IP[cite: 4].", 
+                out: "lease 10.0.0.200 {\n  starts 2 2026/08/10 07:48:59;\n  ends 2 2026/08/10 07:58:59;\n  hardware ethernet 52:54:00:87:24:2c;\n  binding state active;\n}",
+                render: `<div style="background:#064e3b; color:#a7f3d0; padding:10px; border-radius:5px; font-size:11px;">
+                    <b>IP Lease Record Found:</b><br>
+                    IP: 10.0.0.200 | MAC: 52:54:00:87:24:2c | State: ACTIVE
+                </div>`
+            },
+            { 
+                step: 6, cmd: "vi /etc/network/interfaces", altCmd: "nano /etc/network/interfaces", 
+                guide: "Langkah 6 (LA 4 - 2.1): Taip <b class='text-info'>vi /etc/network/interfaces</b> (Set iface enp1s0 inet dhcp pada Debian Klien)[cite: 4].", 
+                out: "iface enp1s0 inet dhcp configured",
+                render: `<div class="alert alert-info small"><b>Debian Client Configured:</b> Interface enp1s0 set to obtain IP automatically.</div>`
+            },
+            { 
+                step: 7, cmd: "systemctl restart ifup@enp1s0", 
+                guide: "Langkah 7 (LA 4 - 2.1): Taip <b class='text-info'>systemctl restart ifup@enp1s0</b> untuk mohon IP automatik[cite: 4].", 
+                out: "DHCPDISCOVER on enp1s0 to 255.255.255.255 port 67\nDHCPOFFER of 10.0.0.200 from 10.0.0.30\nDHCPACK of 10.0.0.200 from 10.0.0.30\nbound to 10.0.0.200 -- renewal in 300 seconds.",
+                render: `<div style="background:#065f46; color:#d1fae5; padding:10px; border-radius:5px; font-size:11px;">
+                    <b>Debian Client IP Assigned (PASS):</b><br>
+                    IP: 10.0.0.200/24 | Gateway: 10.0.0.1 | DNS: 10.0.0.30
+                </div>`
+            },
+            { 
+                step: 8, cmd: "ping 10.0.0.1", 
+                guide: "Langkah 8 (LA 4 - 3.1a): Taip <b class='text-info'>ping 10.0.0.1</b> untuk menguji sambungan dari Klien ke Gateway[cite: 4].", 
+                out: "PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.\n64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=0.32 ms\n64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.28 ms",
+                render: `<div class="alert alert-success small"><b>Ping Gateway Test (PASS):</b> 0% packet loss to 10.0.0.1. Network connectivity verified.</div>`
+            },
+            { 
+                step: 9, cmd: "ipconfig /release", 
+                guide: "Langkah 9 (LA 4 - 3.2a): Taip <b class='text-info'>ipconfig /release</b> pada Windows Klien untuk melepaskan IP[cite: 4].", 
+                out: "Windows IP Configuration\n\nEthernet adapter Ethernet0 2:\n   Connection-specific DNS Suffix  . :\n   IPv4 Address. . . . . . . . . . . : 0.0.0.0\n   Subnet Mask . . . . . . . . . . . : 0.0.0.0",
+                render: `<div style="background:#451a03; color:#fde68a; padding:10px; border-radius:5px; font-size:11px;">
+                    <b>Windows Client IP Released:</b><br>
+                    IP Address reset to 0.0.0.0. Ready for renew test.
+                </div>`
+            },
+            { 
+                step: 10, cmd: "ipconfig /renew", 
+                guide: "Langkah 10 (LA 4 - 3.2a): Taip <b class='text-info'>ipconfig /renew</b> untuk memohon semula IP daripada DHCP Server[cite: 4].", 
+                out: "Windows IP Configuration\n\nEthernet adapter Ethernet0 2:\n   Connection-specific DNS Suffix  . : srv.world\n   IPv4 Address. . . . . . . . . . . : 10.0.0.201\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0",
+                render: `<div style="background:#065f46; color:#d1fae5; padding:10px; border-radius:5px; font-size:11px;">
+                    <b>Windows Client IP Renewed (PASS):</b><br>
+                    New IP 10.0.0.201 assigned from DHCP Pool range!
+                </div>`
+            },
+            { 
+                step: 11, cmd: "ipconfig /all", 
+                guide: "Langkah 11 (LA 4 - 3.2b): Taip <b class='text-info'>ipconfig /all</b> untuk menyemak maklumat terperinci rangkaian klien[cite: 4].", 
+                out: "Windows IP Configuration\n   Host Name . . . . . . . . . . . . : hiroyuki-pc\n   Primary Dns Suffix . . . . . . . : srv.world\n   DHCP Enabled. . . . . . . . . . . : Yes\n   IPv4 Address. . . . . . . . . . . : 10.0.0.201(Preferred)\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Default Gateway . . . . . . . . . : 10.0.0.1\n   DHCP Server . . . . . . . . . . . : 10.0.0.30\n   DNS Servers . . . . . . . . . . . : 10.0.0.30",
+                render: `<div style="background:#1e1b4b; color:#e0e7ff; padding:10px; border-radius:5px; font-size:11px;">
+                    <b>Windows 11 Full Network Settings Verified:</b><br>
+                    • IP: 10.0.0.201 (Within Pool Range)<br>
+                    • Subnet Mask: 255.255.255.0<br>
+                    • Default Gateway: 10.0.0.1<br>
+                    • DHCP & DNS Server: 10.0.0.30 (dlp.srv.world)
+                </div>`
+            },
+            { 
+                step: 12, cmd: "ping 10.0.0.30", 
+                guide: "Langkah 12 (LA 4 - Ujian Akhir): Taip <b class='text-info'>ping 10.0.0.30</b> untuk menguji ketersediaan Pelayan DHCP[cite: 4].", 
+                out: "Pinging 10.0.0.30 with 32 bytes of data:\nReply from 10.0.0.30: bytes=32 time<1ms TTL=64\nReply from 10.0.0.30: bytes=32 time<1ms TTL=64\n\nPing statistics for 10.0.0.30:\n    Packets: Sent = 2, Received = 2, Lost = 0 (0% loss)",
+                render: `<div class="alert alert-success small"><b>Final Verification Complete:</b> Full End-to-End DHCP Client-Server communication established!</div>`
+            }
+        ];
+
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        const cliModal = new bootstrap.Modal(document.getElementById('cliModal'));
+        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+
+        window.onload = function() {
+            loginModal.show();
+        };
+
+        function registerStudent() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (!nameInput) {
+                document.getElementById('name-error').classList.remove('d-none');
+                return;
+            }
+
+            studentName = nameInput;
+            selectedGender = document.getElementById('gender-select').value;
+            currentMode = document.getElementById('mode-select').value;
+
+            document.getElementById('hud-student-display').innerText = `Pelajar: ${studentName}`;
+            document.getElementById('cert-student-name').innerText = studentName;
+            
+            if (currentMode === 'exam') {
+                document.getElementById('hud-mode-badge').className = "badge bg-danger";
+                document.getElementById('hud-mode-badge').innerText = "Mod: PEPERIKSAAN";
+                document.getElementById('guide-box-container').classList.add('d-none');
+                document.getElementById('cheat-sheet-lock').classList.remove('d-none');
+            } else {
+                document.getElementById('hud-mode-badge').className = "badge bg-success";
+                document.getElementById('hud-mode-badge').innerText = "Mod: LATIHAN";
+                document.getElementById('guide-box-container').classList.remove('d-none');
+                document.getElementById('cheat-sheet-lock').classList.add('d-none');
+            }
+
+            build3DPlayerAvatar(selectedGender);
+            loginModal.hide();
+        }
+
+        // THREE.JS SETUP
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x1a233a, 0.012);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(5, 12, 8);
+        scene.add(dirLight);
+
+        const floorGeo = new THREE.PlaneGeometry(35, 35);
+        const floorMat = new THREE.MeshPhongMaterial({ color: 0x1f293d, specular: 0x445577, shininess: 20 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        const grid = new THREE.GridHelper(35, 35, 0x00d2ff, 0x2d3f56);
+        grid.position.y = 0.01;
+        scene.add(grid);
+
+        const wallMat = new THREE.MeshPhongMaterial({ color: 0x223048, specular: 0x222222 });
+        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(35, 12), wallMat);
+        backWall.position.set(0, 5, -12);
+        scene.add(backWall);
+
+        function createLabWallSignTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "rgba(13, 110, 253, 0.95)";
+            ctx.roundRect(10, 10, 1004, 108, 15);
+            ctx.fill();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 32px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("LAB LINUX TKR ADTEC JTM KAMPUS SANDAKAN", 512, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const wallSignGeo = new THREE.PlaneGeometry(10, 1.25);
+        const wallSignMat = new THREE.MeshBasicMaterial({ map: createLabWallSignTexture(), transparent: true, side: THREE.DoubleSide });
+        const wallSignMesh = new THREE.Mesh(wallSignGeo, wallSignMat);
+        wallSignMesh.position.set(0, 6.2, -11.9);
+        scene.add(wallSignMesh);
+
+        function createShirtBackTexture(shirtColorHex) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = shirtColorHex;
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 22px 'Segoe UI', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("TKR ADTEC", 128, 100);
+            ctx.fillText("SANDAKAN", 128, 140);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const playerGroup = new THREE.Group();
+
+        function build3DPlayerAvatar(gender) {
+            while(playerGroup.children.length > 0){ playerGroup.remove(playerGroup.children[0]); }
+            const shirtColor = gender === 'female' ? '#ff66aa' : '#0d6efd';
+            const shirtTexture = createShirtBackTexture(shirtColor);
+
+            const headGeo = new THREE.SphereGeometry(0.25, 16, 16);
+            const headMat = new THREE.MeshPhongMaterial({ color: 0xffccaa });
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.position.y = 1.35;
+            playerGroup.add(head);
+
+            if (gender === 'male') {
+                const capGeo = new THREE.CylinderGeometry(0.27, 0.27, 0.1, 16);
+                const capMat = new THREE.MeshPhongMaterial({ color: 0x0d6efd });
+                const cap = new THREE.Mesh(capGeo, capMat);
+                cap.position.y = 1.5;
+                playerGroup.add(cap);
+            } else {
+                const hijabGeo = new THREE.SphereGeometry(0.3, 16, 16);
+                const hijabMat = new THREE.MeshPhongMaterial({ color: 0xff66aa });
+                const hijab = new THREE.Mesh(hijabGeo, hijabMat);
+                hijab.position.y = 1.37;
+                playerGroup.add(hijab);
+            }
+
+            const bodyGeo = new THREE.BoxGeometry(0.5, 0.6, 0.3);
+            const bodyMaterials = [
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ color: shirtColor }),
+                new THREE.MeshPhongMaterial({ map: shirtTexture }),
+                new THREE.MeshPhongMaterial({ color: shirtColor })
+            ];
+            const body = new THREE.Mesh(bodyGeo, bodyMaterials);
+            body.position.y = 0.9;
+            playerGroup.add(body);
+
+            const legGeo = new THREE.BoxGeometry(0.18, 0.6, 0.2);
+            const legMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const leftLeg = new THREE.Mesh(legGeo, legMat);
+            leftLeg.position.set(-0.13, 0.3, 0);
+            playerGroup.add(leftLeg);
+
+            const rightLeg = new THREE.Mesh(legGeo, legMat);
+            rightLeg.position.set(0.13, 0.3, 0);
+            playerGroup.add(rightLeg);
+
+            playerGroup.position.set(0, 0, 4);
+            scene.add(playerGroup);
+        }
+
+        let dhcpRackMesh = null;
+        let dhcpRackLedMesh = null;
+
+        function create3DTextTexture(text) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "rgba(13, 110, 253, 0.95)";
+            ctx.roundRect(10, 10, 492, 108, 20);
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 26px 'Segoe UI', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, 256, 64);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function buildDhcpRackAndWorkstation() {
+            const rackGroup = new THREE.Group();
+            const frameGeo = new THREE.BoxGeometry(1.2, 3, 1.2);
+            const frameMat = new THREE.MeshPhongMaterial({ color: 0x2a2a2a });
+            const frame = new THREE.Mesh(frameGeo, frameMat);
+            frame.position.y = 1.5;
+            rackGroup.add(frame);
+
+            for (let i = 0; i < 5; i++) {
+                const bladeGeo = new THREE.BoxGeometry(1.0, 0.4, 1.1);
+                const bladeMat = new THREE.MeshPhongMaterial({ color: 0x444444 });
+                const blade = new THREE.Mesh(bladeGeo, bladeMat);
+                blade.position.set(0, 0.5 + (i * 0.5), 0.05);
+                rackGroup.add(blade);
+
+                const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+                const ledMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+                const led = new THREE.Mesh(ledGeo, ledMat);
+                led.position.set(-0.3 + (i * 0.15), 0.5 + (i * 0.5), 0.61);
+                rackGroup.add(led);
+                if (i === 2) dhcpRackLedMesh = led;
+            }
+
+            const labelGeo = new THREE.PlaneGeometry(2.4, 0.6);
+            const labelMat = new THREE.MeshBasicMaterial({ map: create3DTextTexture("LA 4 - ISC DHCP SERVER"), transparent: true, side: THREE.DoubleSide });
+            const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+            labelMesh.position.set(0, 3.4, 0);
+            rackGroup.add(labelMesh);
+
+            rackGroup.position.set(0, 0, -3);
+            dhcpRackMesh = frame;
+            scene.add(rackGroup);
+
+            const deskGeo = new THREE.BoxGeometry(1.4, 0.75, 0.7);
+            const deskMat = new THREE.MeshPhongMaterial({ color: 0x3a4454 });
+            const desk = new THREE.Mesh(deskGeo, deskMat);
+            desk.position.set(1.5, 0.375, -3);
+            scene.add(desk);
+
+            const monScreenGeo = new THREE.BoxGeometry(0.9, 0.55, 0.05);
+            const monScreenMat = new THREE.MeshBasicMaterial({ color: 0x00ff66 });
+            const monScreen = new THREE.Mesh(monScreenGeo, monScreenMat);
+            monScreen.position.set(1.5, 1.25, -3.1);
+            scene.add(monScreen);
+        }
+
+        buildDhcpRackAndWorkstation();
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        window.addEventListener('click', (event) => {
+            if (document.querySelector('.modal.show')) return;
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(dhcpRackMesh);
+
+            if (intersects.length > 0) {
+                openDhcpCliConsole();
+            }
+        });
+
+        function openDhcpCliConsole() {
+            updateStepGuide();
+            cliModal.show();
+        }
+
+        const terminalScreen = document.getElementById('terminal-screen');
+        const cliInput = document.getElementById('cli-input-field');
+        const guideText = document.getElementById('guide-text');
+        const guideStepTitle = document.getElementById('guide-step-title');
+        const dhcpViewport = document.getElementById('dhcp-viewport');
+
+        function updateStepGuide() {
+            const stepObj = la4Steps[currentLa4Step - 1];
+            if (stepObj && currentMode === 'practice') {
+                guideStepTitle.innerText = `📌 LANGKAH KERJA ${stepObj.step} DARI 12 (LA 4 DHCP SERVER):`;
+                guideText.innerHTML = stepObj.guide;
+            }
+        }
+
+        cliInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+                appendTerminalLine(`root@dlp:~# ${this.value}`, '#58a6ff');
+                this.value = '';
+
+                const stepObj = la4Steps[currentLa4Step - 1];
+
+                if (stepObj) {
+                    const validCmd = stepObj.cmd.toLowerCase();
+                    const validAlt = stepObj.altCmd ? stepObj.altCmd.toLowerCase() : null;
+
+                    if (command === validCmd || (validAlt && command === validAlt)) {
+                        appendTerminalLine(stepObj.out, '#00ff66');
+                        
+                        if (stepObj.render) dhcpViewport.innerHTML = stepObj.render;
+
+                        currentLa4Step++;
+                        document.getElementById('hud-progress-text').innerText = `${currentLa4Step - 1} / 12 Langkah Selesai`;
+
+                        if (currentLa4Step > la4Steps.length) {
+                            appendTerminalLine(`[OK] Semua 12 Langkah Kertas Kerja LA 4 DHCP Server Selesai!`, '#00ffff');
+                            if (dhcpRackLedMesh) dhcpRackLedMesh.material.color.setHex(0x00ff00);
+
+                            document.getElementById('hud-progress-text').className = "text-success fw-bold";
+                            document.getElementById('hud-progress-text').innerText = "12 / 12 LA 4 SELESAI! ⚡";
+
+                            cliModal.hide();
+                            setTimeout(() => resultModal.show(), 500);
+                        } else {
+                            updateStepGuide();
+                        }
+                    } else {
+                        appendTerminalLine(`Ralat sintaks! Sila taip arahan LA 4 yang betul.`, '#ff5555');
+                    }
+                }
+
+                terminalScreen.scrollTop = terminalScreen.scrollHeight;
+            }
+        });
+
+        function appendTerminalLine(text, color) {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.style.whiteSpace = "pre-wrap";
+            div.innerText = text;
+            terminalScreen.appendChild(div);
+        }
+
+        function resetLa4Lab() {
+            currentLa4Step = 1;
+            document.getElementById('hud-progress-text').innerText = "0 / 12 Langkah Selesai";
+            terminalScreen.innerHTML = `
+                <div class="text-white-50">Debian GNU/Linux 12 (Bookworm) tty1</div>
+                <div class="text-white-50">Log masuk pelayan DHCP (dlp.srv.world) berjaya. Sila lengkapkan 12 amali LA 4.</div>
+                <br>
+            `;
+            dhcpViewport.innerHTML = `
+                <div class="text-center mt-5 text-muted">
+                    <div class="display-3 mb-2">⚡</div>
+                    ##### Perkhidmatan DHCP Server Belum Aktif
+                    <p class="small">Sila taip arahan <code>apt -y install isc-dhcp-server</code> pada terminal CLI untuk memulakan amali.</p>
+                </div>
+            `;
+            updateStepGuide();
+        }
+
+        const keys = { w: false, a: false, s: false, d: false, e: false };
+
+        window.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = true;
+
+            if (k === 'e' && !document.querySelector('.modal.show')) {
+                const dist = playerGroup.position.distanceTo(new THREE.Vector3(0, 0, -3));
+                if (dist < 3.0) {
+                    openDhcpCliConsole();
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k in keys) keys[k] = false;
+        });
+
+        function updatePlayerMovement() {
+            if (document.querySelector('.modal.show')) return;
+
+            const moveSpeed = 0.07;
+            const rotSpeed = 0.04;
+
+            if (keys.w) playerGroup.translateZ(-moveSpeed);
+            if (keys.s) playerGroup.translateZ(moveSpeed);
+            if (keys.a) playerGroup.rotation.y += rotSpeed;
+            if (keys.d) playerGroup.rotation.y -= rotSpeed;
+
+            const cameraOffset = new THREE.Vector3(0, 1.8, 3.5);
+            cameraOffset.applyQuaternion(playerGroup.quaternion);
+            camera.position.copy(playerGroup.position).add(cameraOffset);
+            camera.lookAt(playerGroup.position.x, playerGroup.position.y + 1.2, playerGroup.position.z);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            updatePlayerMovement();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "source": "original procedural models based on published reference specifications; not manufacturer-owned 3D assets",
+  "products": [
+    {
+      "id": "corsair-vengeance-rgb-pro-ddr4",
+      "brand": "Corsair",
+      "name": "VENGEANCE RGB PRO DDR4",
+      "category": "ram",
+      "compatibility": "DDR4, visual sample compatible with Z170-P DDR4 family",
+      "demoOnly": true,
+      "glb": "models/brands/corsair-vengeance-rgb-pro-ddr4.glb"
+    },
+    {
+      "id": "corsair-qx120-rgb",
+      "brand": "Corsair",
+      "name": "iCUE LINK QX120 RGB",
+      "category": "fan",
+      "compatibility": "120mm; verify case mount & LINK hub",
+      "demoOnly": true,
+      "glb": "models/brands/corsair-qx120-rgb.glb"
+    },
+    {
+      "id": "corsair-h100i-elite-capellix-xt",
+      "brand": "Corsair",
+      "name": "iCUE H100i ELITE CAPELLIX XT",
+      "category": "cooler",
+      "compatibility": "Intel LGA115x compatible; radiator clearance F600 unverified",
+      "demoOnly": true,
+      "glb": "models/brands/corsair-h100i-elite-capellix-xt.glb"
+    },
+    {
+      "id": "corsair-rm750e-2025",
+      "brand": "Corsair",
+      "name": "RM750e 2025 ATX",
+      "category": "psu",
+      "compatibility": "ATX 750 W 140mm length",
+      "demoOnly": true,
+      "glb": "models/brands/corsair-rm750e-2025.glb"
+    },
+    {
+      "id": "elgato-stream-deck-mk2",
+      "brand": "Elgato",
+      "name": "Stream Deck MK.2",
+      "category": "peripheral",
+      "compatibility": "External USB device",
+      "demoOnly": true,
+      "glb": "models/brands/elgato-stream-deck-mk2.glb"
+    },
+    {
+      "id": "elgato-facecam-mk2",
+      "brand": "Elgato",
+      "name": "Facecam MK.2",
+      "category": "peripheral",
+      "compatibility": "External USB webcam",
+      "demoOnly": true,
+      "glb": "models/brands/elgato-facecam-mk2.glb"
+    },
+    {
+      "id": "elgato-wave3",
+      "brand": "Elgato",
+      "name": "Wave:3",
+      "category": "peripheral",
+      "compatibility": "External USB microphone",
+      "demoOnly": true,
+      "glb": "models/brands/elgato-wave3.glb"
+    },
+    {
+      "id": "elgato-key-light-air-mk2",
+      "brand": "Elgato",
+      "name": "Key Light Air MK.2",
+      "category": "peripheral",
+      "compatibility": "External desktop light",
+      "demoOnly": true,
+      "glb": "models/brands/elgato-key-light-air-mk2.glb"
+    }
+  ]
+}

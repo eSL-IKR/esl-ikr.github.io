@@ -1,0 +1,40 @@
+/* eSL-IKR Perisian: genuine WebGL workstation; original #panel untouched. */
+#swstage{position:relative!important;display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:0!important;gap:0!important;overflow:hidden;background:#0d1620!important;isolation:isolate}
+#swstage::before,#swstage::after{display:none!important}
+#sw3dWork{position:relative;width:100%;height:100%;min-height:340px;flex:1;overflow:hidden;background:radial-gradient(ellipse at 55% 50%,#26394a 0,#111e2a 54%,#0b141f 100%)}
+#sw3dCanvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none;outline:0}
+#sw3dCanvas:active{cursor:grabbing}
+#sw3dScreen{position:absolute;top:0;left:0;width:960px;height:540px;transform-origin:0 0;z-index:2;will-change:transform;pointer-events:none;backface-visibility:hidden}
+#sw3dScreen .glass{position:relative!important;width:960px!important;height:540px!important;aspect-ratio:auto!important;overflow:hidden!important;background:#020617!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+#sw3dScreen .glass::before,#sw3dScreen .glass::after{display:none!important}
+#sw3dScreen #scr{position:relative;width:960px;height:540px;overflow:hidden}
+#sw3dScreen .px{transform:scale(1)!important;transform-origin:0 0}
+#sw3dScreen .hl{pointer-events:auto;cursor:pointer}
+#sw3dHeader{position:absolute;top:14px;left:15px;right:15px;z-index:4;display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;pointer-events:none}
+#sw3dHeader .sw3d-glass-label{background:rgba(8,18,32,.87);border:1px solid rgba(133,170,208,.29);color:#e7f2ff;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:700;max-width:78%;box-shadow:0 6px 18px rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+#sw3dHeader .sw3d-status{color:#9ff1cf;white-space:nowrap}
+#sw3dControls{position:absolute;bottom:43px;left:50%;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 20px);padding:7px;background:rgba(6,14,25,.85);border:1px solid rgba(105,149,191,.30);border-radius:14px;backdrop-filter:blur(12px)}
+#sw3dControls button{font:700 11px system-ui,-apple-system,'Segoe UI',sans-serif;border:1px solid transparent;background:transparent;color:#d4e4f3;cursor:pointer;padding:7px 10px;border-radius:9px;white-space:nowrap}
+#sw3dControls button:hover,#sw3dControls button:focus-visible{border-color:#6ea0d2;outline:none}
+#sw3dControls button.on{background:#1f5daa;color:#fff;border-color:#4d8bd6}
+#sw3dControls button:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+#sw3dToast{position:absolute;top:53px;right:15px;z-index:5;max-width:260px;border-radius:10px;padding:9px 12px;background:rgba(9,28,40,.95);border:1px solid #357c9a;color:#d8f8ff;font-size:11px;line-height:1.5;display:none}
+#sw3dToast.show{display:block}
+#sw3dHint{position:absolute;bottom:11px;left:14px;right:14px;z-index:4;pointer-events:none;color:#b6cddd;text-align:center;font:600 11px system-ui,sans-serif;text-shadow:0 2px 8px #000}
+#swstage #swinfo{position:absolute;bottom:86px;left:20px;right:20px;z-index:4;text-align:center;color:#e2edf7;font-weight:700;font-size:11px;text-shadow:0 2px 6px #000;pointer-events:none}
+#swstage #swDragHint{position:absolute;bottom:69px;left:20px;right:20px;z-index:4;text-align:center;color:#93d4f6;font-size:10px;pointer-events:none;border:0;background:none;padding:0;margin:0}
+#swstage #swhud{position:absolute;top:48px;right:10px;z-index:4}
+#sw3dModal{position:fixed;inset:0;z-index:290;display:grid;place-items:center;background:rgba(0,7,17,.82);padding:14px;backdrop-filter:blur(12px)}
+#sw3dModal[hidden]{display:none!important}
+#sw3dModal .sw3d-modalbox{width:min(1050px,100%);background:#101b2a;color:#eaf3ff;border:1px solid #456587;border-radius:16px;overflow:hidden;box-shadow:0 32px 80px #0009}
+#sw3dModal .sw3d-modalhead{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #2d4157;font-weight:700;font-size:13px}
+#sw3dModal button{background:#22374c;color:#e4f2fb;border:1px solid #58738b;padding:6px 12px;border-radius:9px;cursor:pointer}
+#sw3dModal .sw3d-modalwindow{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#060b15}
+#sw3dModal #sw3dModalScr{position:absolute;top:0;left:0;width:960px;height:540px;transform-origin:0 0}
+#sw3dModal .px{transform:none!important}
+#sw3dModal .sw3d-modal-foot{padding:11px;color:#a9becd;font-size:11px}
+#sw3dFallback{position:absolute;inset:0;z-index:10;display:none;place-items:center;padding:30px;text-align:center;background:#101c28;color:#e7f2ff}
+#sw3dFallback.show{display:grid}
+@media(max-width:900px){#sw3dWork{min-height:360px}#swstage #swinfo{bottom:94px}#sw3dControls{bottom:43px}#sw3dHeader .sw3d-glass-label{font-size:10px}}
+@media(max-width:600px){#sw3dWork{min-height:350px}#sw3dControls{width:calc(100% - 12px);gap:2px;padding:4px;border-radius:12px;bottom:40px}#sw3dControls button{flex:1 1 20%;padding:7px 4px;font-size:10px}#swstage #swinfo{bottom:91px;font-size:10px}#sw3dHeader{left:8px;right:8px;top:9px}#sw3dHeader .sw3d-glass-label{padding:5px 8px;font-size:9px}#sw3dHint{font-size:9px;bottom:7px}}
+@media(prefers-reduced-motion:reduce){#sw3dControls *{animation:none!important;transition:none!important}}

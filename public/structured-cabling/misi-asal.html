@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>eSL-IKR · IKR3023 Structured Cabling 3D</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/hud.css">
+<link rel="stylesheet" href="css/responsive.css">
+<script type="importmap">
+{"imports":{
+ "three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+ "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<div id="app">
+  <main id="viewport">
+    <canvas id="c" aria-label="Bangku kerja 3D"></canvas>
+    <div id="tip" class="tip" hidden></div>
+
+    <header id="topbar">
+      <div class="brand"><b>IKR3023</b><span>Pendawaian Berstruktur</span></div>
+      <div class="topbtns">
+        <button id="btn-fit" class="ibtn" title="Set semula pandangan">⌂</button>
+        <button id="btn-focus" class="ibtn" title="Fokus pada objek dipilih" disabled>◎</button>
+        <button id="btn-sound" class="ibtn" title="Bunyi" aria-pressed="false">🔇</button>
+        <button id="btn-help" class="ibtn" title="Bantuan">?</button>
+      </div>
+    </header>
+
+    <div id="loading" class="overlay">
+      <div class="card">
+        <h2>Memuat bangku kerja…</h2>
+        <div class="bar"><i id="load-bar"></i></div>
+        <p id="load-text">Menyediakan model 3D</p>
+      </div>
+    </div>
+
+    <div id="error" class="overlay" hidden>
+      <div class="card">
+        <h2 id="err-title">Ralat</h2>
+        <p id="err-msg"></p>
+        <button id="err-retry" class="btn primary">Cuba semula</button>
+      </div>
+    </div>
+
+    <div id="start" class="overlay" hidden>
+      <div class="card wide">
+        <h2>Amali Terminasi Kabel Rangkaian</h2>
+        <p>Pilih kabel → potong → kupas → susun T568A/B → crimp RJ45 → punch down pada patch panel → uji dengan cable tester.</p>
+        <div class="modes">
+          <button class="mode" data-mode="guided"><b>Latihan Berpandu</b><span>Langkah demi langkah, petunjuk, cuba semula tanpa had.</span></button>
+          <button class="mode" data-mode="exam"><b>Mod Peperiksaan</b><span>Tiada petunjuk. Kesilapan dikira dan markah dikira.</span></button>
+        </div>
+        <button id="btn-reset" class="btn ghost small">Padam kemajuan tersimpan</button>
+      </div>
+    </div>
+
+    <div id="help" class="overlay" hidden>
+      <div class="card">
+        <h2>Bantuan</h2>
+        <ul class="helplist">
+          <li><b>Pilih objek:</b> klik atau ketik pada objek 3D, atau pada kad inventori.</li>
+          <li><b>Putar kamera:</b> seret (satu jari). <b>Zum:</b> roda tetikus / cubit. <b>Gerak:</b> klik kanan / dua jari.</li>
+          <li><b>⌂</b> set semula pandangan. <b>◎</b> fokus pada objek dipilih.</li>
+          <li>Butang <b>Seterusnya</b> hanya aktif selepas tugasan misi benar-benar selesai.</li>
+        </ul>
+        <button id="help-close" class="btn primary">Tutup</button>
+      </div>
+    </div>
+  </main>
+
+  <aside id="mission">
+    <a class="sim-back-to-portal" href="../" aria-label="Kembali ke portal eSL-IKR">← Kembali ke eSL-IKR</a>
+    <button id="mission-toggle" class="mission-head" aria-expanded="true">
+      <span class="mtag" id="m-tag">MISI 1/8</span>
+      <span class="mtitle" id="m-title">—</span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="mission-body" id="mission-body">
+      <p id="m-goal" class="goal"></p>
+      <ol id="m-steps" class="steps"></ol>
+      <div id="m-feedback" class="feedback" hidden></div>
+      <div class="row">
+        <button id="btn-hint" class="btn ghost small">💡 Petunjuk</button>
+        <button id="btn-confirm" class="btn primary small" disabled>Sahkan Pilihan</button>
+      </div>
+      <section id="info" class="info" hidden>
+        <h3 id="info-name"></h3>
+        <p id="info-text"></p>
+        <dl id="info-spec"></dl>
+      </section>
+    </div>
+    <footer class="mission-foot">
+      <div id="progress" class="progress" aria-label="Kemajuan misi"></div>
+      <button id="btn-next" class="btn primary" disabled>Misi Seterusnya →</button>
+    </footer>
+  </aside>
+
+  <section id="dock" class="dock">
+    <button id="dock-handle" class="dock-handle" aria-label="Buka atau tutup inventori"><i></i></button>
+    <nav id="tabs" class="tabs"></nav>
+    <div id="cards" class="cards"></div>
+  </section>
+</div>
+<noscript>Simulator ini memerlukan JavaScript.</noscript>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

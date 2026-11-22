@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galeri 3D Perkakasan PC — eSL-IKR</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;--bg:#080e19;--panel:#111c2b;--border:#26394f;--text:#e7edf6;--muted:#96aac0;--accent:#6575ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);height:100vh;min-height:350px;display:grid;grid-template-columns:250px 1fr;overflow:hidden}button,input{font:inherit}
+aside{min-height:0;border-right:1px solid var(--border);background:var(--panel);display:flex;flex-direction:column}header{padding:16px 15px;border-bottom:1px solid var(--border)}h1{font-size:15px;margin:0 0 6px}small,p{color:var(--muted)}header p{font-size:11px;margin:0 0 10px}#filters button{border:1px solid #3d5169;border-radius:7px;background:#17253a;padding:6px 8px;color:#d6e3f4;font-size:10px;cursor:pointer}#filters button.on{background:#4f46e5;color:white;border-color:#8b82ff} input{width:100%;padding:10px 11px;border-radius:8px;background:#08111d;color:#fff;border:1px solid #344459;outline:none}input:focus{border-color:var(--accent)}
+#list{overflow:auto;padding:9px;display:flex;flex-direction:column;gap:5px}.part{display:flex;gap:9px;align-items:center;border:1px solid transparent;background:transparent;color:#c6d5eb;border-radius:8px;padding:9px 10px;cursor:pointer;text-align:left}.part:hover{background:#1c2a43}.part.on{border-color:var(--accent);background:#293369;color:#fff}.part .n{display:block;font-size:12px;font-weight:700}.part small{display:block;font-size:10px}.part i{font-size:21px;font-style:normal;width:28px;text-align:center}
+main{position:relative;min-width:0;overflow:hidden}canvas{display:block;width:100%;height:100%;touch-action:none}.shade{position:absolute;pointer-events:none;background:linear-gradient(180deg,#07121dc8,transparent);inset:0 0 auto;height:145px}.meta{position:absolute;top:15px;left:20px;pointer-events:none;max-width:78%}.meta h2{font-size:22px;margin:4px 0}.meta p{font-size:12px;max-width:420px;line-height:1.5;margin:6px 0}.meta span{letter-spacing:.12em;text-transform:uppercase;font-size:10px;color:#7fded8;font-weight:700}
+.controls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:calc(100% - 20px)}.controls button{border:1px solid #456078;background:#18293ae8;color:#e7f1ff;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:12px}.controls button:hover,.controls button.on{background:#535fec;color:#fff;border-color:#7987ff}
+#status{position:absolute;right:15px;top:15px;padding:6px 10px;background:#071c26ab;border-radius:20px;color:#9ce9ba;font-size:11px;pointer-events:none}.license{position:absolute;bottom:76px;left:20px;color:#8ea3b6;font-size:10px;max-width:80%;pointer-events:none}
+@media(max-width:640px){body{grid-template-columns:132px 1fr}.part{padding:7px 4px;gap:3px}.part i{font-size:17px;width:21px}.part .n{font-size:11px}header{padding:9px 6px}h1{font-size:12px}header p{display:none}#list{padding:4px}.meta{top:8px;left:8px}.meta h2{font-size:16px}.meta p{font-size:10px}.controls button{padding:7px 8px;font-size:10px}.license{display:none}}
+.controls button:disabled{opacity:.45;cursor:not-allowed}</style>
+</head>
+<body>
+<aside><header><h1>◈ 3D Hardware Gallery</h1><p>24 model asal + 8 model Corsair / Elgato berinspirasi produk sebenar.</p><div id="filters" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px"><button type="button" class="on" data-brand="all">Semua (32)</button><button type="button" data-brand="corsair">Corsair (4)</button><button type="button" data-brand="elgato">Elgato (4)</button><button type="button" data-brand="old">Asal (24)</button></div><input id="search" placeholder="Cari komponen..." aria-label="Cari model"></header><div id="list" role="navigation" aria-label="Senarai komponen 3D"></div></aside>
+<main><div class="shade"></div><canvas id="viewer" aria-label="Objek 3D boleh diputar dengan tetikus"></canvas>
+<div class="meta"><span>eSL-IKR · Perkakasan</span><h2 id="name">GPU (Kad Grafik)</h2><p id="info">Geometri tiga dimensi, material PBR, zum dan putaran bebas.</p></div>
+<div id="status" role="status">Memuatkan...</div><div class="license">Model baharu Corsair &amp; Elgato dijana secara prosedural berasaskan spesifikasi rasmi. Bukan model/tekstur rasmi, bukan integrasi iCUE/Stream Deck.</div>
+<div class="controls"><button data-view="front">Depan</button><button data-view="right">Sisi</button><button data-view="top">Atas</button><button data-view="iso">Isometrik</button><button id="spin" class="on">⟳ Putar auto</button><button id="grid" class="on">⌗ Grid</button></div></main>
+<script src="../libs/three/three.min.js"></script>
+<script src="../libs/three/GLTFLoader.js"></script>
+<script src="../libs/three/OrbitControls.js"></script>
+<script src="../libs/three/RoomEnvironment.js"></script>
+<script src="studio.js"></script>
+<script>
+'use strict';
+const DATA=[
+['corsair-vengeance-rgb-pro-ddr4','Corsair VENGEANCE RGB PRO DDR4','RAM DDR4 RGB model prosedural; sesuai generasi memori ASUS Z170-P. Bukan aset 3D rasmi Corsair.','🧠','Corsair'],
+['corsair-qx120-rgb','Corsair iCUE LINK QX120 RGB','Kipas 120 mm dengan bingkai, bilah 3D, LED dan penyambung. Animasi RGB simulasi sahaja.','🌈','Corsair'],
+['corsair-h100i-elite-capellix-xt','Corsair H100i ELITE CAPELLIX XT','Penyejuk cecair AIO 240 mm dengan radiator, dua kipas dan hos. Keserasian radiator F600 perlu disahkan.','💧','Corsair'],
+['corsair-rm750e-2025','Corsair RM750e (2025)','PSU ATX 750 W model peragaan berinspirasikan casing sebenar.','🔌','Corsair'],
+['elgato-stream-deck-mk2','Elgato Stream Deck MK.2','Panel USB dengan 15 kekunci LCD (5×3); untuk streaming dan makro.','🎛️','Elgato'],
+['elgato-facecam-mk2','Elgato Facecam MK.2','Webcam USB dengan kaca lensa, cincin fokus dan bracket monitor.','📹','Elgato'],
+['elgato-wave3','Elgato Wave:3','Mikrofon USB dengan gril, tombol gain, dudukan dan pemegang.','🎙️','Elgato'],
+['elgato-key-light-air-mk2','Elgato Key Light Air MK.2','Lampu LED studio dengan panel diffuser dan penyangga meja.','💡','Elgato'],
+['gpu','GPU / Kad Grafik','Kad grafik dengan PCB, heatsink, kipas penyejukan, panel belakang serta penyambung PCIe.','🎮'],
+['asus','ASUS Z170-P Motherboard','Model GLB ASUS Z170-P yang diberikan pengguna.','🧩'],
+['case','FOIFKIN F600','Casing ATX F600 dengan kaca panoramik dan 7 kipas.','🖥️'],
+['cpu','CPU Intel','CPU bersoket LGA1151 dengan penutup penyebar haba logam dan PCB.','⚙️'],
+['ram-blue','RAM DDR4 (Modul 1)','Modul RAM DDR4 lengkap dengan cip DRAM, kaki kenalan dan penyebar haba.','🧠'],
+['ram-purple','RAM DDR4 (Modul 2)','Modul DDR4 kedua dengan penyebar haba warna ungu.','🧠'],
+['cooler-air','CPU Air Cooler','Menara heatsink aluminium, heatpipe tembaga dan kipas 3D.','❄️'],
+['cooler-aio','Penyejuk Cecair AIO','Pam CPU, radiator, sirip logam dan paip bendalir.','💧'],
+['m2','SSD M.2 NVMe','PCB M.2 dengan NAND flash, pengawal dan kontak penyambung.','💾'],
+['ssd-sata','SSD SATA 2.5 inci','Pemacu SSD SATA berperumah dengan penyambung data dan kuasa.','💾'],
+['hdd','HDD SATA 3.5 inci','Pemacu HDD dengan badan logam, penutup, label dan SATA.','💽'],
+['psu','PSU / Bekalan Kuasa','Kotak PSU ATX, kipas, panel label, soket modular dan gril.','🔌'],
+['nic','Kad NIC PCIe','Kad rangkaian PCIe dengan cip pengawal dan port LAN RJ45.','🌐'],
+['fan-front','Kipas Casing 120 mm','Kipas dengan bingkai, rotor, bilah dan cincin lampu ARGB.','🌀'],
+['fan-rear','Kipas Casing Belakang','Kipas exhaust dengan bilah dan rangka 3D.','🌀'],
+['wifi-usb','Adapter WiFi USB','Dongle WiFi USB kecil dengan soket Type-A dan LED.','📶'],
+['keyboard','Papan Kekunci','Papan kekunci dengan puluhan keycap geometri 3D.','⌨️'],
+['mouse','Tetikus','Tetikus dengan badan berkontur, roda dan lampu RGB.','🖱️'],
+['monitor','Monitor','Monitor dengan skrin, bezel, pemegang dan kaki.','🖥️'],
+['speaker','Speaker','Kabinet pembesar suara dengan woofer dan tweeter.','🔊'],
+['rj45','Penyambung Kabel LAN','Kepala kabel Ethernet RJ45 dengan lapan kontak.','🌐'],
+['ac-plug','Plag Kuasa AC','Penyambung kuasa AC untuk PSU.','⚡'],
+['wall-plug','Plag Kuasa 3-pin','Plag BS1363 tiga pin dengan komponen bergeometri.','🔌'],
+['thermal-paste','Thermal Paste','Titisan bahan konduktor haba untuk CPU.','💧']
+];
+const canvas=document.querySelector('#viewer'),status=document.querySelector('#status'),nameEl=document.querySelector('#name'),infoEl=document.querySelector('#info');
+let renderer,scene,camera,ctl,root=null,rad=4,lastLoad=0,grid;let spun=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const urls={case:'models/FOIFKIN_F600.glb',asus:'models/asus-z170p.glb'};
+const BRAND_IDS=new Set(['corsair-vengeance-rgb-pro-ddr4','corsair-qx120-rgb','corsair-h100i-elite-capellix-xt','corsair-rm750e-2025','elgato-stream-deck-mk2','elgato-facecam-mk2','elgato-wave3','elgato-key-light-air-mk2']);
+BRAND_IDS.forEach(id=>{urls[id]='models/brands/'+id+'.glb';});
+function init(){
+  if(typeof THREE==='undefined'||!THREE.GLTFLoader){status.textContent='Three.js tidak tersedia';return false;}
+  try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});}catch(e){status.textContent='WebGL tidak disokong';return false;}
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.4;
+  renderer.setClearColor(0x08111d,1);
+  scene=new THREE.Scene();lightStudio(renderer,scene);camera=new THREE.PerspectiveCamera(38,1,.02,500);
+  scene.add(new THREE.HemisphereLight(0xf5faff,0x26334b,1.0));
+  const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(5,7,8);scene.add(key);
+  const fill=new THREE.DirectionalLight(0x85bfff,1.3);fill.position.set(-4,0,-6);scene.add(fill);
+  const edge=new THREE.DirectionalLight(0xe5a2ff,.95);edge.position.set(2,-5,3);scene.add(edge);
+  grid=new THREE.GridHelper(8,20,0x33466a,0x18253b);grid.position.y=-2.5;scene.add(grid);
+  ctl=new THREE.OrbitControls(camera,canvas);ctl.enableDamping=true;ctl.autoRotate=spun;document.querySelector('#spin').classList.toggle('on',spun);ctl.autoRotateSpeed=1.2;ctl.minDistance=1.2;ctl.maxDistance=24;
+  camera.position.set(4,2.6,5.4);ctl.target.set(0,0,0);
+  function resize(){let w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  new ResizeObserver(resize).observe(canvas);resize();
+  function animate(){requestAnimationFrame(animate);ctl.update();renderer.render(scene,camera);}animate();return true;
+}
+let loader=null;
+function load(id){
+  let item=DATA.find(x=>x[0]===id);if(!item)return;
+  let token=++lastLoad;nameEl.textContent=item[1];infoEl.textContent=item[2];
+  document.querySelectorAll('.part').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
+  if(!renderer)return;
+  status.textContent='Memuatkan GLB...';
+  const path=urls[id]||('models/components/'+id+'.glb');
+  if(!loader)loader=new THREE.GLTFLoader();
+  loader.load(path,function(gltf){
+    if(token!==lastLoad)return;
+    if(root)scene.remove(root);
+    root=gltf.scene;
+    if(id==='asus')root.rotation.z=-Math.PI/2;
+    const trainingRam = id==='ram-blue'||id==='ram-purple';
+    if(trainingRam){
+      detailTrainingDimm(root);
+      root.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(
+        new THREE.Vector3(0,0,1),new THREE.Vector3(1,0,0),new THREE.Vector3(0,1,0)));
+    }
+    if(id==='gpu')root.rotation.x=-Math.PI/2;
+    scene.add(root);
+    const box=new THREE.Box3().setFromObject(root);
+    const size=box.getSize(new THREE.Vector3());
+    if(!isFinite(size.length())||size.length()<1e-8){status.textContent='Model GLB kosong';return;}
+    const center=box.getCenter(new THREE.Vector3());
+    const fac=3.5/Math.max(size.x,size.y,size.z);
+    root.scale.multiplyScalar(fac);
+    root.position.sub(center.multiplyScalar(fac));
+    ctl.target.set(0,0,0);
+    const pose=trainingRam?[.65,.85,5.5]:({gpu:[2.2,1.4,5.6],asus:[.9,.55,5.9],case:[4.4,2.1,4.8]}[id]||[4.2,2.75,5.5]);
+    camera.position.set(...pose).multiplyScalar(Math.max(1,1/camera.aspect));ctl.update();
+    grid.position.y=-size.y*fac/2-.04;status.textContent='✓ 3D GLB tersedia';
+  },undefined,function(err){if(token!==lastLoad)return;status.textContent='GLB gagal dimuatkan';console.error(path,err);});
+}
+let brandFilter=new URLSearchParams(location.search).get('group')==='brands'?'brands':'all';
+function renderList(term=''){
+  const lst=document.querySelector('#list');lst.innerHTML='';
+  DATA.filter(v=>{let grp=v[4]||'old';return (brandFilter==='all'||brandFilter==='brands'&&grp!=='old'||brandFilter===grp.toLowerCase()) && (v[1]+' '+v[2]+' '+grp).toLowerCase().includes(term.toLowerCase());}).forEach(v=>{
+    let b=document.createElement('button');b.type='button';b.className='part';b.dataset.part=v[0];
+    b.innerHTML='<i>'+v[3]+'</i><span><span class="n"></span><small></small></span>';
+    b.querySelector('.n').textContent=v[1];b.querySelector('small').textContent=(v[4]||'Model asal')+' · GLB tempatan';b.addEventListener('click',()=>load(v[0]));lst.appendChild(b);
+  });
+}
+document.querySelector('#search').addEventListener('input',e=>renderList(e.target.value));
+document.querySelectorAll('[data-brand]').forEach(b=>b.addEventListener('click',()=>{brandFilter=b.dataset.brand;document.querySelectorAll('[data-brand]').forEach(x=>x.classList.toggle('on',x===b));renderList(document.querySelector('#search').value); }));
+if(brandFilter==='brands'){document.querySelector('[data-brand="all"]').classList.remove('on');document.querySelector('[data-brand="corsair"]').classList.add('on');document.querySelector('[data-brand="elgato"]').classList.add('on');}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
+  let v=b.dataset.view;camera.position.set(...({front:[0,.1,7],right:[7,.1,0],top:[.1,7,.1],iso:[4,3,5]}[v]));ctl.update();
+}));
+document.querySelector('#spin').addEventListener('click',e=>{spun=!spun;ctl.autoRotate=spun;e.currentTarget.classList.toggle('on',spun);});
+document.querySelector('#grid').addEventListener('click',e=>{grid.visible=!grid.visible;e.currentTarget.classList.toggle('on',grid.visible);});
+renderList();if(init()){const queryModel=new URLSearchParams(location.search).get('model');const first=DATA.find(v=>v[0]===queryModel);load(first?first[0]:(brandFilter==='brands'?'corsair-vengeance-rgb-pro-ddr4':'gpu'));}else{document.querySelectorAll('.controls button').forEach(button=>{button.disabled=true;});}
+</script>
+</body></html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soalan Objektif - IKR3103 Network Operating System (150 Soalan)</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; background: #0b1220; color: #1f2937; margin: 0; padding: 0; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+  header.main-header { background: linear-gradient(135deg, #0f172a, #14532d, #166534); color: #fff; padding: 40px 24px; text-align: center; }
+  header.main-header h1 { margin: 0 0 6px; font-size: 27px; }
+  header.main-header p { margin: 4px 0 0; font-size: 14px; opacity: 0.9; }
+  .toc { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 18px 22px; margin: -24px 0 28px; box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+  .toc h2 { font-size: 16px; margin: 0 0 10px; color: #14532d; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin-bottom: 6px; font-size: 14px; }
+  .toc a { color: #15803d; text-decoration: none; font-weight: 600; }
+  .toc a:hover { text-decoration: underline; }
+  section.kp { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; margin-bottom: 26px; overflow: hidden; }
+  section.kp > h2 { background: #14532d; color: #fff; margin: 0; padding: 14px 22px; font-size: 17px; }
+  .kp-body { padding: 8px 22px 20px; }
+  .q { padding: 14px 0; border-bottom: 1px solid #edf1f5; }
+  .q:last-child { border-bottom: none; }
+  .q-text { font-weight: 600; margin: 0 0 8px; font-size: 14.5px; line-height: 1.5; }
+  .q-num { display: inline-block; min-width: 26px; color: #15803d; font-weight: 700; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .03em; border-radius: 999px; padding: 2px 7px; margin-right: 4px; vertical-align: middle; }
+  .b-easy { background: #dcfce7; color: #15803d; }
+  .b-med { background: #fef3c7; color: #b45309; }
+  .b-hard { background: #fee2e2; color: #be123c; }
+  .options { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+  .options li { font-size: 14px; padding: 6px 10px; background: #f7f9fb; border: 1px solid #e5eaf0; border-radius: 6px; }
+  .options li b { color: #14532d; margin-right: 4px; }
+  details.answer-key { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; margin-bottom: 26px; }
+  details.answer-key summary { cursor: pointer; padding: 14px 22px; background: #14532d; color: #fff; font-weight: 600; border-radius: 10px 10px 0 0; list-style: none; }
+  details.answer-key summary::-webkit-details-marker { display: none; }
+  details.answer-key[open] summary { border-radius: 10px 10px 0 0; }
+  .key-body { padding: 18px 22px; }
+  .key-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .key-grid div { background: #eef3f8; border-radius: 6px; padding: 6px 4px; text-align: center; font-size: 13px; font-weight: 600; color: #14532d; }
+  .key-sub-title { font-weight: 700; color: #15803d; margin: 18px 0 8px; font-size: 14px; }
+  .key-sub-title:first-child { margin-top: 0; }
+  footer { text-align: center; color: #8592a3; font-size: 12.5px; margin-top: 30px; }
+  @media (max-width: 560px) { .options { grid-template-columns: 1fr; } .key-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media print { body { background: #fff; } details.answer-key { page-break-before: always; } section.kp { break-inside: avoid-page; } }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <h1>Soalan Objektif &mdash; IKR3103 Network Operating System</h1>
+  <p>Web Server &middot; DNS Server &middot; DHCP Server &middot; Directory Server (Linux)</p>
+  <p>150 Soalan &middot; 5 KP &middot; 30 Soalan Setiap KP (10 Easy, 10 Medium, 10 Hard KBAT)</p>
+</header>
+
+<div class="wrap">
+
+  <div class="toc">
+    <h2>Kandungan</h2>
+    <ol>
+<li><a href="#kp1">KP 1 &ndash; Fungsi &amp; Konfigurasi Perkhidmatan Rangkaian (30 soalan: 10 Easy, 10 Medium, 10 Hard KBAT)</a></li>
+<li><a href="#kp2">KP 2 &ndash; Prosedur Konfigurasi Web Server (30 soalan: 10 Easy, 10 Medium, 10 Hard KBAT)</a></li>
+<li><a href="#kp3">KP 3 &ndash; Prosedur Konfigurasi DNS Server (30 soalan: 10 Easy, 10 Medium, 10 Hard KBAT)</a></li>
+<li><a href="#kp4">KP 4 &ndash; Prosedur Konfigurasi DHCP Server (30 soalan: 10 Easy, 10 Medium, 10 Hard KBAT)</a></li>
+<li><a href="#kp5">KP 5 &ndash; Prosedur Konfigurasi Directory Server (30 soalan: 10 Easy, 10 Medium, 10 Hard KBAT)</a></li>
+      <li><a href="#kunci">Kunci Jawapan</a></li>
+    </ol>
+  </div>
+
+  <section class="kp" id="kp1">
+    <h2>KP 1 &mdash; Fungsi &amp; Konfigurasi Perkhidmatan Rangkaian</h2>
+    <div class="kp-body">
+      <div class="q"><p class="q-text"><span class="q-num">1.</span> <span class="badge b-easy">E</span> Protokol utama yang digunakan web server untuk menghantar kandungan kepada pengguna ialah?</p>
+      <ul class="options"><li><b>A.</b> FTP</li><li><b>B.</b> SMTP</li><li><b>C.</b> SNMP</li><li><b>D.</b> HTTP/HTTPS</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">2.</span> <span class="badge b-easy">E</span> Port lalai bagi protokol HTTP ialah?</p>
+      <ul class="options"><li><b>A.</b> 53</li><li><b>B.</b> 21</li><li><b>C.</b> 80</li><li><b>D.</b> 443</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">3.</span> <span class="badge b-easy">E</span> Port lalai bagi protokol HTTPS ialah?</p>
+      <ul class="options"><li><b>A.</b> 443</li><li><b>B.</b> 21</li><li><b>C.</b> 8080</li><li><b>D.</b> 80</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">4.</span> <span class="badge b-easy">E</span> Konfigurasi virtual host yang membezakan laman web berdasarkan nama domain pada satu IP dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> Domain-Based</li><li><b>B.</b> Name-Based</li><li><b>C.</b> Port-Based</li><li><b>D.</b> IP-Based</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">5.</span> <span class="badge b-easy">E</span> Konfigurasi virtual host yang menggunakan alamat IP berbeza bagi setiap laman web ialah?</p>
+      <ul class="options"><li><b>A.</b> Host-Based</li><li><b>B.</b> Name-Based</li><li><b>C.</b> Port-Based</li><li><b>D.</b> IP-Based</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">6.</span> <span class="badge b-easy">E</span> Konfigurasi virtual host yang membezakan laman web mengikut nombor port ialah?</p>
+      <ul class="options"><li><b>A.</b> SSL-Based</li><li><b>B.</b> Port-Based</li><li><b>C.</b> IP-Based</li><li><b>D.</b> Name-Based</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">7.</span> <span class="badge b-easy">E</span> Fungsi SSL/TLS yang memastikan data tidak dapat dibaca oleh pihak luar ialah?</p>
+      <ul class="options"><li><b>A.</b> Autentikasi</li><li><b>B.</b> Logging</li><li><b>C.</b> Integriti Data</li><li><b>D.</b> Penyulitan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">8.</span> <span class="badge b-easy">E</span> DHCP Server menetapkan alamat IP kepada peranti secara?</p>
+      <ul class="options"><li><b>A.</b> Manual</li><li><b>B.</b> Automatik</li><li><b>C.</b> Statik tetap</li><li><b>D.</b> Rawak tanpa pool</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">9.</span> <span class="badge b-easy">E</span> Tempoh sesuatu alamat IP diberikan secara sementara oleh DHCP dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> Binding</li><li><b>B.</b> Scope</li><li><b>C.</b> Reservation</li><li><b>D.</b> Lease</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">10.</span> <span class="badge b-easy">E</span> Perisian direktori sumber terbuka yang popular dalam persekitaran Linux ialah?</p>
+      <ul class="options"><li><b>A.</b> Apache Tomcat</li><li><b>B.</b> Active Directory</li><li><b>C.</b> IIS</li><li><b>D.</b> OpenLDAP</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">11.</span> <span class="badge b-med">M</span> Fungsi SSL/TLS yang mengesahkan identiti server melalui sijil digital ialah?</p>
+      <ul class="options"><li><b>A.</b> Access Control</li><li><b>B.</b> Data Integrity</li><li><b>C.</b> Encryption</li><li><b>D.</b> Authentication</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">12.</span> <span class="badge b-med">M</span> Fungsi SSL/TLS yang mengesan sebarang perubahan data semasa penghantaran ialah?</p>
+      <ul class="options"><li><b>A.</b> Authentication</li><li><b>B.</b> Data Integrity</li><li><b>C.</b> Firewall</li><li><b>D.</b> Encryption</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">13.</span> <span class="badge b-med">M</span> Kaedah authentication yang menghantar data dalam bentuk base64 tanpa penyulitan ialah?</p>
+      <ul class="options"><li><b>A.</b> Form-Based</li><li><b>B.</b> Token-Based</li><li><b>C.</b> Basic Authentication</li><li><b>D.</b> Digest Authentication</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">14.</span> <span class="badge b-med">M</span> Fail log yang merekod kegagalan seperti skrip gagal atau ralat konfigurasi ialah?</p>
+      <ul class="options"><li><b>A.</b> Boot Log</li><li><b>B.</b> Audit Log</li><li><b>C.</b> Access Log</li><li><b>D.</b> Error Log</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">15.</span> <span class="badge b-med">M</span> Alat pemantauan yang menggabungkan visualisasi metrik dan amaran (alerting) ialah?</p>
+      <ul class="options"><li><b>A.</b> Nagios</li><li><b>B.</b> Wireshark</li><li><b>C.</b> Grafana + Prometheus</li><li><b>D.</b> ELK Stack</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">16.</span> <span class="badge b-med">M</span> Alat yang digunakan untuk pengurusan log berskala besar dan analisis visual ialah?</p>
+      <ul class="options"><li><b>A.</b> Nginx</li><li><b>B.</b> ELK Stack</li><li><b>C.</b> Zabbix</li><li><b>D.</b> Grafana</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">17.</span> <span class="badge b-med">M</span> Apabila cache tempatan tiada jawapan, pertanyaan DNS pertama dalam proses DNS Lookup dihantar ke?</p>
+      <ul class="options"><li><b>A.</b> DHCP Server</li><li><b>B.</b> TLD Server (.com)</li><li><b>C.</b> Authoritative DNS Server</li><li><b>D.</b> Root Server</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">18.</span> <span class="badge b-med">M</span> Server yang menyimpan rekod rasmi bagi sesuatu domain seperti example.com ialah?</p>
+      <ul class="options"><li><b>A.</b> TLD Server</li><li><b>B.</b> Recursive Server</li><li><b>C.</b> Authoritative DNS Server</li><li><b>D.</b> Root Server</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">19.</span> <span class="badge b-med">M</span> Antara berikut, manakah BUKAN maklumat rangkaian yang disediakan oleh DHCP Server?</p>
+      <ul class="options"><li><b>A.</b> Subnet Mask</li><li><b>B.</b> DNS Server</li><li><b>C.</b> Nama Pengguna</li><li><b>D.</b> Default Gateway</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">20.</span> <span class="badge b-med">M</span> Setiap objek unik dalam directory server dikenal pasti melalui?</p>
+      <ul class="options"><li><b>A.</b> Distinguished Name (DN)</li><li><b>B.</b> Index</li><li><b>C.</b> Schema</li><li><b>D.</b> Object Class</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">21.</span> <span class="badge b-hard">H</span> Dua laman, www.kedai-a.my dan www.kedai-b.my, perlu dihoskan pada satu pelayan yang hanya ada satu alamat IP awam dan kedua-duanya guna port 80. Jenis virtual host mana yang sesuai, dan apa yang membezakan permintaan?</p>
+      <ul class="options"><li><b>A.</b> Port-Based; pelayan membezakan berdasarkan nombor port sumber pada pelayar</li><li><b>B.</b> IP-Based; pelayan membezakan berdasarkan alamat IP destinasi yang berbeza bagi setiap laman</li><li><b>C.</b> Name-Based; pelayan membezakan berdasarkan nama hos (domain) yang diminta pelayar</li><li><b>D.</b> Name-Based; pelayan membezakan berdasarkan alamat MAC klien yang membuat permintaan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">22.</span> <span class="badge b-hard">H</span> Sebuah portal dalaman menggunakan Basic Authentication melalui HTTP biasa. Seorang juruteknik menangkap trafik pada segmen yang sama dan dapat membaca kata laluan pengguna. Langkah manakah yang menangani punca sebenar masalah ini?</p>
+      <ul class="options"><li><b>A.</b> Tukar port portal daripada 80 kepada 8080 supaya trafiknya tidak dikenali penyerang</li><li><b>B.</b> Simpan fail .htpasswd di dalam direktori awam supaya mudah disemak pentadbir</li><li><b>C.</b> Tukar kepada Form-Based Authentication tetapi kekalkan HTTP biasa tanpa SSL</li><li><b>D.</b> Aktifkan HTTPS dengan SSL/TLS supaya kelayakan disulitkan semasa penghantaran, kerana base64 hanyalah pengekodan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">23.</span> <span class="badge b-hard">H</span> Pelayar memaparkan amaran bahawa sijil sesebuah laman HTTPS tidak dipercayai, walaupun sambungan menggunakan port 443. Fungsi SSL/TLS manakah yang sebenarnya gagal dipenuhi?</p>
+      <ul class="options"><li><b>A.</b> Integriti data, kerana amaran itu muncul hanya apabila paket diubah di tengah jalan</li><li><b>B.</b> Kawalan akses, kerana pelayan menyekat alamat IP pelayar tersebut</li><li><b>C.</b> Pengesahan identiti pelayan, kerana sijil digital tidak disahkan oleh pihak ketiga yang dipercayai</li><li><b>D.</b> Penyulitan data, kerana port 443 tidak boleh membawa data yang disulitkan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">24.</span> <span class="badge b-hard">H</span> Pentadbir ingin tahu alamat IP mana yang paling kerap meminta URL /login sepanjang sejam lalu, dan pada masa yang sama mahu mengesan skrip PHP yang gagal dijalankan. Gabungan log manakah yang perlu disemak?</p>
+      <ul class="options"><li><b>A.</b> Fail .htaccess, kerana ia merekod semua permintaan dan kegagalan skrip</li><li><b>B.</b> Access log untuk IP, masa dan URL permintaan; error log untuk skrip yang gagal dan ralat konfigurasi</li><li><b>C.</b> Error log untuk kedua-dua keperluan, kerana access log tidak menyimpan alamat IP</li><li><b>D.</b> Access log untuk kedua-dua keperluan, kerana ralat skrip turut dicatat bersama status respons</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">25.</span> <span class="badge b-hard">H</span> Sebuah makmal mempunyai 60 komputer. DHCP server dikonfigurasi dengan julat 192.168.10.10 hingga 192.168.10.50. Pada awal kelas, kira-kira 20 komputer gagal mendapat alamat IP. Apakah punca dan penyelesaian yang tepat?</p>
+      <ul class="options"><li><b>A.</b> Default gateway tidak ditetapkan dalam skop, jadi 20 komputer terakhir ditolak oleh server</li><li><b>B.</b> Port 53 disekat oleh firewall, maka DHCP tidak dapat menjawab komputer selepas ke-41</li><li><b>C.</b> Subnet mask /24 tidak menyokong lebih daripada 40 klien dalam satu skop</li><li><b>D.</b> Julat hanya menampung 41 alamat, kurang daripada 60 peranti; luaskan julat atau pendekkan tempoh lease</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">26.</span> <span class="badge b-hard">H</span> Sebuah syarikat mahu pekerja menggunakan satu akaun untuk log masuk ke pelbagai aplikasi dan komputer Linux, dan akaun pekerja yang berhenti boleh dinyahaktifkan di satu tempat sahaja. Perkhidmatan manakah yang menjawab keperluan ini?</p>
+      <ul class="options"><li><b>A.</b> Web server, kerana setiap aplikasi menyimpan senarai penggunanya sendiri</li><li><b>B.</b> DHCP server, kerana ia memberi identiti unik kepada setiap peranti melalui alamat IP</li><li><b>C.</b> Directory server, kerana identiti, kata laluan dan hak akses disimpan serta diurus secara berpusat</li><li><b>D.</b> DNS server, kerana ia menterjemah nama pengguna kepada kata laluan yang sah</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">27.</span> <span class="badge b-hard">H</span> Sebuah komputer menaip contoh.com dan cache DNS tempatan tidak menyimpan jawapan. Berdasarkan rajah DNS Lookup dalam nota, apakah urutan pertanyaan yang betul?</p>
+      <ul class="options"><li><b>A.</b> TLD server (.com), kemudian Root server, kemudian authoritative server, lalu alamat IP dipulangkan</li><li><b>B.</b> Authoritative server, kemudian Root server, kemudian TLD server, lalu alamat IP dipulangkan</li><li><b>C.</b> Root server terus memulangkan alamat IP contoh.com tanpa melalui pelayan lain</li><li><b>D.</b> Root server, kemudian TLD server (.com), kemudian authoritative server (contoh.com), lalu alamat IP dipulangkan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">28.</span> <span class="badge b-hard">H</span> Seorang pengurus enggan mengaktifkan HTTPS untuk laman promosi kerana laman itu tiada borang kata laluan dan HTTPS dikatakan sedikit lebih perlahan. Hujah balas manakah yang paling tepat?</p>
+      <ul class="options"><li><b>A.</b> HTTPS diperlukan hanya jika laman menggunakan port selain 80</li><li><b>B.</b> SSL/TLS bukan sekadar menyulit; ia mengesahkan identiti pelayan dan mengesan data yang diubah semasa penghantaran</li><li><b>C.</b> HTTPS menggantikan keperluan firewall, jadi laman itu tidak perlu dilindungi cara lain</li><li><b>D.</b> HTTPS lebih laju daripada HTTP kerana data dimampatkan semasa penyulitan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">29.</span> <span class="badge b-hard">H</span> Konfigurasi Nginx berikut wujud pada pelayan: server { listen 80; server_name mysite.com; location / { proxy_pass http://localhost:8080; } }. Apakah yang berlaku apabila pelayar meminta http://mysite.com?</p>
+      <ul class="options"><li><b>A.</b> Nginx menerima permintaan pada port 80 lalu memajukannya kepada aplikasi yang berjalan pada localhost port 8080</li><li><b>B.</b> Nginx menyulitkan permintaan dan menghantarnya melalui port 443 ke pelayan lain</li><li><b>C.</b> Nginx mengalihkan pelayar supaya menyambung terus ke port 8080 pada komputer pelayar</li><li><b>D.</b> Nginx menolak permintaan kerana port 80 dan 8080 tidak boleh digunakan serentak</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">30.</span> <span class="badge b-hard">H</span> Sebuah direktori pentadbiran perlu dilindungi supaya hanya pengguna 'ali' dengan kata laluan yang sah dan hanya dari rangkaian dalaman boleh mengaksesnya. Pasangan mekanisme dan tujuan manakah yang betul?</p>
+      <ul class="options"><li><b>A.</b> Fail .htpasswd dengan AuthType Basic untuk mengesahkan identiti; sekatan alamat IP untuk mengawal akses mengikut asal permintaan</li><li><b>B.</b> Access log untuk mengesahkan identiti; sekatan alamat IP untuk merekod permintaan</li><li><b>C.</b> Sekatan alamat IP untuk mengesahkan identiti; fail .htpasswd untuk mengawal akses mengikut asal permintaan</li><li><b>D.</b> Fail .htpasswd untuk mengawal akses mengikut alamat IP; SSL/TLS untuk menyimpan kata laluan</li></ul></div>
+    </div>
+  </section>
+  <section class="kp" id="kp2">
+    <h2>KP 2 &mdash; Prosedur Konfigurasi Web Server</h2>
+    <div class="kp-body">
+      <div class="q"><p class="q-text"><span class="q-num">1.</span> <span class="badge b-easy">E</span> Arahan untuk memasang Apache di sistem Ubuntu ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo apt install nginx</li><li><b>B.</b> sudo yum install httpd</li><li><b>C.</b> sudo apt install apache2</li><li><b>D.</b> sudo apt get apache</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">2.</span> <span class="badge b-easy">E</span> Arahan untuk memulakan perkhidmatan Apache ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl start apache2</li><li><b>B.</b> sudo systemctl status apache2</li><li><b>C.</b> sudo systemctl reload apache2</li><li><b>D.</b> sudo systemctl stop apache2</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">3.</span> <span class="badge b-easy">E</span> Arahan untuk memastikan Apache bermula automatik semasa but sistem ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl mask apache2</li><li><b>B.</b> sudo systemctl enable apache2</li><li><b>C.</b> sudo systemctl restart apache2</li><li><b>D.</b> sudo systemctl start apache2</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">4.</span> <span class="badge b-easy">E</span> Arahan UFW untuk membenarkan trafik HTTP dan HTTPS ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo ufw allow 80</li><li><b>B.</b> sudo ufw allow 'Apache Full'</li><li><b>C.</b> sudo ufw enable</li><li><b>D.</b> sudo ufw allow 443 sahaja</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">5.</span> <span class="badge b-easy">E</span> Fail konfigurasi virtual host baharu Apache disimpan dalam folder?</p>
+      <ul class="options"><li><b>A.</b> /etc/apache2/conf/</li><li><b>B.</b> /var/www/html/</li><li><b>C.</b> /etc/apache2/sites-available/</li><li><b>D.</b> /etc/apache2/sites-enabled/</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">6.</span> <span class="badge b-easy">E</span> Arahan untuk mengaktifkan virtual host di Apache ialah?</p>
+      <ul class="options"><li><b>A.</b> a2enmod</li><li><b>B.</b> a2dissite</li><li><b>C.</b> a2ensite</li><li><b>D.</b> a2query</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">7.</span> <span class="badge b-easy">E</span> Direktif yang menetapkan lokasi fail laman web dalam virtual host ialah?</p>
+      <ul class="options"><li><b>A.</b> DocumentRoot</li><li><b>B.</b> ServerAlias</li><li><b>C.</b> ErrorLog</li><li><b>D.</b> ServerName</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">8.</span> <span class="badge b-easy">E</span> Direktif yang menyenaraikan nama domain alternatif bagi virtual host ialah?</p>
+      <ul class="options"><li><b>A.</b> VirtualHost</li><li><b>B.</b> ServerAdmin</li><li><b>C.</b> ServerAlias</li><li><b>D.</b> DocumentRoot</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">9.</span> <span class="badge b-easy">E</span> Arahan untuk memuat semula konfigurasi Apache tanpa memutuskan sambungan aktif ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl stop apache2</li><li><b>B.</b> sudo systemctl reload apache2</li><li><b>C.</b> sudo apt remove apache2</li><li><b>D.</b> sudo systemctl disable apache2</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">10.</span> <span class="badge b-easy">E</span> Modul yang perlu dipasang untuk mengaktifkan HTTPS di Apache ialah?</p>
+      <ul class="options"><li><b>A.</b> mod_security</li><li><b>B.</b> mod_proxy</li><li><b>C.</b> mod_rewrite</li><li><b>D.</b> mod_ssl</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">11.</span> <span class="badge b-med">M</span> Alat asas yang digunakan untuk menguji sama ada hos pelayan web boleh dihubungi melalui rangkaian ialah?</p>
+      <ul class="options"><li><b>A.</b> dhclient</li><li><b>B.</b> ldapsearch</li><li><b>C.</b> nslookup</li><li><b>D.</b> ping</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">12.</span> <span class="badge b-med">M</span> Alat yang digunakan untuk memaparkan header HTTP sahaja daripada laman web ialah?</p>
+      <ul class="options"><li><b>A.</b> curl -I</li><li><b>B.</b> telnet</li><li><b>C.</b> ping</li><li><b>D.</b> wget</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">13.</span> <span class="badge b-med">M</span> Status HTTP yang menunjukkan akses dilarang ialah?</p>
+      <ul class="options"><li><b>A.</b> 500</li><li><b>B.</b> 200</li><li><b>C.</b> 404</li><li><b>D.</b> 403 Forbidden</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">14.</span> <span class="badge b-med">M</span> Alat yang digunakan untuk memeriksa jika port HTTP terbuka dan menerima sambungan ialah?</p>
+      <ul class="options"><li><b>A.</b> ping</li><li><b>B.</b> wget</li><li><b>C.</b> telnet atau nc</li><li><b>D.</b> curl</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">15.</span> <span class="badge b-med">M</span> Lokasi log akses Apache pada Linux biasanya terletak di?</p>
+      <ul class="options"><li><b>A.</b> /var/www/access.log</li><li><b>B.</b> /etc/apache2/access.log</li><li><b>C.</b> /var/log/nginx/access.log</li><li><b>D.</b> /var/log/apache2/access.log</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">16.</span> <span class="badge b-med">M</span> Alat yang digunakan untuk menguji beban dan prestasi web server ialah?</p>
+      <ul class="options"><li><b>A.</b> nslookup</li><li><b>B.</b> Wireshark</li><li><b>C.</b> Apache Bench (ab)</li><li><b>D.</b> netstat</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">17.</span> <span class="badge b-med">M</span> Perisian yang memantau percubaan log masuk mencurigakan dan menyekat IP secara automatik ialah?</p>
+      <ul class="options"><li><b>A.</b> Varnish</li><li><b>B.</b> Nikto</li><li><b>C.</b> Fail2ban</li><li><b>D.</b> Memcached</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">18.</span> <span class="badge b-med">M</span> Penyedia sijil SSL percuma yang boleh diperbaharui secara automatik ialah?</p>
+      <ul class="options"><li><b>A.</b> GoDaddy</li><li><b>B.</b> DigiCert</li><li><b>C.</b> Let's Encrypt</li><li><b>D.</b> Comodo</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">19.</span> <span class="badge b-med">M</span> Arahan untuk memeriksa status Apache di sistem CentOS/RHEL ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl status apache2</li><li><b>B.</b> sudo systemctl status nginx</li><li><b>C.</b> sudo systemctl status web</li><li><b>D.</b> sudo systemctl status httpd</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">20.</span> <span class="badge b-med">M</span> Fail yang mengawal peraturan akses bagi direktori tertentu di Apache ialah?</p>
+      <ul class="options"><li><b>A.</b> httpd.conf</li><li><b>B.</b> named.conf</li><li><b>C.</b> dhcpd.conf</li><li><b>D.</b> .htaccess</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">21.</span> <span class="badge b-hard">H</span> Juruteknik telah menyimpan contoh.conf dalam /etc/apache2/sites-available/ dan memulakan semula Apache, tetapi halaman lalai Apache masih dipaparkan bagi domain baharu itu. Apakah langkah yang tertinggal?</p>
+      <ul class="options"><li><b>A.</b> Jalankan sudo a2ensite contoh.conf, kemudian reload apache2 supaya virtual host diaktifkan</li><li><b>B.</b> Jalankan sudo a2dissite contoh.conf kemudian reload apache2</li><li><b>C.</b> Jalankan sudo ufw enable supaya Apache mengenali virtual host baharu</li><li><b>D.</b> Jalankan sudo apt upgrade apache2 supaya fail dalam sites-available dibaca secara automatik</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">22.</span> <span class="badge b-hard">H</span> Virtual host baharu memaparkan 403 Forbidden walaupun index.html wujud dan Apache berstatus running. Blok &lt;Directory&gt; bagi DocumentRoot tidak mempunyai satu arahan. Arahan manakah yang paling mungkin tertinggal?</p>
+      <ul class="options"><li><b>A.</b> ErrorLog ${APACHE_LOG_DIR}/error.log</li><li><b>B.</b> Require all granted</li><li><b>C.</b> ServerAlias www.contoh.com</li><li><b>D.</b> ServerAdmin admin@contoh.com</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">23.</span> <span class="badge b-hard">H</span> Pada pelayan, systemctl status apache2 menunjukkan running dan curl -I http://localhost mengembalikan 200 OK. Namun pengguna di rangkaian lain tidak dapat membuka laman. Apakah perkara pertama yang wajar diperiksa?</p>
+      <ul class="options"><li><b>A.</b> Sama ada fail access.log telah melebihi saiz tertentu</li><li><b>B.</b> Sama ada fail index.html mempunyai tag HTML yang lengkap</li><li><b>C.</b> Peraturan firewall (contohnya UFW) yang perlu membenarkan trafik port 80/443</li><li><b>D.</b> Sama ada modul mod_ssl telah dipasang pada pelayan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">24.</span> <span class="badge b-hard">H</span> Pada pelayan Nginx yang bertindak sebagai reverse proxy, nc -zv pelayan 80 memaparkan Connected, tetapi pelayar mendapat 502 Bad Gateway. Apakah tafsiran yang paling munasabah?</p>
+      <ul class="options"><li><b>A.</b> Sijil SSL telah tamat tempoh sehingga sambungan ditolak pada port 80</li><li><b>B.</b> Firewall menyekat port 80 sehingga permintaan tidak sampai ke Nginx</li><li><b>C.</b> DNS gagal menyelesaikan nama domain kepada alamat IP pelayan</li><li><b>D.</b> Nginx menerima sambungan pada port 80, tetapi aplikasi di belakangnya (upstream) tidak memberi respons yang sah</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">25.</span> <span class="badge b-hard">H</span> Sebuah laman pendaftaran dijangka menerima ribuan pengguna serentak sebaik sahaja dibuka. Bagaimanakah pentadbir patut menguji kesediaannya?</p>
+      <ul class="options"><li><b>A.</b> Guna WAVE untuk menghantar ribuan permintaan, sambil memantau kontras warna laman</li><li><b>B.</b> Guna Nikto dan OWASP ZAP untuk menjana beban, sambil memantau tarikh luput sijil SSL</li><li><b>C.</b> Guna Apache Bench, Siege atau JMeter untuk menjana beban, sambil memantau penggunaan CPU, memori dan I/O cakera</li><li><b>D.</b> Guna nslookup dan dig untuk menghantar permintaan berterusan, sambil memantau jadual rekod A</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">26.</span> <span class="badge b-hard">H</span> Sijil SSL sebuah laman tamat tanpa disedari sehingga pengunjung melihat amaran keselamatan. Ini kali ketiga ia berlaku. Pendekatan penyelenggaraan yang paling sesuai ialah?</p>
+      <ul class="options"><li><b>A.</b> Gunakan penyedia seperti Let's Encrypt dengan pembaharuan automatik dan kemas kini sijil sebelum tamat tempoh</li><li><b>B.</b> Tukar laman kepada HTTP supaya tiada lagi sijil yang perlu diperbaharui</li><li><b>C.</b> Aktifkan Basic Authentication supaya pelayar tidak menyemak sijil</li><li><b>D.</b> Padam access.log setiap minggu supaya sijil sentiasa dianggap sah</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">27.</span> <span class="badge b-hard">H</span> Pelayan web rosak selepas kegagalan cakera. Pasukan mempunyai salinan sandaran fail laman dan konfigurasi yang dibuat setiap malam, tetapi pemulihan gagal kerana fail sandaran rosak. Amalan mana yang diabaikan?</p>
+      <ul class="options"><li><b>A.</b> Menggunakan Varnish Cache supaya fail laman tidak perlu dipulihkan</li><li><b>B.</b> Mengaktifkan Gzip supaya saiz fail sandaran menjadi lebih kecil</li><li><b>C.</b> Menguji proses pemulihan data secara berkala dan menyimpan sandaran di lokasi luar talian atau pelayan alternatif</li><li><b>D.</b> Menutup port 80 semasa proses sandaran dijalankan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">28.</span> <span class="badge b-hard">H</span> Pasukan IT ingin menaik taraf Apache pada pelayan pengeluaran yang menghos aplikasi web. Tindakan manakah yang selari dengan amalan penyelenggaraan yang baik?</p>
+      <ul class="options"><li><b>A.</b> Naik taraf terus pada waktu puncak supaya masalah dapat dikesan oleh pengguna sebenar</li><li><b>B.</b> Uji versi baharu dahulu dalam persekitaran ujian untuk memastikan tiada ketidakserasian dengan aplikasi web</li><li><b>C.</b> Padam semua fail log lama sebelum kemas kini supaya versi baharu bermula bersih</li><li><b>D.</b> Matikan firewall sepanjang proses kemas kini supaya pakej dimuat turun lebih pantas</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">29.</span> <span class="badge b-hard">H</span> Log menunjukkan percubaan log masuk berulang daripada beberapa alamat IP, dan pentadbir juga bimbang tentang serangan SQL injection serta XSS. Gabungan kawalan manakah yang paling sesuai?</p>
+      <ul class="options"><li><b>A.</b> Apache Bench dan JMeter untuk mengesan serta menyekat serangan secara automatik</li><li><b>B.</b> Nikto dan WAVE untuk menyekat IP mencurigakan sewaktu serangan berlaku</li><li><b>C.</b> Varnish Cache dan Gzip untuk menyekat IP mencurigakan dan menapis serangan</li><li><b>D.</b> Fail2ban untuk menyekat IP mencurigakan secara automatik, dan IDS/IPS seperti Snort untuk mengesan serta mencegah serangan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">30.</span> <span class="badge b-hard">H</span> Sebuah laman berita menerima permintaan yang sama berulang kali untuk halaman utama sehingga pelayan menjadi perlahan. Langkah pengoptimuman mana yang paling berkesan?</p>
+      <ul class="options"><li><b>A.</b> Matikan SSL/TLS supaya setiap permintaan tidak lagi disulitkan</li><li><b>B.</b> Tukar port pelayan kepada 8080 supaya lebih sedikit klien mengakses laman</li><li><b>C.</b> Gunakan Fail2ban supaya setiap permintaan berulang disekat oleh firewall</li><li><b>D.</b> Gunakan caching seperti Varnish Cache atau Memcached, dan mampatkan penghantaran data dengan Gzip</li></ul></div>
+    </div>
+  </section>
+  <section class="kp" id="kp3">
+    <h2>KP 3 &mdash; Prosedur Konfigurasi DNS Server</h2>
+    <div class="kp-body">
+      <div class="q"><p class="q-text"><span class="q-num">1.</span> <span class="badge b-easy">E</span> Perisian DNS server yang paling banyak digunakan dalam Linux ialah?</p>
+      <ul class="options"><li><b>A.</b> BIND9</li><li><b>B.</b> ISC DHCP</li><li><b>C.</b> OpenLDAP</li><li><b>D.</b> Apache</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">2.</span> <span class="badge b-easy">E</span> Arahan untuk memasang BIND di Ubuntu/Debian ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo apt install bind9 bind9utils bind9-doc</li><li><b>B.</b> sudo apt install dns-server</li><li><b>C.</b> sudo apt install named</li><li><b>D.</b> sudo yum install bind</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">3.</span> <span class="badge b-easy">E</span> Arahan untuk memasang BIND di CentOS/RHEL ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo yum install bind bind-utils</li><li><b>B.</b> sudo apt install bind9</li><li><b>C.</b> sudo yum install named-utils</li><li><b>D.</b> sudo dnf install dns</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">4.</span> <span class="badge b-easy">E</span> Fail konfigurasi utama BIND di Ubuntu/Debian terletak di?</p>
+      <ul class="options"><li><b>A.</b> /etc/dns/named.conf</li><li><b>B.</b> /etc/named.conf</li><li><b>C.</b> /etc/bind/named.conf</li><li><b>D.</b> /var/bind/named.conf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">5.</span> <span class="badge b-easy">E</span> Fail konfigurasi utama BIND di CentOS/RHEL terletak di?</p>
+      <ul class="options"><li><b>A.</b> /etc/dns.conf</li><li><b>B.</b> /etc/dhcp/named.conf</li><li><b>C.</b> /etc/bind/named.conf</li><li><b>D.</b> /etc/named.conf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">6.</span> <span class="badge b-easy">E</span> Fail yang perlu diedit untuk menambah zon DNS baharu di Ubuntu ialah?</p>
+      <ul class="options"><li><b>A.</b> slapd.conf</li><li><b>B.</b> resolv.conf</li><li><b>C.</b> dhcpd.conf</li><li><b>D.</b> named.conf.local</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">7.</span> <span class="badge b-easy">E</span> Arahan untuk memulakan perkhidmatan BIND di Ubuntu/Debian ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl start named</li><li><b>B.</b> sudo systemctl start slapd</li><li><b>C.</b> sudo systemctl start dns</li><li><b>D.</b> sudo systemctl start bind9</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">8.</span> <span class="badge b-easy">E</span> Arahan untuk memulakan perkhidmatan BIND di CentOS/RHEL ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl start dhcpd</li><li><b>B.</b> sudo systemctl start dns9</li><li><b>C.</b> sudo systemctl start bind9</li><li><b>D.</b> sudo systemctl start named</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">9.</span> <span class="badge b-easy">E</span> Port yang digunakan oleh DNS untuk komunikasi ialah?</p>
+      <ul class="options"><li><b>A.</b> 80</li><li><b>B.</b> 25</li><li><b>C.</b> 110</li><li><b>D.</b> 53</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">10.</span> <span class="badge b-easy">E</span> DNS berfungsi untuk menterjemah nama domain kepada?</p>
+      <ul class="options"><li><b>A.</b> Alamat MAC</li><li><b>B.</b> Nombor port</li><li><b>C.</b> Alamat IP</li><li><b>D.</b> Alamat e-mel</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">11.</span> <span class="badge b-med">M</span> Antara berikut, manakah BUKAN sebahagian daripada rekod SOA dalam fail zon?</p>
+      <ul class="options"><li><b>A.</b> Refresh</li><li><b>B.</b> Serial</li><li><b>C.</b> Alamat MAC</li><li><b>D.</b> Retry</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">12.</span> <span class="badge b-med">M</span> Rekod yang menunjukkan alamat IP bagi domain utama (root) ialah?</p>
+      <ul class="options"><li><b>A.</b> MX</li><li><b>B.</b> NS</li><li><b>C.</b> A</li><li><b>D.</b> CNAME</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">13.</span> <span class="badge b-med">M</span> Rekod yang menetapkan pelayan nama (name server) bagi sesuatu domain ialah?</p>
+      <ul class="options"><li><b>A.</b> PTR</li><li><b>B.</b> NS</li><li><b>C.</b> A</li><li><b>D.</b> CNAME</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">14.</span> <span class="badge b-med">M</span> Arahan untuk memeriksa ralat pada fail konfigurasi utama BIND ialah?</p>
+      <ul class="options"><li><b>A.</b> named-checkconf</li><li><b>B.</b> bind-check</li><li><b>C.</b> dig-check</li><li><b>D.</b> named-checkzone</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">15.</span> <span class="badge b-med">M</span> Arahan untuk memeriksa ralat pada fail zon ialah?</p>
+      <ul class="options"><li><b>A.</b> dig</li><li><b>B.</b> named-checkzone</li><li><b>C.</b> nslookup</li><li><b>D.</b> named-checkconf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">16.</span> <span class="badge b-med">M</span> Arahan dig untuk resolusi terbalik (reverse DNS) ialah?</p>
+      <ul class="options"><li><b>A.</b> dig -x 192.168.1.10</li><li><b>B.</b> dig reverse</li><li><b>C.</b> dig @127.0.0.1</li><li><b>D.</b> dig contoh.com</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">17.</span> <span class="badge b-med">M</span> Arahan untuk memeriksa jika port 53 terbuka ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo named-checkport</li><li><b>B.</b> sudo bind9 --port</li><li><b>C.</b> sudo netstat -tulnp | grep :53</li><li><b>D.</b> sudo dig port53</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">18.</span> <span class="badge b-med">M</span> Lapisan keselamatan yang memastikan integriti dan keaslian rekod DNS ialah?</p>
+      <ul class="options"><li><b>A.</b> DNSSEC</li><li><b>B.</b> ACL sahaja</li><li><b>C.</b> VPN</li><li><b>D.</b> SSL</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">19.</span> <span class="badge b-med">M</span> Arahan untuk memuat semula konfigurasi BIND selepas kemas kini zon ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl reload bind9</li><li><b>B.</b> sudo systemctl restart named-checkconf</li><li><b>C.</b> sudo apt reload bind</li><li><b>D.</b> sudo dig reload</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">20.</span> <span class="badge b-med">M</span> Server yang menyimpan maklumat rasmi zon domain dan menjadi rujukan utama dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> Authoritative Server</li><li><b>B.</b> Proxy Server</li><li><b>C.</b> Cache Server</li><li><b>D.</b> Recursive Server</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">21.</span> <span class="badge b-hard">H</span> Selepas fail zon db.contoh.com disunting, named-checkzone tidak melaporkan ralat, tetapi dig masih memulangkan alamat IP yang lama. Langkah manakah yang belum dilakukan?</p>
+      <ul class="options"><li><b>A.</b> Jalankan named-checkconf sekali lagi supaya fail zon dimuat semula secara automatik</li><li><b>B.</b> Padam fail named.conf.local supaya BIND membaca fail zon dari awal</li><li><b>C.</b> Naikkan nilai Serial dalam rekod SOA dan muat semula konfigurasi dengan sudo systemctl reload bind9</li><li><b>D.</b> Pasang semula bind9utils supaya alat dig membaca fail zon terkini</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">22.</span> <span class="badge b-hard">H</span> Dalam fail zon, seorang pelatih menulis '@ IN NS ns1.contoh.com' tanpa titik di hujung nama. Apakah kesan sebenar penulisan ini dalam BIND?</p>
+      <ul class="options"><li><b>A.</b> TTL rekod menjadi sifar, jadi jawapan tidak akan disimpan dalam cache</li><li><b>B.</b> Titik di hujung menandakan komen, jadi baris tanpa titik akan dilangkau oleh BIND</li><li><b>C.</b> Rekod NS mesti ditulis sebagai alamat IP, jadi nama hos akan ditolak sepenuhnya</li><li><b>D.</b> Nama tanpa titik dianggap relatif, lalu asal zon ditambah sehingga menjadi ns1.contoh.com.contoh.com</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">23.</span> <span class="badge b-hard">H</span> Pada pelayan DNS yang baru dikonfigurasi, nslookup www.contoh.com memberi 192.168.1.10 dengan betul, tetapi nslookup 192.168.1.10 gagal mencari nama. Fail zon hanya mengandungi rekod SOA, NS dan A. Apakah punca yang paling munasabah?</p>
+      <ul class="options"><li><b>A.</b> Rekod PTR untuk resolusi terbalik belum ditetapkan dalam zon songsang</li><li><b>B.</b> Perkhidmatan bind9 tidak berjalan pada pelayan tersebut</li><li><b>C.</b> Port 53 ditutup sehingga pertanyaan songsang tidak sampai ke pelayan</li><li><b>D.</b> Rekod A untuk www salah ditulis sehingga resolusi ke hadapan turut gagal</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">24.</span> <span class="badge b-hard">H</span> Di pelayan, dig @127.0.0.1 contoh.com berjaya. Daripada komputer klien, nslookup contoh.com IP_Server_DNS menamatkan masa. Apakah langkah diagnosis yang paling tepat seterusnya?</p>
+      <ul class="options"><li><b>A.</b> Jalankan named-checkzone kerana fail zon tentu rosak walaupun dig berjaya</li><li><b>B.</b> Pasang bind9-doc supaya klien boleh membaca dokumentasi zon</li><li><b>C.</b> Semak sama ada port 53 (TCP/UDP) terbuka pada pelayan dan firewall, contohnya dengan netstat -tulnp | grep :53</li><li><b>D.</b> Naikkan nilai TTL pada rekod SOA supaya klien menerima jawapan lebih lama</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">25.</span> <span class="badge b-hard">H</span> Pelayan Ubuntu menjalankan BIND dengan betul semalam. Selepas bekalan kuasa terputus dan pulih, DNS tidak menjawab dan systemctl status bind9 menunjukkan inactive (dead). Apakah yang tertinggal semasa pemasangan asal?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl enable bind9 supaya perkhidmatan bermula secara automatik semasa sistem dihidupkan</li><li><b>B.</b> sudo ufw allow 67/udp supaya perkhidmatan tidak dimatikan oleh firewall</li><li><b>C.</b> sudo named-checkzone supaya fail zon dimuat secara automatik selepas boot</li><li><b>D.</b> sudo a2ensite bind9 supaya perkhidmatan dimasukkan ke dalam senarai laman aktif</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">26.</span> <span class="badge b-hard">H</span> Skrip automasi yang ditulis untuk Ubuntu (systemctl reload bind9 dan mengedit /etc/bind/named.conf.local) gagal apabila dijalankan pada pelayan CentOS. Penyesuaian yang betul ialah?</p>
+      <ul class="options"><li><b>A.</b> Tukar reload kepada restart sahaja kerana nama perkhidmatan sama pada kedua-dua distribusi</li><li><b>B.</b> Guna nama perkhidmatan named, dan edit /etc/named.conf sebagai fail konfigurasi utama</li><li><b>C.</b> Guna apt install bind9 pada CentOS supaya laluan fail sama seperti Ubuntu</li><li><b>D.</b> Salin named.conf.local ke /etc/dns.conf kerana CentOS menggunakan fail itu</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">27.</span> <span class="badge b-hard">H</span> Pentadbir bimbang DNS mereka boleh dipalsukan (DNS spoofing) dan sesiapa sahaja di Internet boleh menghantar pertanyaan kepada pelayan. Gabungan kawalan manakah yang menjawab kedua-dua kebimbangan?</p>
+      <ul class="options"><li><b>A.</b> Varnish Cache untuk mempercepat jawapan serta Gzip untuk memampatkannya</li><li><b>B.</b> Sijil SSL untuk laman web serta Basic Authentication pada fail zon</li><li><b>C.</b> RAID pada cakera pelayan serta UPS untuk bekalan kuasa</li><li><b>D.</b> DNSSEC untuk menjamin integriti dan keaslian rekod, serta ACL dalam named.conf untuk menghadkan pihak yang boleh bertanya</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">28.</span> <span class="badge b-hard">H</span> Subdomain mel telah dipindahkan ke pelayan baharu sebulan lalu, tetapi rekod A dan MX lama masih berada dalam fail zon. Apakah risikonya dan tindakan yang wajar?</p>
+      <ul class="options"><li><b>A.</b> Rekod lama menyebabkan port 53 tertutup; tutup semula firewall untuk membetulkannya</li><li><b>B.</b> Tiada risiko kerana pelayan sentiasa memilih rekod terbaharu; tindakan tidak diperlukan</li><li><b>C.</b> Rekod lama hanya menjejaskan DNSSEC; padam kunci DNSSEC dan biarkan rekod A</li><li><b>D.</b> Rekod lama boleh menyebabkan konflik atau penyelesaian nama yang salah; semak, buang rekod tidak sah, tambah rekod baharu, kemudian reload</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">29.</span> <span class="badge b-hard">H</span> Fail zon sebuah pejabat mengandungi 'zone "contoh.com" { type master; file "/etc/bind/db.contoh.com"; };'. Apakah peranan pelayan ini bagi domain contoh.com?</p>
+      <ul class="options"><li><b>A.</b> TLD server yang menguruskan semua domain berakhiran .com</li><li><b>B.</b> Cache server yang hanya menyimpan salinan jawapan daripada pelayan lain</li><li><b>C.</b> Authoritative server yang menyimpan rekod rasmi zon contoh.com</li><li><b>D.</b> Root server yang menerima pertanyaan pertama bagi semua domain</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">30.</span> <span class="badge b-hard">H</span> Susunan kerja manakah yang betul apabila memasang dan menaikkan DNS server BIND di Ubuntu untuk kegunaan sebenar?</p>
+      <ul class="options"><li><b>A.</b> Pasang BIND, tambah zon dan cipta fail zon, semak dengan named-checkconf dan named-checkzone, mulakan serta enable perkhidmatan, kemudian uji dengan nslookup atau dig</li><li><b>B.</b> Pasang BIND, mulakan perkhidmatan, tambah zon dan cipta fail zon, uji dengan dig, kemudian jalankan named-checkzone</li><li><b>C.</b> Uji dengan nslookup, pasang BIND, tambah zon dan fail zon, mulakan perkhidmatan, kemudian semak dengan named-checkconf</li><li><b>D.</b> Cipta fail zon, mulakan perkhidmatan, pasang BIND, semak dengan named-checkzone, kemudian tambah zon dalam named.conf.local</li></ul></div>
+    </div>
+  </section>
+  <section class="kp" id="kp4">
+    <h2>KP 4 &mdash; Prosedur Konfigurasi DHCP Server</h2>
+    <div class="kp-body">
+      <div class="q"><p class="q-text"><span class="q-num">1.</span> <span class="badge b-easy">E</span> Protokol yang digunakan untuk memberi alamat IP secara automatik kepada peranti ialah?</p>
+      <ul class="options"><li><b>A.</b> DNS</li><li><b>B.</b> LDAP</li><li><b>C.</b> DHCP</li><li><b>D.</b> HTTP</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">2.</span> <span class="badge b-easy">E</span> Perisian DHCP server yang biasa digunakan dalam Linux ialah?</p>
+      <ul class="options"><li><b>A.</b> OpenLDAP</li><li><b>B.</b> ISC DHCP Server</li><li><b>C.</b> Apache</li><li><b>D.</b> BIND9</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">3.</span> <span class="badge b-easy">E</span> Sebelum memasang DHCP server, server perlu dikonfigurasi dengan?</p>
+      <ul class="options"><li><b>A.</b> Alamat IP statik</li><li><b>B.</b> Subnet kosong</li><li><b>C.</b> Alamat MAC tetap</li><li><b>D.</b> Alamat IP dinamik</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">4.</span> <span class="badge b-easy">E</span> Arahan untuk memasang ISC DHCP Server ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo apt install bind9</li><li><b>B.</b> sudo yum install dhcpd-server</li><li><b>C.</b> sudo apt install dhcp-client</li><li><b>D.</b> sudo apt install isc-dhcp-server</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">5.</span> <span class="badge b-easy">E</span> Fail konfigurasi utama DHCP server terletak di?</p>
+      <ul class="options"><li><b>A.</b> /etc/named.conf</li><li><b>B.</b> /etc/dhcp/dhclient.conf</li><li><b>C.</b> /var/lib/dhcp.conf</li><li><b>D.</b> /etc/dhcp/dhcpd.conf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">6.</span> <span class="badge b-easy">E</span> Dalam blok subnet, parameter yang menetapkan julat IP untuk klien ialah?</p>
+      <ul class="options"><li><b>A.</b> lease-time</li><li><b>B.</b> subnet mask</li><li><b>C.</b> range</li><li><b>D.</b> option routers</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">7.</span> <span class="badge b-easy">E</span> Parameter yang menetapkan alamat gateway lalai dalam dhcpd.conf ialah?</p>
+      <ul class="options"><li><b>A.</b> option routers</li><li><b>B.</b> default-lease-time</li><li><b>C.</b> option domain-name-servers</li><li><b>D.</b> range</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">8.</span> <span class="badge b-easy">E</span> Parameter yang menetapkan DNS server untuk klien dalam dhcpd.conf ialah?</p>
+      <ul class="options"><li><b>A.</b> range</li><li><b>B.</b> option routers</li><li><b>C.</b> max-lease-time</li><li><b>D.</b> option domain-name-servers</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">9.</span> <span class="badge b-easy">E</span> Port yang digunakan oleh DHCP server untuk komunikasi ialah?</p>
+      <ul class="options"><li><b>A.</b> Port 80</li><li><b>B.</b> Port 443</li><li><b>C.</b> Port 53</li><li><b>D.</b> Port 67</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">10.</span> <span class="badge b-easy">E</span> Port yang digunakan oleh klien DHCP ialah?</p>
+      <ul class="options"><li><b>A.</b> Port 67</li><li><b>B.</b> Port 68</li><li><b>C.</b> Port 21</li><li><b>D.</b> Port 53</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">11.</span> <span class="badge b-med">M</span> Fail yang perlu disunting untuk menetapkan antaramuka rangkaian DHCP ialah?</p>
+      <ul class="options"><li><b>A.</b> /etc/network/interfaces</li><li><b>B.</b> /etc/dhcp/dhclient.conf</li><li><b>C.</b> /etc/default/isc-dhcp-server</li><li><b>D.</b> /etc/dhcp/dhcpd.conf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">12.</span> <span class="badge b-med">M</span> Pada Linux, arahan untuk memperbaharui alamat IP klien ialah?</p>
+      <ul class="options"><li><b>A.</b> nslookup renew</li><li><b>B.</b> sudo dhclient</li><li><b>C.</b> ipconfig /renew</li><li><b>D.</b> dig renew</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">13.</span> <span class="badge b-med">M</span> Pada Windows, arahan untuk melepaskan alamat IP semasa ialah?</p>
+      <ul class="options"><li><b>A.</b> ipconfig /release</li><li><b>B.</b> ip a</li><li><b>C.</b> dhclient -r</li><li><b>D.</b> ipconfig /renew</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">14.</span> <span class="badge b-med">M</span> Fail yang menyimpan rekod sewaan (lease) alamat IP DHCP ialah?</p>
+      <ul class="options"><li><b>A.</b> /var/lib/dhcp/dhcpd.leases</li><li><b>B.</b> /var/log/dhcp.log</li><li><b>C.</b> /etc/dhcp/dhcpd.conf</li><li><b>D.</b> /etc/dhcp/leases.conf</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">15.</span> <span class="badge b-med">M</span> Mesej yang dihantar klien untuk mencari DHCP server dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> DHCPACK</li><li><b>B.</b> DHCPOFFER</li><li><b>C.</b> DHCPDISCOVER</li><li><b>D.</b> DHCPREQUEST</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">16.</span> <span class="badge b-med">M</span> Mesej yang dihantar server untuk menawarkan alamat IP kepada klien dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> DHCPDISCOVER</li><li><b>B.</b> DHCPACK</li><li><b>C.</b> DHCPOFFER</li><li><b>D.</b> DHCPREQUEST</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">17.</span> <span class="badge b-med">M</span> Mesej pengesahan akhir daripada server kepada klien dalam proses DHCP dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> DHCPDISCOVER</li><li><b>B.</b> DHCPOFFER</li><li><b>C.</b> DHCPACK</li><li><b>D.</b> DHCPDECLINE</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">18.</span> <span class="badge b-med">M</span> Parameter yang menetapkan tempoh sewaan lalai dalam saat ialah?</p>
+      <ul class="options"><li><b>A.</b> range</li><li><b>B.</b> option routers</li><li><b>C.</b> max-lease-time</li><li><b>D.</b> default-lease-time</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">19.</span> <span class="badge b-med">M</span> Sekiranya DHCP server kehabisan alamat IP untuk diagihkan, langkah yang sesuai ialah?</p>
+      <ul class="options"><li><b>A.</b> Padam fail dhcpd.conf</li><li><b>B.</b> Tambah julat IP atau bersihkan lease lama</li><li><b>C.</b> Tukar subnet mask kepada /8</li><li><b>D.</b> Tutup perkhidmatan DHCP</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">20.</span> <span class="badge b-med">M</span> Sebelum membuat perubahan besar pada konfigurasi DHCP, langkah wajar ialah?</p>
+      <ul class="options"><li><b>A.</b> Tutup firewall</li><li><b>B.</b> Restart server terus</li><li><b>C.</b> Buat backup fail dhcpd.conf</li><li><b>D.</b> Padam fail leases</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">21.</span> <span class="badge b-hard">H</span> Server DHCP mempunyai dua kad rangkaian: eth0 (192.168.1.5) yang menghadap klien dan eth1 untuk pengurusan. Perkhidmatan isc-dhcp-server berstatus active (running), julat dan gateway betul, tetapi klien tidak mendapat IP. Fail /etc/default/isc-dhcp-server mengandungi INTERFACESv4="eth1". Apakah punca?</p>
+      <ul class="options"><li><b>A.</b> DHCP mendengar pada antaramuka yang salah; tetapkan INTERFACESv4 kepada eth0 dan mulakan semula perkhidmatan</li><li><b>B.</b> Julat IP terlalu luas sehingga server tidak mengeluarkan sebarang alamat kepada klien</li><li><b>C.</b> Nilai default-lease-time terlalu kecil sehingga klien tidak sempat menerima alamat</li><li><b>D.</b> Fail dhcpd.leases kosong sehingga server tidak tahu klien mana yang wujud</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">22.</span> <span class="badge b-hard">H</span> Pejabat mempunyai VLAN 10 (192.168.10.0/24) dan VLAN 20 (192.168.20.0/24). Klien VLAN 20 menerima alamat bernombor 192.168.10.x. Apakah tafsiran dan langkah pembetulan yang sesuai?</p>
+      <ul class="options"><li><b>A.</b> Nilai max-lease-time terlalu tinggi sehingga klien VLAN 20 mengekalkan alamat lama</li><li><b>B.</b> Skop VLAN 20 belum ditetapkan dengan betul; setiap VLAN memerlukan skop dan julat alamat tersendiri</li><li><b>C.</b> Julat VLAN 10 terlalu kecil, jadi server memberi alamat daripada rangkaian yang sama kepada semua klien</li><li><b>D.</b> Port 68 pada server tertutup sehingga klien VLAN 20 menerima alamat rawak</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">23.</span> <span class="badge b-hard">H</span> Selepas mengubah julat dalam dhcpd.conf, isc-dhcp-server gagal dimulakan dan seluruh rangkaian tiada IP baharu. Sebelum perubahan, pentadbir telah menyalin dhcpd.conf ke dhcpd.conf.backup. Tindakan paling selamat ialah?</p>
+      <ul class="options"><li><b>A.</b> Tukar subnet mask kepada /8 supaya server menerima julat baharu yang lebih besar</li><li><b>B.</b> Salin dhcpd.conf.backup ke dhcpd.conf, kemudian restart isc-dhcp-server, dan semak kesilapan yang dibuat pada fail baharu</li><li><b>C.</b> Padam dhcpd.leases dan pasang semula isc-dhcp-server supaya julat lama dipulihkan</li><li><b>D.</b> Matikan firewall sepenuhnya kerana ia menghalang server membaca konfigurasi baharu</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">24.</span> <span class="badge b-hard">H</span> Klien mendapat alamat IP dalam julat yang betul dan ping ke 8.8.8.8 berjaya, tetapi ping ke www.google.com gagal dengan mesej nama tidak dapat diselesaikan. Fail manakah yang wajar disemak pada klien Linux?</p>
+      <ul class="options"><li><b>A.</b> /etc/resolv.conf, untuk memastikan DNS server daripada option domain-name-servers diterima</li><li><b>B.</b> /etc/default/isc-dhcp-server, kerana ia menyimpan alamat DNS yang diberikan kepada klien</li><li><b>C.</b> /var/lib/dhcp/dhcpd.leases, kerana fail ini menyimpan tetapan DNS yang digunakan klien</li><li><b>D.</b> /etc/dhcp/dhcpd.conf pada klien, kerana klien membaca julat alamat daripadanya</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">25.</span> <span class="badge b-hard">H</span> Klien menerima alamat 192.168.1.40, boleh ping klien lain dalam subnet, tetapi tidak boleh ping alamat di luar rangkaian termasuk 8.8.8.8. Arahan ip route pada klien tidak menunjukkan laluan lalai. Apakah tetapan DHCP yang perlu diperiksa?</p>
+      <ul class="options"><li><b>A.</b> option domain-name-servers, kerana laluan lalai diambil daripada DNS server</li><li><b>B.</b> option routers dalam blok subnet, kerana ia menetapkan gateway lalai untuk klien</li><li><b>C.</b> range, kerana julat yang sempit menghapuskan laluan lalai klien</li><li><b>D.</b> default-lease-time, kerana gateway hilang apabila tempoh sewaan terlalu singkat</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">26.</span> <span class="badge b-hard">H</span> Pentadbir hanya menjalankan sudo ufw allow 67/tcp dan menganggap firewall sudah dikonfigurasi untuk DHCP. Klien masih tidak mendapat IP. Apakah kesilapannya?</p>
+      <ul class="options"><li><b>A.</b> DHCP menggunakan UDP, jadi port 67/udp dan 68/udp perlu dibenarkan</li><li><b>B.</b> DHCP menggunakan port 53, jadi port 67 tidak perlu dibuka pada firewall</li><li><b>C.</b> Peraturan UFW tidak boleh digunakan untuk DHCP; hanya iptables yang menyokongnya</li><li><b>D.</b> Port 67 hanya untuk klien; server perlu dibenarkan pada port 68/tcp sahaja</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">27.</span> <span class="badge b-hard">H</span> Semasa memantau /var/log/syslog, pentadbir melihat empat mesej DHCP bagi satu klien baharu. Urutan lazim pertukaran mesej itu ialah?</p>
+      <ul class="options"><li><b>A.</b> DHCPOFFER, DHCPDISCOVER, DHCPACK, kemudian DHCPREQUEST</li><li><b>B.</b> DHCPDISCOVER, DHCPOFFER, DHCPREQUEST, kemudian DHCPACK</li><li><b>C.</b> DHCPREQUEST, DHCPDISCOVER, DHCPOFFER, kemudian DHCPACK</li><li><b>D.</b> DHCPDISCOVER, DHCPACK, DHCPOFFER, kemudian DHCPREQUEST</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">28.</span> <span class="badge b-hard">H</span> Sebuah kafe menyediakan Wi-Fi tetamu dengan pool alamat yang kecil, dan pelanggan silih berganti dalam masa 15 hingga 20 minit. Kerap kali pool kehabisan alamat walaupun ramai peranti telah beredar. Tetapan mana yang paling wajar disesuaikan?</p>
+      <ul class="options"><li><b>A.</b> Tukar range kepada satu alamat sahaja supaya pengurusan lebih mudah</li><li><b>B.</b> Panjangkan default-lease-time supaya klien tidak perlu memperbaharui alamat</li><li><b>C.</b> Matikan option routers supaya klien tidak menggunakan alamat gateway</li><li><b>D.</b> Pendekkan default-lease-time supaya alamat yang sudah tidak digunakan cepat kembali ke pool</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">29.</span> <span class="badge b-hard">H</span> Seorang pentadbir mengkonfigurasi kad rangkaian pelayan DHCP supaya memperoleh alamat secara dinamik daripada router pejabat. Selepas beberapa hari, klien tiba-tiba tidak mendapat IP baharu. Mengapakah reka bentuk ini bermasalah?</p>
+      <ul class="options"><li><b>A.</b> Pelayan DHCP tidak boleh menggunakan kad rangkaian yang sama untuk dua alamat berbeza</li><li><b>B.</b> Alamat dinamik menyebabkan port 67 bertukar kepada port 68 secara automatik</li><li><b>C.</b> Router pejabat sentiasa memadam fail dhcpd.conf setiap kali alamat pelayan berubah</li><li><b>D.</b> Pelayan DHCP memerlukan alamat IP statik supaya klien sentiasa dapat mencapainya pada alamat yang sama</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">30.</span> <span class="badge b-hard">H</span> Selepas netstat -tuln | grep :67 dijalankan, didapati satu perkhidmatan lain sudah menggunakan port 67 dan isc-dhcp-server gagal dimulakan. Tindakan yang paling wajar?</p>
+      <ul class="options"><li><b>A.</b> Kenal pasti perkhidmatan yang menggunakan port 67 dan selesaikan konflik itu sebelum memulakan semula DHCP server</li><li><b>B.</b> Tukar port klien DHCP daripada 68 kepada 53 supaya port 67 dibebaskan</li><li><b>C.</b> Padam fail dhcpd.leases supaya port 67 dilepaskan oleh sistem</li><li><b>D.</b> Naikkan max-lease-time supaya perkhidmatan lain melepaskan port 67</li></ul></div>
+    </div>
+  </section>
+  <section class="kp" id="kp5">
+    <h2>KP 5 &mdash; Prosedur Konfigurasi Directory Server</h2>
+    <div class="kp-body">
+      <div class="q"><p class="q-text"><span class="q-num">1.</span> <span class="badge b-easy">E</span> Protokol yang digunakan untuk mengakses maklumat directory server ialah?</p>
+      <ul class="options"><li><b>A.</b> LDAP</li><li><b>B.</b> DNS</li><li><b>C.</b> DHCP</li><li><b>D.</b> HTTP</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">2.</span> <span class="badge b-easy">E</span> Implementasi sumber terbuka LDAP yang popular dalam Linux ialah?</p>
+      <ul class="options"><li><b>A.</b> Apache</li><li><b>B.</b> OpenLDAP</li><li><b>C.</b> Active Directory</li><li><b>D.</b> BIND9</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">3.</span> <span class="badge b-easy">E</span> Arahan untuk memasang OpenLDAP di Ubuntu/Debian ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo yum install slapd</li><li><b>B.</b> sudo apt install openldap-server</li><li><b>C.</b> sudo apt install slapd ldap-utils</li><li><b>D.</b> sudo apt install bind9</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">4.</span> <span class="badge b-easy">E</span> Arahan untuk memasang OpenLDAP di CentOS ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo apt install slapd</li><li><b>B.</b> sudo dnf install slapd-only</li><li><b>C.</b> sudo yum install openldap openldap-servers openldap-clients</li><li><b>D.</b> sudo yum install ldap-tools</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">5.</span> <span class="badge b-easy">E</span> Fail yang digunakan untuk menambah struktur direktori seperti pengguna dan kumpulan ialah?</p>
+      <ul class="options"><li><b>A.</b> Fail JSON</li><li><b>B.</b> Fail XML</li><li><b>C.</b> Fail YAML</li><li><b>D.</b> Fail LDIF</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">6.</span> <span class="badge b-easy">E</span> Dalam fail LDIF, baris yang mengenal pasti setiap entri secara unik ialah?</p>
+      <ul class="options"><li><b>A.</b> uid</li><li><b>B.</b> dn</li><li><b>C.</b> cn</li><li><b>D.</b> sn</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">7.</span> <span class="badge b-easy">E</span> Arahan untuk menambah struktur atau pengguna baharu ke dalam LDAP ialah?</p>
+      <ul class="options"><li><b>A.</b> ldapsearch</li><li><b>B.</b> ldapmodify</li><li><b>C.</b> ldapadd</li><li><b>D.</b> ldapdelete</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">8.</span> <span class="badge b-easy">E</span> Arahan untuk mengesahkan server LDAP berfungsi dan memaparkan entri ialah?</p>
+      <ul class="options"><li><b>A.</b> ldapadd</li><li><b>B.</b> ldapsearch</li><li><b>C.</b> slapcat</li><li><b>D.</b> ldapdelete</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">9.</span> <span class="badge b-easy">E</span> Arahan untuk memulakan semula perkhidmatan slapd ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo systemctl restart dhcpd</li><li><b>B.</b> sudo systemctl restart bind9</li><li><b>C.</b> sudo systemctl restart slapd</li><li><b>D.</b> sudo systemctl restart named</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">10.</span> <span class="badge b-easy">E</span> Struktur direktori LDAP disusun dalam bentuk?</p>
+      <ul class="options"><li><b>A.</b> Jadual leper</li><li><b>B.</b> Hierarki pokok</li><li><b>C.</b> Graf bulat</li><li><b>D.</b> Senarai rawak</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">11.</span> <span class="badge b-med">M</span> Arahan untuk mengkonfigurasi semula slapd selepas pemasangan di Ubuntu ialah?</p>
+      <ul class="options"><li><b>A.</b> sudo dpkg-reconfigure slapd</li><li><b>B.</b> sudo slapd-config</li><li><b>C.</b> sudo ldap-setup</li><li><b>D.</b> sudo systemctl config slapd</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">12.</span> <span class="badge b-med">M</span> Atribut yang menyatakan jenis objek dalam entri LDIF ialah?</p>
+      <ul class="options"><li><b>A.</b> objectClass</li><li><b>B.</b> homeDirectory</li><li><b>C.</b> description</li><li><b>D.</b> uidNumber</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">13.</span> <span class="badge b-med">M</span> Arahan untuk memadam entri pengguna dalam LDAP ialah?</p>
+      <ul class="options"><li><b>A.</b> ldapdelete</li><li><b>B.</b> ldapsearch</li><li><b>C.</b> ldapadd</li><li><b>D.</b> ldapremove</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">14.</span> <span class="badge b-med">M</span> Awalan URL yang digunakan bagi sambungan LDAP yang selamat ialah?</p>
+      <ul class="options"><li><b>A.</b> ldap://</li><li><b>B.</b> ldaps://</li><li><b>C.</b> sldap://</li><li><b>D.</b> https-ldap://</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">15.</span> <span class="badge b-med">M</span> Arahan untuk membuat sandaran (backup) direktori LDAP ialah?</p>
+      <ul class="options"><li><b>A.</b> ldapdump</li><li><b>B.</b> ldapbackup</li><li><b>C.</b> slapadd</li><li><b>D.</b> slapcat</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">16.</span> <span class="badge b-med">M</span> Objek pengguna dalam struktur direktori biasanya diletakkan di bawah?</p>
+      <ul class="options"><li><b>A.</b> ou=users</li><li><b>B.</b> ou=groups</li><li><b>C.</b> dc=admin</li><li><b>D.</b> ou=computers</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">17.</span> <span class="badge b-med">M</span> Atribut uidNumber dalam fail LDIF pengguna berfungsi sebagai?</p>
+      <ul class="options"><li><b>A.</b> ID unik pengguna dalam sistem</li><li><b>B.</b> Kata laluan</li><li><b>C.</b> Nombor port</li><li><b>D.</b> Nombor telefon</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">18.</span> <span class="badge b-med">M</span> Untuk mencari pengguna tertentu dalam direktori, arahan ldapsearch menggunakan penapis seperti?</p>
+      <ul class="options"><li><b>A.</b> "(gid=1001)"</li><li><b>B.</b> "(dc=example)"</li><li><b>C.</b> "(uid=johndoe)"</li><li><b>D.</b> "(cn=admin)"</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">19.</span> <span class="badge b-med">M</span> Ujian akses tanpa kebenaran bertujuan untuk mengesahkan bahawa?</p>
+      <ul class="options"><li><b>A.</b> Semua pengguna boleh masuk</li><li><b>B.</b> Kata laluan dipaparkan</li><li><b>C.</b> Akses tidak sah ditolak</li><li><b>D.</b> Server dimatikan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">20.</span> <span class="badge b-med">M</span> Rancangan yang disediakan bagi situasi kegagalan sistem atau serangan keselamatan dikenali sebagai?</p>
+      <ul class="options"><li><b>A.</b> Rancangan Virtual Host</li><li><b>B.</b> Rancangan DHCP Pool</li><li><b>C.</b> Rancangan Pemulihan Bencana</li><li><b>D.</b> Rancangan Backup Harian</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">21.</span> <span class="badge b-hard">H</span> Pentadbir menjalankan ldapadd -f users.ldif untuk menambah uid=johndoe,ou=users,dc=example,dc=com tetapi menerima ralat entri induk tidak wujud. Fail base.ldif hanya mencipta dc=example,dc=com dan cn=admin. Apakah punca dan pembetulan?</p>
+      <ul class="options"><li><b>A.</b> Perkhidmatan slapd tidak berjalan; pasang semula ldap-utils untuk membetulkannya</li><li><b>B.</b> Atribut userPassword terlalu pendek; panjangkan kata laluan pengguna dalam users.ldif</li><li><b>C.</b> Nilai uidNumber 1001 sudah dipakai; tukar ldapadd kepada ldapsearch</li><li><b>D.</b> Entri ou=users belum dicipta; tambah ou=users dalam LDIF terlebih dahulu sebelum menambah pengguna</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">22.</span> <span class="badge b-hard">H</span> Ujian ldapsearch -H ldaps://example.com -x -b "dc=example,dc=com" menunjukkan ralat berkaitan sijil, sedangkan ldap:// biasa berfungsi. Apakah tafsiran yang paling tepat?</p>
+      <ul class="options"><li><b>A.</b> Kata laluan admin LDAP telah tamat, jadi hanya sambungan tidak selamat dibenarkan</li><li><b>B.</b> Entri direktori rosak, jadi pelayan menolak semua pertanyaan pada port selamat</li><li><b>C.</b> SSL/TLS pada slapd belum dikonfigurasi dengan sijil yang sah, jadi sambungan selamat gagal</li><li><b>D.</b> Pelayan LDAP tidak menyokong struktur dc=example,dc=com pada sambungan selamat</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">23.</span> <span class="badge b-hard">H</span> Seorang juruaudit meminta bukti tentang siapa yang mengubah atau memadam akaun pengguna sepanjang bulan lalu. Amalan direktori manakah yang menjawab keperluan ini?</p>
+      <ul class="options"><li><b>A.</b> Menjalankan top dan df -h, kerana kedua-duanya memaparkan sejarah perubahan direktori</li><li><b>B.</b> Mengaktifkan indexing pada atribut uid, kerana indeks menyimpan sejarah perubahan</li><li><b>C.</b> Audit berkala terhadap akses dan perubahan direktori serta semakan log untuk perubahan yang mencurigakan</li><li><b>D.</b> Menjalankan slapcat &gt; backup.ldif, kerana fail sandaran mencatat pengguna yang membuat setiap perubahan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">24.</span> <span class="badge b-hard">H</span> Tiga bulan selepas seorang pekerja berhenti, akaunnya masih aktif dalam direktori dan boleh log masuk ke sistem. Apakah tindakan penyelenggaraan yang sepatutnya dilakukan?</p>
+      <ul class="options"><li><b>A.</b> Kaji hak akses secara berkala dan hapuskan akaun tidak aktif mengikut dasar, contohnya dengan ldapdelete</li><li><b>B.</b> Biarkan akaun kerana direktori akan memadamnya sendiri apabila kata laluan tamat</li><li><b>C.</b> Jalankan slapcat pada akaun itu supaya ia dinyahaktifkan secara automatik</li><li><b>D.</b> Tukar objectClass akaun itu kepada posixAccount supaya ia tidak boleh log masuk</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">25.</span> <span class="badge b-hard">H</span> Sebuah aplikasi dalaman berjaya mengesahkan pengguna melalui LDAP, tetapi semua pengguna yang berjaya log masuk boleh membuka modul gaji. Aspek manakah yang belum dikonfigurasi?</p>
+      <ul class="options"><li><b>A.</b> Autorisasi, iaitu kawalan hak akses kepada sumber tertentu mengikut identiti atau kumpulan pengguna</li><li><b>B.</b> Indexing, kerana modul gaji tidak dapat dicari tanpa indeks pada atribut uid</li><li><b>C.</b> Autentikasi, kerana kata laluan pengguna tidak disahkan langsung oleh direktori</li><li><b>D.</b> Backup, kerana modul gaji hanya dilindungi selepas slapcat dijalankan</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">26.</span> <span class="badge b-hard">H</span> Semasa ujian akses tanpa kebenaran, ldapsearch dengan uid=unauthorizeduser memaparkan senarai entri direktori dan bukannya mesej akses ditolak. Apakah kesimpulan yang betul?</p>
+      <ul class="options"><li><b>A.</b> Direktori perlu dipadam dan dicipta semula dengan slapcat untuk membetulkan ralat</li><li><b>B.</b> Ujian berjaya, kerana ldapsearch sentiasa memaparkan entri tanpa mengira kebenaran</li><li><b>C.</b> Ujian berjaya, kerana memaparkan entri membuktikan pengguna itu sah</li><li><b>D.</b> Kawalan akses direktori lemah kerana akses tidak sah sepatutnya ditolak; konfigurasi keselamatan perlu dikaji semula</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">27.</span> <span class="badge b-hard">H</span> Pentadbir tidak mahu menunggu pentadbir lain menjalankan arahan secara manual untuk mengetahui slapd telah berhenti atau ruang cakera hampir penuh. Penyelesaian manakah yang paling tepat?</p>
+      <ul class="options"><li><b>A.</b> Menjalankan slapcat setiap malam kerana ia akan memberi amaran apabila slapd berhenti</li><li><b>B.</b> Menggunakan ldapsearch sekali seminggu untuk memaparkan semua entri direktori</li><li><b>C.</b> Alat pemantauan seperti Nagios, Zabbix atau Grafana dengan amaran untuk ketersediaan perkhidmatan dan penggunaan sumber</li><li><b>D.</b> Menjalankan top dan df -h secara manual setiap hari dan mencatat hasilnya</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">28.</span> <span class="badge b-hard">H</span> Sebuah entri baharu dengan objectClass inetOrgPerson dan posixAccount ditolak oleh ldapadd kerana melanggar skema. Entri itu tidak mempunyai atribut uidNumber, gidNumber dan homeDirectory. Apakah penerangan yang paling tepat?</p>
+      <ul class="options"><li><b>A.</b> Atribut wajib hanya diperlukan apabila entri dipadam dengan ldapdelete, bukan semasa ldapadd</li><li><b>B.</b> Object class menentukan atribut yang diperlukan bagi sesuatu jenis objek, jadi atribut wajib mesti dilengkapkan mengikut skema</li><li><b>C.</b> Skema hanya menentukan susunan paparan entri, jadi ralat itu berpunca daripada kata laluan admin yang salah</li><li><b>D.</b> Ralat berlaku kerana nama fail LDIF tidak mengikut format yang sama seperti base.ldif</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">29.</span> <span class="badge b-hard">H</span> Carian ldapsearch dengan penapis (uid=...) semakin perlahan apabila bilangan pengguna mencecah puluhan ribu. Apakah pendekatan yang disebut dalam nota untuk mempercepat carian ini?</p>
+      <ul class="options"><li><b>A.</b> Menukar ldapsearch kepada ldapdelete supaya entri lama dibuang</li><li><b>B.</b> Menggunakan indexing pada atribut yang kerap dicari, seperti uid</li><li><b>C.</b> Menambah RAM sehingga 8 GB tanpa sebarang perubahan pada direktori</li><li><b>D.</b> Menggantikan hierarki pokok dengan satu jadual rata tanpa objek class</li></ul></div>
+      <div class="q"><p class="q-text"><span class="q-num">30.</span> <span class="badge b-hard">H</span> Dalam pokok direktori dc=example,dc=com terdapat ou=users. Manakah Distinguished Name (DN) yang betul bagi pengguna janedoe?</p>
+      <ul class="options"><li><b>A.</b> ou=users,uid=janedoe,dc=example,dc=com</li><li><b>B.</b> dc=com,dc=example,ou=users,uid=janedoe</li><li><b>C.</b> uid=janedoe,ou=users,dc=example,dc=com</li><li><b>D.</b> uid=janedoe;ou=users;dc=example;dc=com</li></ul></div>
+    </div>
+  </section>
+
+  <details class="answer-key" id="kunci">
+    <summary>Kunci Jawapan (klik untuk buka)</summary>
+    <div class="key-body">
+      <div class="key-sub-title">KP 1</div>
+      <div class="key-grid">
+        <div>1. D</div><div>2. C</div><div>3. A</div><div>4. B</div><div>5. D</div><div>6. B</div><div>7. D</div><div>8. B</div><div>9. D</div><div>10. D</div><div>11. D</div><div>12. B</div><div>13. C</div><div>14. D</div><div>15. C</div><div>16. B</div><div>17. D</div><div>18. C</div><div>19. C</div><div>20. A</div><div>21. C</div><div>22. D</div><div>23. C</div><div>24. B</div><div>25. D</div><div>26. C</div><div>27. D</div><div>28. B</div><div>29. A</div><div>30. A</div>
+      </div>
+      <div class="key-sub-title">KP 2</div>
+      <div class="key-grid">
+        <div>1. C</div><div>2. A</div><div>3. B</div><div>4. B</div><div>5. C</div><div>6. C</div><div>7. A</div><div>8. C</div><div>9. B</div><div>10. D</div><div>11. D</div><div>12. A</div><div>13. D</div><div>14. C</div><div>15. D</div><div>16. C</div><div>17. C</div><div>18. C</div><div>19. D</div><div>20. D</div><div>21. A</div><div>22. B</div><div>23. C</div><div>24. D</div><div>25. C</div><div>26. A</div><div>27. C</div><div>28. B</div><div>29. D</div><div>30. D</div>
+      </div>
+      <div class="key-sub-title">KP 3</div>
+      <div class="key-grid">
+        <div>1. A</div><div>2. A</div><div>3. A</div><div>4. C</div><div>5. D</div><div>6. D</div><div>7. D</div><div>8. D</div><div>9. D</div><div>10. C</div><div>11. C</div><div>12. C</div><div>13. B</div><div>14. A</div><div>15. B</div><div>16. A</div><div>17. C</div><div>18. A</div><div>19. A</div><div>20. A</div><div>21. C</div><div>22. D</div><div>23. A</div><div>24. C</div><div>25. A</div><div>26. B</div><div>27. D</div><div>28. D</div><div>29. C</div><div>30. A</div>
+      </div>
+      <div class="key-sub-title">KP 4</div>
+      <div class="key-grid">
+        <div>1. C</div><div>2. B</div><div>3. A</div><div>4. D</div><div>5. D</div><div>6. C</div><div>7. A</div><div>8. D</div><div>9. D</div><div>10. B</div><div>11. C</div><div>12. B</div><div>13. A</div><div>14. A</div><div>15. C</div><div>16. C</div><div>17. C</div><div>18. D</div><div>19. B</div><div>20. C</div><div>21. A</div><div>22. B</div><div>23. B</div><div>24. A</div><div>25. B</div><div>26. A</div><div>27. B</div><div>28. D</div><div>29. D</div><div>30. A</div>
+      </div>
+      <div class="key-sub-title">KP 5</div>
+      <div class="key-grid">
+        <div>1. A</div><div>2. B</div><div>3. C</div><div>4. C</div><div>5. D</div><div>6. B</div><div>7. C</div><div>8. B</div><div>9. C</div><div>10. B</div><div>11. A</div><div>12. A</div><div>13. A</div><div>14. B</div><div>15. D</div><div>16. A</div><div>17. A</div><div>18. C</div><div>19. C</div><div>20. C</div><div>21. D</div><div>22. C</div><div>23. C</div><div>24. A</div><div>25. A</div><div>26. D</div><div>27. C</div><div>28. B</div><div>29. B</div><div>30. C</div>
+      </div>
+    </div>
+  </details>
+
+  <footer>Kertas Penerangan JTM &mdash; Soalan Objektif IKR3103 Disusun Untuk Tujuan Pembelajaran &middot; eSL-IKR, ADTEC JTM Kampus Sandakan</footer>
+
+</div>
+</body>
+</html>

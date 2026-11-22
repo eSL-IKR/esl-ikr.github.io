@@ -1,0 +1,9 @@
+eSL-IKR - FOLDER REPOSITORY SIAP
+
+1. Upload semua KANDUNGAN folder ini ke satu repo GitHub.
+2. Sumber web: src/, public/, index.html dan fail npm/Vite.
+3. Versi website yang siap bina: dist/.
+4. JANGAN upload node_modules/, fail .env atau arkib backup.
+5. Untuk GitHub Pages, konfigurasikan Pages / GitHub Actions.
+   Meletakkan dist/ dalam repo belum menerbitkan laman secara automatik.
+6. Bagi repo jenis project Pages, pastikan Vite base path sesuai.

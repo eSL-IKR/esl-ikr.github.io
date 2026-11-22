@@ -741,6 +741,76 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 @media(max-width:860px){#panel .catx-guide{padding-bottom:12px}#panel .catx-head{padding:12px}#panel .catx-actions button{min-height:41px} }
 @media(prefers-reduced-motion:reduce){#panel .catx-chevron{transition:none}}
 </style>
+<style id="esl-mobile-ux-v1">
+/* eSL-IKR: narrow-screen UX only, preserving desktop >=1024px. */
+.esl-return-link{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 12px;color:var(--tx);background:var(--btn);border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:750;text-decoration:none}
+.esl-return-link:hover,.esl-return-link:focus-visible{border-color:var(--ac);outline-offset:2px}
+@media(max-width:1023px){
+  html,body,#app{max-width:100%;min-width:0}
+  #app>header{flex:0 0 auto!important;height:auto!important;min-height:0!important}
+  header{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;gap:7px!important;padding:8px 10px!important}
+  header .brand{flex:1 1 auto;min-width:110px;margin-right:0}
+  #modes,#doms,#themes{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+  header #modes,header #doms{flex:1 1 auto}
+  #modes button,#doms button{min-height:42px;white-space:nowrap}
+  #srch{display:flex!important;flex:1 1 100%;order:80;width:100%!important;min-width:0}
+  #srch input{min-width:0;max-width:100%;width:100%}
+  #bldTabs{overflow-x:auto;flex-wrap:nowrap;max-width:100%;scrollbar-width:thin}
+  #bldTabs button{flex:none;min-height:44px}
+  #bldPanes,#bldstage,#bldPpb,#bldf{min-width:0;max-width:100%}
+  #views{overflow-x:auto;overflow-y:hidden;display:flex;flex-wrap:nowrap;max-width:calc(100% - 20px);scrollbar-width:thin}
+  #views button{flex:none;min-height:40px;white-space:nowrap}
+  #panel .pc-quick,#panel button,.ctabs button{min-height:40px}
+  #catstage,#panel,.ci,.esl-photo-info{overflow-wrap:anywhere;min-width:0}
+  #catstage .cgrid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+  #sw3dControls{max-width:calc(100% - 16px);overflow-x:auto;flex-wrap:nowrap}
+  #sw3dControls button{min-height:40px;white-space:nowrap;flex:none}
+  #mbm{padding:6px;align-items:center}
+  #mbm .mbb{width:100%;height:min(94dvh,880px);min-height:0;border-radius:12px}
+  #mbm .mbt{flex-wrap:wrap;gap:7px}
+  #mbm .mbt h2{font-size:14px;line-height:1.25}
+  #mbm .mbs{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(230px,54%) minmax(0,46%);overflow:hidden}
+  #mbm .mbw{min-height:0;touch-action:pan-y}
+  #mbm .mbside{min-height:0;overflow:auto;overscroll-behavior:contain}
+  #mbm .mbc button{min-height:38px}
+  #mbm .mbl button{min-height:42px;font-size:12px}
+  #mbm .mbh{width:36px;height:36px;font-size:12px}
+}
+@media(max-width:767px){
+  #app{min-height:100dvh;height:auto}
+  header .logo{width:32px;height:32px}
+  .esl-return-link{order:0;min-height:42px;width:42px;max-width:42px;font-size:0;padding:0;flex:0 0 42px}
+  .esl-return-link::before{content:"←";font-size:22px;line-height:1}
+  #modes{order:10;flex-basis:100%!important}
+  #doms{order:20;flex-basis:100%!important}
+  #srch{order:30}
+  header>a.btn.sm:not(.esl-return-link){order:40;flex:0 0 auto;font-size:0;padding:9px 12px}
+  header>a.btn.sm:not(.esl-return-link)::before{content:"POST";font-size:12px}
+  #qsel{order:41;width:95px;max-width:95px}
+  #helpBtn{order:42}
+  #themes{order:43;flex:0 0 auto;max-width:none}
+  #app>main{display:flex;flex:0 0 auto!important;flex-direction:column;min-height:0;overflow:visible}
+  #stage,#swstage{height:clamp(300px,52dvh,580px);min-height:300px;flex:0 0 auto}
+  #panel{order:2;flex:0 0 auto;width:100%;max-width:100%;height:auto;overflow:visible;padding:12px}
+  #catstage{min-height:50dvh;overflow:visible;padding:10px}
+  #bldstage{min-height:64dvh;overflow:visible}
+  #bldPanes{min-height:60dvh}
+  #bldPpb iframe{width:100%;height:70dvh;min-height:470px}
+  #views{left:8px;right:8px;bottom:90px;max-width:calc(100% - 16px);padding:3px}
+  #views button{padding:9px 11px;font-size:11px}
+  #ttl{font-size:17px;top:13px;left:10px;max-width:85%}
+  #tl{height:76px;padding:6px 8px;gap:7px}
+  #tlPlay{width:46px;height:46px;flex:none}
+  .cgrid{grid-template-columns:minmax(0,1fr)}
+  #catstage .esl-photo-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #mbm .mbb{height:calc(100dvh - 12px)}
+  #mbm .mbs{grid-template-rows:minmax(205px,48%) minmax(0,52%)}
+}
+@media(max-width:370px){
+  #catstage .esl-photo-gallery{grid-template-columns:minmax(0,1fr)}
+  #mbm .mbc button{padding:6px 8px;font-size:11px}
+}
+</style>
 </head><body>
 <noscript><p style="padding:24px;font-family:sans-serif">Simulator ini memerlukan JavaScript. Sila aktifkan JavaScript dalam pelayar anda.</p></noscript>
 <div id="intro" role="dialog" aria-label="Pengenalan Simulator PC 3D">
@@ -757,6 +827,7 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 <script>setTimeout(function(){var i=document.getElementById('intro');if(i)i.style.display='none';},9000);</script>
 <div id="app">
   <header>
+    <a class="esl-return-link" href="../#pilih-makmal" target="_top" aria-label="Kembali ke Pilihan Makmal Interaktif">← Pilihan Makmal</a>
     <div class="logo"><img src="./assets/logo-pc-3d.png" alt="Logo Simulator PC 3D" width="38" height="38"></div><div class="brand"><b>Simulator PC 3D</b><span>IKR · Perkakasan &amp; Perisian</span></div>
     <a class="btn sm" href="post-lab.html">Demo POST · BM / EN</a>
     <nav id="modes"><button data-mode="belajar">Belajar</button><button data-mode="latihan">Latihan</button><button data-mode="ujian">Ujian</button></nav>
@@ -861,12 +932,35 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 #mbm .mbcap{border-color:#92408a55}
 #mbm .mbl button.on{background:#4d204a;border-color:#e37cda;color:#fff}
 </style>
+<style id="esl-mobo-icons-v1">
+/* Scoped to the ASUS Z170-P 11-label list. Desktop, tablet and phone. */
+#mbm .mbl button {
+  display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;
+  gap:10px;width:100%;min-height:51px;padding:7px 10px;text-align:left;
+}
+#mbm .mbl .mb-list-icon {
+  width:36px;height:36px;display:grid;place-items:center;flex:none;
+  border-radius:10px;background:rgba(153,105,193,.13);
+  border:1px solid rgba(218,168,243,.20);color:#ddaaf0;
+}
+#mbm .mbl .mb-list-icon svg {width:21px;height:21px;display:block;pointer-events:none}
+#mbm .mbl .mb-list-name {
+  min-width:0;overflow-wrap:anywhere;line-height:1.35;
+  font-size:12.5px;font-weight:650;color:var(--tx);
+}
+#mbm .mbl button.on .mb-list-icon {background:#613260;border-color:#e6a5ed;color:#fff}
+#mbm .mbl button:focus-visible {outline:2px solid var(--acx);outline-offset:2px}
+@media(max-width:760px) {
+  #mbm .mbl button {min-height:52px;grid-template-columns:38px minmax(0,1fr);gap:10px}
+  #mbm .mbl .mb-list-icon {width:38px;height:38px}
+}
+</style>
 <div id="mbm" hidden role="dialog" aria-modal="true" aria-labelledby="mbtitle"><div class="mbb">
   <div class="mbt"><h2 id="mbtitle">ASUS Z170-P — 11 label interaktif</h2><button class="btn sm" type="button" id="mbclose">Tutup (Esc)</button></div>
   <div class="mbs">
     <div class="mbw" id="mbw"><canvas id="mbcv" aria-label="Model 3D motherboard ASUS Z170-P. Seret untuk putar, skrol untuk zum."></canvas><div class="mbmsg" id="mbmsg">Memuatkan model...</div></div>
     <div class="mbside">
-      <div class="mbc"><button class="btn sm" type="button" id="mbspin" aria-pressed="false">Putar auto</button><button class="btn sm" type="button" id="mblbl" aria-pressed="true">Label</button><button class="btn sm" type="button" id="mbreset">Set semula</button><button class="btn sm" type="button" id="mbflip" aria-pressed="false" title="Jika foto papan kelihatan terbalik, tekan butang ini">Foto: dibetulkan</button></div>
+      <div class="mbc"><button class="btn sm" type="button" id="mbspin" aria-pressed="false">Putar auto</button><button class="btn sm" type="button" id="mblbl" aria-pressed="true">Label</button><button class="btn sm" type="button" id="mbreset">Set semula</button><button class="btn sm" type="button" id="mbretry">Cuba Semula</button><button class="btn sm" type="button" id="mbflip" aria-pressed="false" title="Jika foto papan kelihatan terbalik, tekan butang ini">Foto: dibetulkan</button></div>
       <div class="mbcap" id="mbcap" aria-live="polite"><b>Pilih satu bahagian</b>Klik nombor pada model atau pilih daripada senarai.</div>
       <div class="mbl" id="mblist" role="group" aria-label="Bahagian motherboard"></div>
       <p style="font-size:11px;color:var(--mut);margin:0">Model GLB ASUS Z170-P disediakan pengguna. Pilih nombor 1–11 untuk belajar fungsi setiap bahagian; seret untuk putar dan skrol untuk zum.</p>
@@ -1087,14 +1181,41 @@ var HS=[
  {n:'Header tepi bawah',px:330,py:772,d:'Pin header untuk panel depan casing (butang kuasa, LED), port USB dan audio depan. Rujuk manual untuk susunan pin.'}
 ];
 HS.forEach(function(h){h.x=(h.px/TEX_W-.5)*PCB_W;h.z=-(.5-h.py/TEX_H)*PCB_H;h.y=.006;});
-var S=null,gltfScene=null,loading=false,opener=null,labels=true,sel=-1,TEX=[],fixV=true;
+var S=null,gltfScene=null,loading=false,opener=null,labels=true,sel=-1,TEX=[],fixV=true,requestId=0;
 // UV dalam GLB ini berasal dari penjana (asal UV di bawah), jadi foto perlu dibalik menegak supaya sepadan dengan slot timbul.
 function flipTex(on){TEX.forEach(function(t){t.wrapT=THREE.RepeatWrapping;t.repeat.y=on?-1:1;t.offset.y=on?1:0;t.needsUpdate=true;});}
 function $(i){return document.getElementById(i);}
 function setMsg(t){var m=$('mbmsg');if(!m)return;m.textContent=t||'';m.hidden=!t;m.style.display=t?'grid':'none';}
+// esl-mobo-icons-v1: each motherboard part has an independent inline SVG.
+// The native button click handler and all 11 3D hotspot positions are unchanged.
+var MB_ICON_PATHS=[
+  '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+  '<rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4M5 17v3M9 17v3M15 17v3M19 17v3"/>',
+  '<path d="M5 5v14M9 3v18M13 5v14M17 3v18M21 5v14M3 7h18M3 17h18"/>',
+  '<rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 13h18M8 7v12M13 7v12M17 7v12M9 3h6M12 3v4"/>',
+  '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M6 9h12M6 12h12M6 15h12M10 5v14M14 5v14"/>',
+  '<rect x="2" y="5" width="20" height="14" rx="2"/><rect x="5" y="8" width="5" height="3" rx=".5"/><rect x="13" y="8" width="6" height="3" rx=".5"/><circle cx="7" cy="15" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="17" cy="15" r="1"/>',
+  '<path d="M2 8h20v7H2zM4 11h11M18 11h2M6 15v3M16 15v3M3 18h18"/>',
+  '<path d="M3 7h11v8H3zM17 7h4v8h-4zM6 10h5M18 10h2M5 15v3M19 15v3M2 18h20"/>',
+  '<rect x="5" y="5" width="14" height="14" rx="2"/><path d="M2 9h3M2 15h3M19 9h3M19 15h3M9 2v3M15 2v3M9 19v3M15 19v3M8 9h8v6H8zM9 12h6"/>',
+  '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M6 16h8"/><circle cx="18" cy="16" r="1"/>',
+  '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M6 8h12M6 16h12"/><circle cx="7" cy="12" r=".7"/><circle cx="11" cy="12" r=".7"/><circle cx="15" cy="12" r=".7"/><circle cx="19" cy="12" r=".7"/>'
+];
+function makeMBIcon(i){
+  var wrap=document.createElement('span');wrap.className='mb-list-icon';wrap.setAttribute('aria-hidden','true');
+  wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">'+MB_ICON_PATHS[i]+'</svg>';
+  return wrap;
+}
 function buildList(){
   var L=$('mblist'),h='',btns=[];L.innerHTML='';
-  HS.forEach(function(x,i){var b=document.createElement('button');b.type='button';b.className='btn';b.textContent=(i+1)+'. '+x.n;b.addEventListener('click',function(){pick(i);});L.appendChild(b);});
+  HS.forEach(function(x,i){
+    var b=document.createElement('button');b.type='button';b.className='btn';
+    b.setAttribute('aria-label',(i+1)+'. '+x.n);
+    b.appendChild(makeMBIcon(i));
+    var name=document.createElement('span');name.className='mb-list-name';name.textContent=(i+1)+'. '+x.n;
+    b.appendChild(name);
+    b.addEventListener('click',function(){pick(i);});L.appendChild(b);
+  });
   var W=$('mbw');W.querySelectorAll('.mbh').forEach(function(n){n.remove();});
   HS.forEach(function(x,i){var b=document.createElement('button');b.type='button';b.className='mbh';b.textContent=String(i+1);b.setAttribute('aria-label',x.n);b.addEventListener('click',function(){pick(i);});W.appendChild(b);x.el=b;});
 }
@@ -1109,9 +1230,9 @@ function webglOK(){try{var c=document.createElement('canvas');return !!(window.W
 function start(){
   if(S)return;
   if(!window.THREE||!THREE.GLTFLoader||!THREE.OrbitControls||!webglOK()){setMsg('Pemapar 3D tidak dapat dimulakan (WebGL atau pustaka Three.js tiada). Semak sambungan atau pelayar anda.');return;}
-  var cv=$('mbcv'),W=$('mbw'),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
-  R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.15;R.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-  var sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(35,1,.01,5);sc.background=new THREE.Color(0x10101a);
+  var cv=$('mbcv'),W=$('mbw'),R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});}catch(err){setMsg('Gagal memulakan WebGL. Semak sokongan grafik pelayar.');console.error('eSL-IKR motherboard renderer:',err);return;}
+  R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.15;R.setPixelRatio(Math.min(window.devicePixelRatio||1,window.innerWidth<768?1.5:2));
+  var sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(35,1,.005,100);sc.background=new THREE.Color(0x10101a);
   sc.add(new THREE.HemisphereLight(0xffe5fb,0x1b1a32,1.25));var dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(.3,.8,.5);sc.add(dl);var fill=new THREE.DirectionalLight(0xfe4cc8,.45);fill.position.set(-.4,.15,-.5);sc.add(fill);
   var ctl=new THREE.OrbitControls(cam,cv);ctl.enableDamping=true;ctl.dampingFactor=.08;ctl.minDistance=.12;ctl.maxDistance=.9;ctl.maxPolarAngle=Math.PI*.6;
   S={R:R,sc:sc,cam:cam,ctl:ctl,raf:0,spin:false};
@@ -1131,17 +1252,34 @@ function start(){
     });
   }
   S.loop=loop;
-  if(gltfScene){sc.add(gltfScene);setMsg('');loop();return;}
-  if(loading)return;loading=true;setMsg('Memuatkan model...');
+  if(gltfScene){sc.add(gltfScene);size();resetView();setMsg('');loop();return;}
+  if(loading)return;loading=true;var ticket=++requestId;setMsg('Memuatkan model...');
   new THREE.GLTFLoader().load(URL_GLB,function(g){
-    loading=false;gltfScene=g.scene;gltfScene.rotation.x=-Math.PI/2;
+    if(ticket!==requestId)return;loading=false;gltfScene=g.scene;gltfScene.rotation.x=-Math.PI/2;
     gltfScene.traverse(function(o){if(o.isMesh&&o.material){var ms=[].concat(o.material);ms.forEach(function(m){m.side=THREE.DoubleSide;if(m.map&&TEX.indexOf(m.map)<0)TEX.push(m.map);});}});
     flipTex(fixV);
-    if(S){S.sc.add(gltfScene);setMsg('');S.loop();}
-  },undefined,function(){loading=false;setMsg('Fail model tidak ditemui. Letakkan asus-z170p.glb dalam public/pclab/models/.');});
+    if(S){S.sc.add(gltfScene);S.size();resetView();setMsg('');S.loop();}
+  },undefined,function(err){if(ticket!==requestId)return;loading=false;setMsg('Motherboard gagal dimuat. Semak fail GLB atau rangkaian, kemudian tekan Cuba Semula.');console.error('eSL-IKR ASUS Z170-P:',err);});
 }
-function resetView(){if(!S)return;S.cam.position.set(0,.42,.30);S.ctl.target.set(0,0,0);S.ctl.update();}
+function resetView(){
+ if(!S)return;
+ if(gltfScene){
+   var bounds=new THREE.Box3().setFromObject(gltfScene);
+   if(!bounds.isEmpty()){
+     var center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
+     var radius=Math.max(.05,size.length()*.5),fov=S.cam.fov*Math.PI/180;
+     var dist=Math.max(.20,radius/Math.sin(fov/2)*1.20);
+     S.cam.position.copy(center).add(new THREE.Vector3(0,dist*.55,dist));
+     S.ctl.target.copy(center);S.ctl.minDistance=Math.max(.01,radius*.30);
+     S.ctl.maxDistance=Math.max(2,dist*4);S.cam.far=Math.max(20,dist*25);
+     S.cam.near=Math.max(.0005,dist/1000);S.cam.updateProjectionMatrix();
+     S.ctl.update();return;
+   }
+ }
+ S.cam.position.set(0,.42,.30);S.ctl.target.set(0,0,0);S.ctl.update();
+}
 function stop(){
+  requestId++;loading=false;
   if(!S)return;cancelAnimationFrame(S.raf);window.removeEventListener('resize',S.size);if(S.ro)S.ro.disconnect();
   if(gltfScene&&gltfScene.parent)gltfScene.parent.remove(gltfScene);
   S.ctl.dispose();S.R.dispose();try{S.R.forceContextLoss();}catch(e){}S=null;
@@ -1161,6 +1299,7 @@ document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e
   $('mbspin').addEventListener('click',function(){if(!S)return;S.spin=!S.spin;this.setAttribute('aria-pressed',S.spin?'true':'false');});
   $('mblbl').addEventListener('click',function(){labels=!labels;this.setAttribute('aria-pressed',labels?'true':'false');});
   $('mbreset').addEventListener('click',resetView);
+   $('mbretry').addEventListener('click',function(){stop();gltfScene=null;TEX=[];setMsg('Memuatkan semula motherboard...');start();});
   $('mbflip').addEventListener('click',function(){fixV=!fixV;flipTex(fixV);this.setAttribute('aria-pressed',fixV?'false':'true');this.textContent=fixV?'Foto: dibetulkan':'Foto: asal GLB';});
 })();
 document.addEventListener('keydown',function(e){var m=$('mbm');if(m&&!m.hidden&&e.key==='Escape'){e.stopPropagation();close();}},true);
@@ -3001,7 +3140,8 @@ function ensureBld(){
   var f=$('#bldf');if(f.dataset.ready)return;f.dataset.ready='1';
   var t=curTheme();
   f.addEventListener('load',function(){bldPost({type:'tema',t:curTheme()});});
-  f.srcdoc=window.BLD_SRC.replace('data-theme="dark"','data-theme="'+t+'"');
+  var builderCSS='<style>@media(max-width:767px){html,body{min-height:100dvh;height:auto;overflow:auto}main{display:flex!important;flex-direction:column!important;height:auto;overflow:visible}#view{order:-1;height:52dvh;min-height:290px;flex:none}#left{height:auto!important;max-height:none!important;overflow:visible!important;padding:10px}#pk{width:100%;height:100dvh}#grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}#tools button{min-height:40px}header{flex-wrap:wrap;padding:9px}#slots .slot{max-width:100%;overflow-wrap:anywhere}}@media(min-width:768px) and (max-width:1023px){main{grid-template-columns: minmax(260px,38%) minmax(0,1fr)}}<\/style>';
+   f.srcdoc=window.BLD_SRC.replace('data-theme="dark"','data-theme="'+t+'"').replace('</head>',builderCSS+'</head>');
 }
 window.addEventListener('message',function(e){
   var d=e.data||{};

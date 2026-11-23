@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/hud.css">
 <link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/guided-mobile-v2.css">
 <script type="importmap">
 {"imports":{
  "three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -19,6 +20,7 @@
   <main id="viewport">
     <canvas id="c" aria-label="Bangku kerja 3D"></canvas>
     <div id="tip" class="tip" hidden></div>
+    <div id="esl3dNextArrow" aria-hidden="true" hidden>➜ <span>Pilih kabel</span></div>
 
     <header id="topbar">
       <div class="brand"><b>IKR3023</b><span>Pendawaian Berstruktur</span></div>
@@ -81,6 +83,13 @@
     </button>
     <div class="mission-body" id="mission-body">
       <p id="m-goal" class="goal"></p>
+      <section class="esl-timer-box" id="eslTimeBox" aria-hidden="true" aria-label="Masa latihan pilihan pelajar">
+        <label for="eslTimeChoice">⏱ Masa latihan — hanya jika pelajar mahu</label>
+        <div class="esl-timer-controls"><select id="eslTimeChoice" aria-label="Tempoh masa latihan">
+          <option value="0">Pilih masa sendiri</option><option value="5">5 minit</option><option value="10">10 minit</option><option value="15">15 minit</option><option value="20">20 minit</option><option value="30">30 minit</option><option value="45">45 minit</option><option value="60">60 minit</option><option value="90">90 minit</option><option value="custom">Tetapkan sendiri (1–180 minit)</option>
+        </select><input id="eslTimeCustom" type="number" min="1" max="180" step="1" inputmode="numeric" placeholder="Minit" aria-label="Minit pilihan sendiri" hidden><button id="eslTimeStart" type="button" class="btn small">Mulakan masa</button></div>
+        <output id="eslTimerStatus" role="status">Belum dimulakan — pelajar tentukan masa dahulu.</output>
+      </section>
       <ol id="m-steps" class="steps"></ol>
       <div id="m-feedback" class="feedback" hidden></div>
       <div class="row">
@@ -107,5 +116,6 @@
 </div>
 <noscript>Simulator ini memerlukan JavaScript.</noscript>
 <script type="module" src="js/app.js"></script>
+<script type="module" src="js/guided-mobile-v2.js"></script>
 </body>
 </html>

@@ -36,6 +36,7 @@ async function boot() {
     onHover: id => { hoverId = id; }
   });
   sc.ticks.add(updateTip);
+  sc.ticks.add(update3DGuide);
   bindUI();
   await loadAll();
 }
@@ -193,6 +194,23 @@ function updateTip() {
   const r = $('c').getBoundingClientRect();
   tip.textContent = comps.items[id].name;
   tip.style.left = ((v.x + 1) / 2 * r.width) + 'px'; tip.style.top = ((1 - v.y) / 2 * r.height) + 'px'; tip.hidden = false;
+}
+
+// Petunjuk 3D merah mengikut kedudukan objek. Dipaparkan dalam latihan berpandu sahaja.
+const eslGuidePos=new THREE.Vector3();
+function update3DGuide(){
+ const el=$('esl3dNextArrow');if(!el||!sc||!comps)return;
+ const s=S.state(),step=mission1Step(s),cable=s.cable.id&&comps.items[s.cable.id];
+ const item=(step===0?'cat6':step===1&&!cable?.shielded?'rj45':step===2&&!cable?.shielded?'panel':null);
+ const g=item&&objs[item];
+ if(s.mode!=='guided'||s.mission!==0||!g||step>=3){el.hidden=true;return;}
+ if(!g.userData.eslGuideCenter){const bounds=new THREE.Box3().setFromObject(g);if(bounds.isEmpty()){el.hidden=true;return;}bounds.getCenter(eslGuidePos);eslGuidePos.y=bounds.max.y+1.5;g.userData.eslGuideCenter=eslGuidePos.clone();}
+ eslGuidePos.copy(g.userData.eslGuideCenter).project(sc.camera);
+ if(!Number.isFinite(eslGuidePos.x)||!Number.isFinite(eslGuidePos.y)||eslGuidePos.z<-1||eslGuidePos.z>1||Math.abs(eslGuidePos.x)>1){el.hidden=true;return;}
+ const canvas=$('c'),w=canvas.clientWidth,h=canvas.clientHeight;
+ el.style.left=((eslGuidePos.x+1)/2*w)+'px';el.style.top=((1-eslGuidePos.y)/2*h)+'px';
+ el.querySelector('span').textContent=step===0?'Pilih kabel':step===1?'Pilih plug RJ45':'Pilih patch panel';
+ el.hidden=false;
 }
 
 boot();

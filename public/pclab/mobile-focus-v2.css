@@ -1,0 +1,57 @@
+/* eSL-IKR mobile focus patch — scoped to the PC lab */
+#eslPcSettings,#eslPcViewDock,#eslSwCameraDock{display:none}
+@media(max-width:1023px){
+  html,body,#app{max-width:100%;min-width:0;overflow-x:hidden}
+  #app>header{align-content:start;row-gap:7px!important;padding:8px 10px!important}
+  #app>header .brand{flex:1 1 auto;min-width:0}
+  #app>header .brand b{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  #app>header #modes,#app>header #doms{flex:1 1 100%!important;order:12;max-width:100%!important;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+  #app>header #doms{order:13}
+  #app>header #modes button,#app>header #doms button{min-height:41px;flex:1;white-space:nowrap}
+  #app>header #srch{order:14!important;flex:1 1 100%!important;min-width:0!important}
+  #eslPcSettings{display:block;order:15;flex:1 1 100%;min-width:0;border:1px solid var(--line);background:var(--panel);border-radius:10px}
+  #eslPcSettings summary{list-style:none;cursor:pointer;min-height:42px;padding:11px 13px;font-weight:700;color:var(--tx)}
+  #eslPcSettings summary::-webkit-details-marker{display:none}
+  #eslPcSettings summary::after{content:'⌄';float:right;color:var(--mut)}
+  #eslPcSettings[open] summary::after{content:'⌃'}
+  #eslPcSettings .esl-aux{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border-top:1px solid var(--line);align-items:center}
+  #eslPcSettings .esl-aux>*{min-height:42px;max-width:100%}
+  #app>main{overflow:visible!important;min-width:0}
+  #stage,#swstage{height:clamp(340px,62dvh,650px)!important;min-height:340px!important;max-width:100%}
+  #views{position:static!important;width:100%!important;max-width:none!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;overflow-x:auto;overflow-y:hidden;padding:5px!important;flex-wrap:nowrap!important;border:0!important;background:transparent!important;box-shadow:none!important;justify-content:flex-start!important}
+  #views button{min-height:44px!important;padding:8px 12px!important;flex:none!important;font-size:12px!important}
+  #eslPcViewDock,#eslSwCameraDock{display:block;order:1;width:100%;max-width:100%;background:var(--panel);border-bottom:1px solid var(--line);padding:7px 10px;min-width:0}
+  #stage[hidden]+#eslPcViewDock,#swstage[hidden]+#eslSwCameraDock{display:none!important}
+  #eslPcViewDock summary,#eslSwCameraDock summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:42px;padding:7px 10px;border-radius:9px;border:1px solid var(--line);font-size:13px;font-weight:750;background:var(--btn);cursor:pointer;color:var(--tx)}
+  #eslPcViewDock summary::after,#eslSwCameraDock summary::after{content:'⌄';color:var(--mut)}
+  #eslPcViewDock[open] summary::after,#eslSwCameraDock[open] summary::after{content:'⌃'}
+  #eslPcViewDock[open] #views{margin-top:8px}
+  #sw3dControls{position:static!important;max-width:100%!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;flex-wrap:nowrap!important;overflow-x:auto!important;white-space:nowrap;display:flex!important;gap:5px!important;padding:6px 0!important;background:transparent!important;border:0!important}
+  #eslSwCameraDock[open] #sw3dControls{margin-top:6px}
+  #sw3dControls button{flex:none!important;min-height:44px!important}
+  #stage #tl{bottom:0!important}
+  #panel{order:3!important;min-width:0}
+  #bldstage{order:0;min-width:0;max-width:100%}
+  #bldTabs{flex-wrap:nowrap!important;overflow-x:auto;gap:6px;padding:8px}
+  #bldTabs button{min-height:43px!important;flex:none;white-space:nowrap}
+  #bldPpb iframe{width:100%!important;min-height:680px!important;height:82dvh!important;max-height:none!important}
+  #bldPpq .bl-main{min-height:54dvh!important}
+  #bldPpm .bl-main{min-height:54dvh!important}
+  #bmPanel{position:static!important;width:auto!important;max-width:100%!important;margin:8px!important;padding:10px!important}
+  #bmC{height:45dvh!important;min-height:260px!important}
+  #eslPcSettings:focus-visible,#eslPcViewDock:focus-visible,#eslSwCameraDock:focus-visible{outline:2px solid var(--ac)}
+}
+@media(max-width:767px){
+  #app>header #modes button,#app>header #doms button{padding:9px 10px;font-size:12px}
+  #app>header #srch{display:flex!important}
+  #app>main{display:flex!important;flex-direction:column!important}
+  #stage,#swstage{flex:none!important}
+  #bldstage{min-height:0!important}
+  #catstage{order:0;overflow:visible!important}
+  #panel{height:auto!important;overflow:visible!important}
+  #ttl{max-width:72%!important}
+}
+#panel .esl-pc-next{position:relative!important;outline:2px solid #f87171!important;outline-offset:1px;box-shadow:0 0 0 3px #f8717133!important}
+#panel .esl-pc-next::after{content:'➜';color:#f87171;position:absolute;top:-13px;right:0;font-size:21px;animation:esl-pc-point 1.2s ease-in-out infinite;pointer-events:none}
+@keyframes esl-pc-point{0%,100%{transform:translateX(-5px);opacity:.7}50%{transform:translateX(3px);opacity:1}}
+@media(prefers-reduced-motion:reduce){#eslPcSettings *,#eslPcViewDock *,#eslSwCameraDock *{scroll-behavior:auto!important}#panel .esl-pc-next::after{animation:none}}

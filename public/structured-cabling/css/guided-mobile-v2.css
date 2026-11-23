@@ -1,0 +1,49 @@
+/* Structured Cabling Misi 1: guiding active steps only, mobile readable 3D */
+.esl-timer-box{display:none;border:1px solid var(--line);background:var(--panel2);padding:12px;border-radius:10px;gap:9px}
+.esl-timer-box[aria-hidden="false"]{display:grid}
+.esl-timer-box label{font-weight:700;font-size:12px;color:var(--txt)}
+.esl-timer-controls{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.esl-timer-controls select{max-width:100%;flex:1 1 125px;min-height:44px;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--txt)}
+.esl-timer-controls button,.esl-timer-controls input{min-height:44px}
+.esl-timer-controls input{min-width:0;width:110px;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--txt)}
+#eslTimerStatus{font-size:12px;color:var(--cy);font-variant-numeric:tabular-nums}
+.steps li{position:relative;min-height:29px;transition:color .2s}
+.steps li.done{color:var(--ok)}
+.steps li:not(.cur):not(.done){color:var(--mut);opacity:.58}
+.steps li.cur{color:var(--txt);font-weight:800;padding-left:14px}
+.steps li.cur::before{content:'➜';color:#ff5b61;position:absolute;left:-9px;top:0;font-weight:900;filter:drop-shadow(0 0 3px #f45a5a55);animation:esl-point 1.2s ease-in-out infinite}
+.esl-next-target{position:relative!important;outline:2px solid #ff5b61!important;outline-offset:-1px;box-shadow:0 0 0 3px #ff5b6130!important}
+.esl-next-target::after{content:'➜';position:absolute;right:5px;top:-15px;font-size:21px;color:#ff5b61;font-weight:900;z-index:12;pointer-events:none;animation:esl-point 1.2s ease-in-out infinite}
+#btn-confirm.esl-next-target::after,#btn-next.esl-next-target::after{top:-14px;right:-4px}
+@keyframes esl-point{0%,100%{transform:translateX(-4px);opacity:.75}50%{transform:translateX(3px);opacity:1}}
+#esl3dNextArrow{position:absolute;left:50%;top:50%;z-index:6;transform:translate(-50%,-115%);pointer-events:none;display:flex;align-items:center;gap:7px;font-size:25px;color:#ff5b61;text-shadow:0 2px 10px #000;filter:drop-shadow(0 3px 6px #ff647777);animation:esl-3d-arrow 1.2s ease-in-out infinite}
+#esl3dNextArrow[hidden]{display:none!important}
+#esl3dNextArrow span{font-size:11px;background:#1d1724ea;border:1px solid #ff6477;border-radius:8px;padding:5px 9px;white-space:nowrap;font-weight:800;color:#fff}
+@keyframes esl-3d-arrow{0%,100%{transform:translate(-50%,-115%)}50%{transform:translate(-50%,-145%)}}
+@media(max-width:1023px){
+ #app{max-width:100%;width:100%;min-width:0;overflow:hidden}
+ #viewport{min-height:clamp(350px,65dvh,720px)!important;grid-area:viewport}
+ #mission{max-height:none!important;min-height:0;grid-area:mission}
+ #app{display:flex!important;flex-direction:column!important;position:fixed!important;inset:0}
+ #viewport{order:0;flex:1!important;min-height:0!important;max-height:none!important;position:relative}
+ #mission{order:1;flex:0 0 auto;max-height:42dvh!important;border:0;border-top:1px solid var(--line);overflow:auto}
+ #mission .mission-head{padding:10px 13px!important;min-height:56px!important}
+ #mission .mission-body{max-height:30dvh;overflow:auto;padding:10px!important}
+ #mission.collapsed{max-height:63px!important;overflow:hidden}
+ #mission.collapsed .mission-body,#mission.collapsed .mission-foot{display:none}
+ #dock{order:2;position:fixed!important;bottom:0!important;top:auto!important;left:0;right:0;transform:translateY(calc(100% - 53px))!important;max-height:min(65dvh,520px);overflow:auto;z-index:11}
+ #dock.open{transform:none!important}
+ #dock .card-item{min-height:68px}
+ #dock .tabs{position:sticky;top:0;background:var(--panel);z-index:1}
+ #topbar{top:0;padding:6px!important;gap:6px}
+ #topbar .brand{font-size:11px;padding:5px!important}
+ #topbar .topbtns{gap:3px}
+ #topbar .ibtn{width:40px;height:40px;min-width:40px}
+ #tip{max-width:65vw;white-space:normal;text-align:center}
+ #mission .mission-foot{padding:9px 12px calc(56px + env(safe-area-inset-bottom,0px))!important}
+}
+@media(max-width:760px){
+ #mission{max-height:36dvh!important}
+ #mission .mission-body{max-height:24dvh}
+}
+@media(prefers-reduced-motion:reduce){.steps li.cur::before,.esl-next-target::after,#esl3dNextArrow{animation:none!important}}

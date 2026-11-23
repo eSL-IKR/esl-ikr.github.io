@@ -1,0 +1,52 @@
+/* Structured Cabling Crimp & Test: uncluttered 3D stage, mobile controls */
+#eslCrimpAction{display:none}
+#eslTimeSetup{border:1px solid var(--edge);background:var(--panel2);border-radius:9px;max-width:280px;min-width:165px}
+#eslTimeSetup summary{cursor:pointer;list-style:none;font-weight:750;padding:9px 12px;min-height:40px;white-space:nowrap}
+#eslTimeSetup summary::-webkit-details-marker{display:none}
+#eslTimeSetup .esl-time-inner{display:grid;gap:7px;padding:10px;border-top:1px solid var(--edge)}
+#eslTimeSetup label{font-size:11px;font-weight:700}
+#eslTimeSetup select,#eslTimeCustom{min-height:42px}
+#eslTimeSetup #eslTimeCustom{min-width:0;width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--edge);background:var(--bg);color:var(--text)}
+#eslTimeSetup .button{min-height:42px}
+#eslTimerNotice{color:var(--muted);font-size:11px;line-height:1.3}
+.step-item:not(.done):not(.active){opacity:.50}
+.step-item.active .step-number{position:relative;border-color:#ff6477;color:#fff;background:#4a1e2a}
+.step-item.active .step-number::before{content:'➜';color:#ff6477;font-size:23px;font-weight:900;position:absolute;left:-23px;top:-1px;animation:esl-crimp-point 1.1s ease-in-out infinite}
+.esl-crimp-target{position:relative!important;outline:2px solid #ff6477!important;outline-offset:2px;box-shadow:0 0 0 3px #ff64773b!important}
+.esl-crimp-target::after{content:'➜';color:#ff6477;font-size:22px;position:absolute;right:-7px;top:-19px;pointer-events:none;animation:esl-crimp-point 1.1s ease-in-out infinite;z-index:20}
+@keyframes esl-crimp-point{0%,100%{transform:translateX(-5px);opacity:.75}50%{transform:translateX(2px);opacity:1}}
+@media(max-width:1023px){
+ html,body{overflow-x:hidden!important;max-width:100%;height:auto!important}
+ .app{height:auto!important;min-height:100dvh!important;overflow:visible!important}
+ .topbar{display:flex!important;flex-wrap:wrap!important;gap:8px!important;padding:9px 12px!important;min-height:0!important}
+ .topbar .brand{flex:1 1 auto;min-width:0}
+ .topmetrics{flex:1 1 100%;order:2;display:flex!important;justify-content:space-between;gap:7px}
+ .topmetrics .metric{min-width:0;flex:1;padding:6px 8px}
+ .topmetrics .metric span{font-size:9px}
+ .mission-top{order:3!important;flex:1 1 100%!important;min-width:0!important;max-width:none!important}
+ #eslTimeSetup{order:4;flex:1 1 100%;max-width:100%;min-width:0}
+ .workspace{display:flex!important;flex-direction:column!important;min-width:0;overflow:visible!important}
+ .stage{order:1!important;position:relative;flex:none;min-height:clamp(340px,61dvh,660px)!important;height:clamp(340px,61dvh,660px)!important;max-height:none!important;overflow:hidden}
+ #canvasBox{position:absolute!important;inset:0!important}
+ .scene-header{top:8px!important;left:10px!important;right:10px!important}
+ .scene-title{max-width:70%;padding:7px 9px!important}
+ .scene-title h2{font-size:13px!important}
+ .stage-help{top:65px!important;left:10px!important;right:10px!important;width:fit-content!important;max-width:calc(100% - 20px)!important;line-height:1.35!important;pointer-events:none}
+ .scene-bottom{display:none!important}
+ #eslCrimpAction{display:grid;order:2!important;gap:8px;padding:10px 12px;background:#101820;border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);min-width:0}
+ #eslCrimpAction .command{position:static!important;display:flex!important;min-width:0!important;max-width:100%!important;width:100%!important;flex-direction:column!important;gap:9px!important;border:0!important;padding:8px!important;background:var(--panel2)!important;border-radius:12px}
+ #eslCrimpAction .command .button{width:100%!important;min-height:46px!important}
+ #eslCrimpAction .camera-tray{position:static!important;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding:6px!important;max-width:100%!important;width:100%!important;scrollbar-width:thin;background:transparent!important}
+ #eslCrimpAction .camera-tray .button{flex:none!important;min-height:42px!important;font-size:12px!important;padding:9px 12px!important}
+ #eslCrimpAction details{display:block;border:1px solid var(--edge);border-radius:10px;min-width:0}
+ #eslCrimpAction details summary{cursor:pointer;list-style:none;font-weight:750;padding:11px;min-height:44px;color:var(--text)}
+ #eslCrimpAction details summary::after{content:'⌄';float:right}
+ #eslCrimpAction details[open] summary::after{content:'⌃'}
+ #eslCrimpAction details summary::-webkit-details-marker{display:none}
+ .inspector{order:3!important;padding:12px!important}
+ .sidebar{order:4!important;padding:12px!important;display:block!important}
+ .sidebar .panel{margin-bottom:12px!important}
+ .step-item{padding-left:21px}
+}
+@media(min-width:761px) and (max-width:1023px){.stage{min-height:570px!important;height:570px!important}}
+@media(prefers-reduced-motion:reduce){.step-item.active .step-number::before,.esl-crimp-target::after{animation:none!important}}

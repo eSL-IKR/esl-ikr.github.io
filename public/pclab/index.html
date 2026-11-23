@@ -833,6 +833,25 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 }
 </style>
 <link rel="stylesheet" href="./mobile-focus-v2.css">
+<style id="ESL_LEFT_ARROW_HOLD_V3">
+/* Penanda panel kiri: warna tema asal, tanpa memberi jawapan dalam ujian. */
+#panel .pi.esl-dd-learn-step{position:relative;outline:2px solid var(--ac)!important;outline-offset:-2px;padding-right:36px!important}
+#panel .pi.esl-dd-learn-step::after{content:'➜';position:absolute;right:9px;top:50%;font-size:23px;line-height:1;color:var(--ac);transform:translateY(-50%);pointer-events:none;animation:esl-left-point 1.35s ease-in-out infinite}
+#panel .esl-dd-learn-help{font-size:12px;line-height:1.5;color:var(--mut);padding:6px 2px 9px;margin:0}
+#panel .chip.th{position:relative;touch-action:none!important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
+#panel .chip.th:active{cursor:grabbing}
+#panel .chip.th .esl-dd-cue{position:absolute;right:8px;top:7px;z-index:2;min-width:30px;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:9px;display:grid;place-items:center;font-size:21px;line-height:1;font-weight:800;background:var(--panel);color:var(--ac);box-shadow:0 2px 6px #0002;pointer-events:none}
+#panel .chip.th .esl-dd-instr{font-size:10.5px;line-height:1.4;color:var(--mut);font-weight:600;text-align:center}
+#panel .chip.th.esl-dd-step{outline:2px solid var(--ac)!important;outline-offset:-2px;border-color:var(--ac)!important}
+#panel .chip.th.esl-dd-step .esl-dd-cue{border-color:var(--ac);animation:esl-left-point 1.35s ease-in-out infinite}
+#panel .chip.th.esl-dd-armed{box-shadow:0 0 0 3px var(--ac)!important}
+/* Petunjuk lama memilih kad pertama, sedangkan kad pertama belum tentu siap dipasang. */
+#panel .esl-pc-next:not(.esl-dd-step){outline:none!important;box-shadow:none!important}
+#panel .esl-pc-next::after{display:none!important}
+@keyframes esl-left-point{0%,100%{translate:-4px 0}50%{translate:2px 0}}
+@media(prefers-reduced-motion:reduce){#panel .pi.esl-dd-learn-step::after,#panel .chip.th.esl-dd-step .esl-dd-cue{animation:none}}
+</style>
+
 <style id="esl-training-catalog-reuse-v1">
 /* Kad latihan sahaja: gambar sama dengan Katalog/Pembina, bukan GLB baharu. */
 #panel .chip.th .esl-training-image{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;object-position:center;
@@ -2404,7 +2423,7 @@ function nextHint(){
 }
 
 /* ESL_DIRECT_PHOTO_DRAG_V2 — Hanya Mod Latihan Perkakasan. */
-var eslDD={gesture:null,ghost:null,marker:null,markerText:null,style:null,blockClickUntil:0,frameTime:0};
+var eslDD={gesture:null,ghost:null,marker:null,markerText:null,style:null,blockClickUntil:0,frameTime:0,holdTimer:null};
 function eslDDTargets(id){
   if(!id||!P[id])return [];
   return TL.map(function(row){return TG[row[0]];}).filter(function(t){
@@ -2455,6 +2474,8 @@ function eslDDMarkerFrame(){
   m.hidden=false;
 }
 function eslDDCleanup(){
+  clearTimeout(eslDD.holdTimer);eslDD.holdTimer=null;
+  if(eslDD.gesture)eslDD.gesture.chip.classList.remove('esl-dd-armed');
   document.body.classList.remove('esl-dd-dragging');
   $('#stage').classList.remove('esl-dd-over','esl-dd-invalid');
   if(eslDD.ghost){eslDD.ghost.remove();eslDD.ghost=null;}
@@ -2502,21 +2523,31 @@ function eslDDInit(panel){
   mark.appendChild(txt);mark.appendChild(arrow);$('#stage').appendChild(mark);
   eslDD.marker=mark;eslDD.markerText=txt;
   panel.addEventListener('pointerdown',function(e){
-    if(S.mode!=='latihan'||S.dom!=='hw'||!scene||e.isPrimary===false||e.button>0)return;
-    var source=e.target.closest('img.esl-training-image,.esl-training-empty');
-    var chip=source&&source.closest('.chip.th');if(!chip)return;
+    if(S.dom!=='hw'||S.mode==='belajar'||!scene||e.isPrimary===false||e.button>0)return;
+    if(S.mode==='ujian'&&!(HW.run&&HW.run.running))return;
+    var chip=e.target.closest('.chip.th');if(!chip||!panel.contains(chip))return;
     var id=chip.dataset.v;if(!P[id]||HW.installed[id])return;
-    eslDD.gesture={id:id,pointerId:e.pointerId,x:e.clientX,y:e.clientY,live:false,chip:chip};
+    eslDDCleanup();
+    var g={id:id,pointerId:e.pointerId,x:e.clientX,y:e.clientY,live:false,chip:chip,
+      ready:e.pointerType!=='touch'};
+    eslDD.gesture=g;
+    if(!g.ready)eslDD.holdTimer=setTimeout(function(){
+      if(eslDD.gesture===g){g.ready=true;chip.classList.add('esl-dd-armed');}
+    },320);
   },{passive:true});
-  panel.addEventListener('dragstart',function(e){if(e.target.closest('.chip.th img'))e.preventDefault();});
+  panel.addEventListener('dragstart',function(e){if(e.target.closest('.chip.th'))e.preventDefault();});
+  panel.addEventListener('contextmenu',function(e){if(e.target.closest('.chip.th'))e.preventDefault();});
   panel.addEventListener('click',function(e){
     if(Date.now()<eslDD.blockClickUntil&&e.target.closest('.chip.th')){e.preventDefault();e.stopImmediatePropagation();}
   },true);
   document.addEventListener('pointermove',function(e){
     var g=eslDD.gesture;if(!g||g.pointerId!==e.pointerId)return;
-    if(S.mode!=='latihan'||S.dom!=='hw'){eslDDCleanup();return;}
+    if(S.dom!=='hw'||S.mode==='belajar'||
+      (S.mode==='ujian'&&!(HW.run&&HW.run.running))){eslDDCleanup();return;}
+    var delta=Math.hypot(e.clientX-g.x,e.clientY-g.y);
+    if(!g.ready){if(delta>12)eslDDCleanup();return;}
     if(!g.live){
-      if(Math.hypot(e.clientX-g.x,e.clientY-g.y)<10)return;
+      if(delta<8)return;
       g.live=true;HW.sel=g.id;HW.force=false;HW.fb=null;
       var ghost=document.createElement('div');ghost.id='esl-dd-ghost';
       var original=g.chip.querySelector('img.esl-training-image');
@@ -2538,15 +2569,17 @@ function eslDDInit(panel){
     var live=g.live,id=g.id,x=e.clientX,y=e.clientY;
     eslDDCleanup();if(!live||cancel)return;
     eslDD.blockClickUntil=Date.now()+420;
-    if(!scene||S.dom!=='hw'||S.mode!=='latihan')return;
+    if(!scene||S.dom!=='hw'||S.mode==='belajar')return;
+    if(S.mode==='ujian'&&!(HW.run&&HW.run.running))return;
     HW.sel=id;HW.force=false;
     if(!eslDDCanvasPoint(x,y)){
       toast('Lepaskan foto pada lokasi dalam model PC 3D, atau ketik foto dan ketik lokasi.');
       render();return;
     }
+    if(P[id].bad){hwMistake(P[id].n+': '+P[id].bad);return;}
     var tid=eslDDHit(x,y,id);
     if(tid){tryPlace(id,tid);return;}
-    hwMistake(P[id].n+': lokasi salah. Lepaskan foto pada penanda pemasangan di model 3D.');
+    hwMistake(P[id].n+': lokasi salah. Lepaskan komponen pada slot pemasangan di model 3D.');
   }
   document.addEventListener('pointerup',function(e){end(e,false);});
   document.addEventListener('pointercancel',function(e){end(e,true);});
@@ -2980,14 +3013,14 @@ function infoCard(x){
 }
 function hwBelajar(){
   var cats=[];PARTS.forEach(function(p){if(!p.bad&&cats.indexOf(p.cat)<0)cats.push(p.cat);});
-  var cur=HW.info&&HW.info.kind==='part'?P[HW.info.id].cat:null,open=S.cOpen===undefined?'':S.cOpen;
+  var cur=HW.info&&HW.info.kind==='part'?P[HW.info.id].cat:null,open=S.cOpen===undefined?'Asas':S.cOpen;
   if(cur&&S.cSel!==HW.info.id){S.cSel=HW.info.id;open=S.cOpen=cur;}
   var list=cats.map(function(c,n){
     var ps=PARTS.filter(function(p){return !p.bad&&p.cat===c;});
     var m=PC_CAT[c]||[c,'cube'];
     return '<div class="cg'+(open===c?' open':'')+'"><button class="ch" type="button" data-act="cgrp" data-v="'+esc(c)+'" aria-expanded="'+(open===c?'true':'false')+'" aria-label="'+esc(c)+', '+ps.length+' komponen">'
       +'<span class="pc-cat-ico">'+pcIcon(m[1])+'</span><span class="pc-cat-text"><b>'+esc(m[0])+'</b></span><span class="pc-count">'+ps.length+'</span><span class="ar">&#9662;</span></button><div class="cb">'
-      +ps.map(function(p){return '<button class="pi'+(HW.info&&HW.info.kind==='part'&&HW.info.id===p.id?' sel':'')+'" type="button" data-act="info" data-v="part:'+p.id+'" title="'+esc(p.n)+'" aria-label="'+esc(p.n)+'">'+pcIcon(pcPartIcon(p))+'<span>'+esc(PC_PART_SHORT[p.id]||p.n)+'</span></button>';}).join('')+'</div></div>';
+      +ps.map(function(p){return '<button class="pi'+(HW.info&&HW.info.kind==='part'&&HW.info.id===p.id?' sel':'')+((HW.info&&HW.info.kind==='part'?HW.info.id:'mobo')===p.id?' esl-dd-learn-step':'')+'" type="button" data-act="info" data-v="part:'+p.id+'" title="'+esc(p.n)+'" aria-label="'+esc(p.n)+'">'+pcIcon(pcPartIcon(p))+'<span>'+esc(PC_PART_SHORT[p.id]||p.n)+'</span></button>';}).join('')+'</div></div>';
   }).join('');
   var feats=Object.keys(FEATS).map(function(k){var a=PC_FEAT[k]||[FEATS[k].n,'chip'];return '<button class="pc-feat'+(HW.info&&HW.info.kind==='feat'&&HW.info.id===k?' sel':'')+'" type="button" data-act="info" data-v="feat:'+k+'" title="'+esc(FEATS[k].n)+'" aria-label="'+esc(FEATS[k].n)+'">'+pcIcon(a[1])+'<span>'+esc(a[0])+'</span></button>';}).join('');
   return infoCard(HW.info)+compatCard()
@@ -3001,20 +3034,26 @@ function hwBelajar(){
    +'<details class="pc-extras" id="pcExtras"><summary>'+pcIcon('settings')+' Set Tambahan</summary><div class="pc-extras-body">'
    +'<div class="row2"><button class="btn sm'+(BRAND_MODE?' on':'')+'" type="button" data-act="brandtoggle">'+(BRAND_MODE?'✓':'✦')+' Corsair + Elgato</button><button class="btn sm" type="button" data-act="brandgallery">'+pcIcon('grid')+' 8 model 3D</button></div>'
    +'<p>Model jenama ialah simulasi 3D, bukan model rasmi.</p></div></details></div>'
-   +'<div class="pc-group-label">'+pcIcon('cube')+' Komponen <span style="margin-left:auto;font-size:10.5px;color:var(--mut);font-weight:500">Tekan untuk buka</span></div>'
+   +'<div class="pc-group-label">'+pcIcon('cube')+' Komponen <span style="margin-left:auto;font-size:10.5px;color:var(--mut);font-weight:500">Tekan untuk buka</span></div>'+'<p class="esl-dd-learn-help">➜ Ikut anak panah pada kad di kiri. Tekan komponen untuk terokai lokasi dan fungsinya pada PC 3D.</p>'
    +list+'<details class="card pc-board" id="pcBoard"><summary>'+pcIcon('board')+' Bahagian Motherboard <span class="pc-count">'+Object.keys(FEATS).length+'</span><span class="pc-expand">⌄</span></summary><div class="pc-feat-grid">'+feats+'</div></details>';
 }
 function trayHTML(){
   var ids=S.mode==='ujian'?HW.order:PARTS.map(function(p){return p.id;});
   var avail=ids.filter(function(id){var p=P[id];return !HW.installed[id]&&!(p.slot&&HW.slotDone[p.slot]);});
-  function chip(id){return '<button class="chip th'+(HW.sel===id?' sel':'')+'" data-act="sel" data-v="'+id+'">'+timg(id)+'<span>'+esc(P[id].n)+'</span></button>';}
+  function chip(id){
+    var next=S.mode==='latihan'?nextHint():null;
+    var point=S.mode==='latihan'&&(HW.sel===id||(!HW.sel&&next&&next.id===id));
+    return '<button type="button" class="chip th'+(HW.sel===id?' sel':'')+(point?' esl-dd-step':'')+'" data-act="sel" data-v="'+id+'" aria-label="'+esc(P[id].n)+', tekan lama dan seret ke PC 3D">'
+      +'<b class="esl-dd-cue" aria-hidden="true">↗</b>'+timg(id)+'<span>'+esc(P[id].n)+'</span>'
+      +'<small class="esl-dd-instr">Tekan lama · seret ke PC 3D</small></button>';
+  }
   if(S.mode==='ujian')return '<div class="card"><h4>Senarai komponen</h4><div class="chips">'+avail.map(chip).join('')+'</div></div>';
   var cats=[];avail.forEach(function(id){if(cats.indexOf(P[id].cat)<0)cats.push(P[id].cat);});
   return '<div class="card"><h4>Senarai komponen</h4>'+cats.map(function(c){return '<div class="cat">'+esc(c)+'</div><div class="chips">'+avail.filter(function(id){return P[id].cat===c;}).map(chip).join('')+'</div>';}).join('')+'</div>';
 }
 function hwLatihan(){
   var t=totalSlots(),d=doneSlots();
-  var h='<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p><b>Seret terus foto komponen ke lokasi pemasangan 3D.</b> Atau ketik foto, kemudian ketik lokasi. Anak panah menunjukkan sasaran pada model, bukan kad sebelah.</p>'
+  var h='<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p><b>Seret terus foto komponen ke lokasi pemasangan 3D.</b> Atau ketik foto, kemudian ketik lokasi. Anak panah pada kad kiri menunjukkan komponen seterusnya; penanda pada model 3D menunjukkan lokasi. Di telefon, tekan lama kad kemudian seret dan lepaskan pada PC.</p>'
    +'<div class="row2"><button class="btn sm" data-act="hint">Petunjuk</button><button class="btn sm" data-act="reset">Mula semula</button><label><input type="checkbox" data-chk="loc"'+(HW.showLoc?' checked':'')+'> cahaya lokasi</label></div></div>';
   if(HW.fb)h+='<div class="fb '+(HW.fb.ok?'ok':'bad')+'">'+esc(HW.fb.msg)+'</div>';
   if(d===t)return h+'<div class="card info"><h3>PC siap dipasang!</h3><p>Semua perkakasan telah disambung. Seterusnya pasang perisian.</p><div class="row2"><button class="btn pri" data-act="tosw">Teruskan ke Perisian</button><button class="btn" data-act="reset">Ulang</button></div></div>';
@@ -3024,7 +3063,7 @@ function hwLatihan(){
 function ujianIntro(kind){
   var tot=kind==='hw'?totalSlots():SWS.length,pen=kind==='hw'?PEN_HW:PEN_SW;
   return '<div class="card"><h3>Ujian Amali: '+(kind==='hw'?'Perkakasan':'Perisian')+'</h3>'
-   +'<p>'+(kind==='hw'?'Pasang '+tot+' komponen mengikut urutan yang betul. Tiada petunjuk, tiada cahaya lokasi.':'Lakukan '+tot+' langkah pemasangan perisian mengikut urutan yang betul, termasuk pengiraan partition. Tiada petunjuk.')+'</p>'
+   +'<p>'+(kind==='hw'?'Pasang '+tot+' komponen mengikut urutan yang betul. Tiada petunjuk jawapan atau cahaya lokasi. Anak panah pada kad hanya menunjukkan cara seret.':'Lakukan '+tot+' langkah pemasangan perisian mengikut urutan yang betul, termasuk pengiraan partition. Tiada petunjuk.')+'</p>'
    +'<p class="mut">Markah = % siap tolak '+pen+' markah bagi setiap kesilapan. Lulus (Kompeten) pada '+PASS+'% ke atas.</p>'
    +'<p class="mut">Had masa '+EXAM_MIN[kind]+' minit. Jawapan diserahkan sendiri apabila masa tamat. Meninggalkan tab atau tetingkap dicatat dalam keputusan.</p>'
    +(kind==='hw'?'<p class="mut">Dalam senarai ada komponen yang kelihatan sah tetapi tidak serasi. Semak soket, jenis RAM, saiz dan kuasa sebelum memasang.</p>':'')
@@ -3042,7 +3081,7 @@ function resultHTML(r){
 function hwUjian(){
   if(!HW.run)return ujianIntro('hw');
   if(HW.run.res)return resultHTML(HW.run.res);
-  var h='<div class="card"><h3>Ujian sedang berjalan</h3><p class="mut">Pilih komponen, kemudian ketuk lokasi pada model 3D.</p><div class="row2"><button class="btn" data-act="submit" data-v="hw">Serah jawapan sekarang</button></div></div>';
+  var h='<div class="card"><h3>Ujian sedang berjalan</h3><p class="mut">Tekan lama pada mana-mana kad komponen dan seret ke slot PC 3D, atau tekan kad kemudian pilih slot. Anak panah kad bukan petunjuk jawapan.</p><div class="row2"><button class="btn" data-act="submit" data-v="hw">Serah jawapan sekarang</button></div></div>';
   if(HW.fb&&!HW.fb.ok)h+='<div class="fb bad">'+esc(HW.fb.msg)+'</div>';
   return h+trayHTML();
 }

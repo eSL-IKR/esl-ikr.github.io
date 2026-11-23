@@ -14,6 +14,74 @@
  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
 }}
 </script>
+<style id="esl-misi1-mobile-visibility-20261123">
+/* Susun atur telefon untuk Misi 1. Tidak mengubah 3D, skor atau state. */
+@media (max-width:1023px) {
+  #app {min-width:0 !important; overflow:hidden !important;}
+  #viewport {flex:1 1 auto !important; min-height:160px !important;}
+  #mission {
+    order:1; flex:0 0 auto !important; height:clamp(280px,43dvh,410px) !important;
+    min-height:0 !important; max-height:none !important;
+    width:100% !important; overflow:hidden !important; display:flex !important;
+    flex-direction:column !important;
+  }
+  #mission .sim-back-to-portal {
+    flex:0 0 auto; padding:7px 13px !important;
+    font-size:12px; line-height:1.2;
+  }
+  #mission .mission-head {
+    flex:0 0 auto; min-height:49px !important; padding:7px 13px !important;
+  }
+  #mission .mtitle {font-size:14px !important; line-height:1.3;}
+  #mission .mission-body {
+    flex:1 1 0% !important; min-height:0 !important; max-height:none !important;
+    padding:9px 13px !important; overflow-y:auto !important;
+    overflow-x:hidden !important; overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch; gap:8px;
+  }
+  #mission #m-goal {font-size:13px; line-height:1.4;}
+  #mission .steps {font-size:13px; line-height:1.4; gap:5px;}
+  #mission .row .btn {min-height:43px;}
+  #mission .mission-foot {
+    flex:0 0 auto; min-height:0 !important;
+    padding:7px 12px calc(55px + env(safe-area-inset-bottom,0px)) !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    gap:8px; background:var(--panel);
+  }
+  #mission .mission-foot .btn {min-height:43px !important; padding:8px 11px; font-size:12px;}
+  #mission.collapsed {height:53px !important; min-height:53px !important; max-height:53px !important;}
+  #mission.collapsed .sim-back-to-portal,
+  #mission.collapsed .mission-body,
+  #mission.collapsed .mission-foot {display:none !important;}
+
+  /* Pemegang inventori mesti nampak seperti butang, bukan jalur kosong. */
+  #dock {z-index:25 !important; max-width:100vw;}
+  #dock .dock-handle {
+    display:flex !important; align-items:center; justify-content:center; gap:10px;
+    width:calc(100% + 24px); height:53px; min-height:53px;
+    margin:-8px -12px 0 !important;
+    background:#152c38; color:#70e3d2; font-size:13px; font-weight:800;
+    border-bottom:1px solid #355363; border-radius:15px 15px 0 0;
+  }
+  #dock .dock-handle i {flex:0 0 33px; height:5px; margin:0; background:#70e3d2;}
+  #dock .dock-handle::after {content:'Pilih kabel / komponen';}
+  #dock.open .dock-handle::after {content:'Tutup pilihan komponen';}
+  #dock.open .cards {padding:8px 2px 14px; scroll-padding:14px;}
+  #dock.open .card-item {min-height:86px;}
+
+  /* Masa latihan masih boleh digunakan, tetapi hanya apabila dipilih pelajar. */
+  #mission .esl-timer-toggle-mobile {display:block; text-align:left; width:100%;
+    min-height:38px; font-size:12px; color:var(--cy); border:1px solid var(--line);}
+  #mission .esl-timer-toggle-mobile[hidden] {display:none !important;}
+  #mission .esl-timer-box[aria-hidden="false"] {display:none !important;}
+  #mission .esl-timer-box.esl-timer-expanded[aria-hidden="false"] {display:grid !important;}
+}
+@media (min-width:1024px){#mission .esl-timer-toggle-mobile{display:none !important;}}
+@media (max-width:1023px) and (max-height:620px){
+  #mission {height:min(47dvh,300px) !important;}
+  #mission .sim-back-to-portal {display:none !important;}
+}
+</style>
 </head>
 <body>
 <div id="app">
@@ -117,5 +185,47 @@
 <noscript>Simulator ini memerlukan JavaScript.</noscript>
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/guided-mobile-v2.js"></script>
+<script id="esl-misi1-mobile-assist-20261123">
+/* Buka pilihan yang mudah difahami, tutup inventori selepas pilihan dibuat. */
+(function(){
+  const dock=document.getElementById('dock');
+  const handle=document.getElementById('dock-handle');
+  const timer=document.getElementById('eslTimeBox');
+  if(!dock || !handle || !timer) return;
+
+  const mobile=()=>window.matchMedia('(max-width:1023px)').matches;
+  const syncHandle=()=>{
+    const open=dock.classList.contains('open');
+    handle.setAttribute('aria-expanded',String(open));
+    handle.setAttribute('aria-label',open?'Tutup pilihan komponen':'Buka pilihan kabel dan komponen');
+  };
+  new MutationObserver(syncHandle).observe(dock,{attributes:true,attributeFilter:['class']});
+  syncHandle();
+
+  const timerButton=document.createElement('button');
+  timerButton.type='button';
+  timerButton.className='btn ghost small esl-timer-toggle-mobile';
+  timerButton.textContent='⏱ Masa latihan (pilihan)';
+  timerButton.setAttribute('aria-controls','eslTimeBox');
+  timerButton.setAttribute('aria-expanded','false');
+  timer.before(timerButton);
+  timerButton.addEventListener('click',()=>{
+    const expanded=timer.classList.toggle('esl-timer-expanded');
+    timerButton.setAttribute('aria-expanded',String(expanded));
+    timerButton.textContent=expanded?'⏱ Tutup tetapan masa':'⏱ Masa latihan (pilihan)';
+  });
+  const syncTimer=()=>{ timerButton.hidden=timer.getAttribute('aria-hidden')!=='false'; };
+  new MutationObserver(syncTimer).observe(timer,{attributes:true,attributeFilter:['aria-hidden']});
+  syncTimer();
+
+  // Gunakan fasa penangkapan supaya penutupan berlaku selepas onPick asal.
+  document.addEventListener('click',(ev)=>{
+    if(!mobile()) return;
+    if(ev.target.closest('#dock .card-item')){
+      requestAnimationFrame(()=>{dock.classList.remove('open'); syncHandle();});
+    }
+  },true);
+})();
+</script>
 </body>
 </html>

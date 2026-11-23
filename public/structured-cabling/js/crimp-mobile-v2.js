@@ -22,16 +22,15 @@
   mq.addEventListener?.('change',layout);layout();
   const act=document.getElementById('mainAction');const steps=document.getElementById('steps');
   function guidance(){
+    // ESL-IKR-ISU-123-V1: only point to the live task button, not a hidden tool.
     document.querySelectorAll('.esl-crimp-target').forEach(e=>e.classList.remove('esl-crimp-target'));
-    const raw=(act?.textContent||'').toUpperCase();let target=act;
-    if(raw.includes('STRIP'))target=document.getElementById('stripTool')||act;
-    else if(raw.includes('INSERT'))target=document.getElementById('insertBtn')||act;
-    else if(raw.includes('CRIMP'))target=document.getElementById('crimpBtn')||act;
-    else if(raw.includes('CONNECT MASTER'))target=document.getElementById('masterBtn')||act;
-    else if(raw.includes('CONNECT REMOTE'))target=document.getElementById('remoteBtn')||act;
-    else if(raw.includes('POWER')||raw.includes('TEST'))target=document.getElementById('testBtn')||act;
-    if(target && !target.disabled)target.classList.add('esl-crimp-target');
-    if(act && !act.disabled && target!==act)act.classList.add('esl-crimp-target');
+    const task=act;
+    if(!task||task.disabled||!task.isConnected)return;
+    const r=task.getBoundingClientRect();
+    if(r.width<25||r.height<20)return;
+    task.classList.add('esl-crimp-target');
+    // Active step gets the same cue. Locked steps remain muted.
+    steps?.querySelector('.step-item.active')?.classList.add('esl-crimp-current');
   }
   const observer=new MutationObserver(()=>requestAnimationFrame(guidance));
   if(act)observer.observe(act,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['disabled']});

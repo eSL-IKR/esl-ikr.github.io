@@ -2403,6 +2403,156 @@ function nextHint(){
   return null;
 }
 
+/* ESL_DIRECT_PHOTO_DRAG_V2 — Hanya Mod Latihan Perkakasan. */
+var eslDD={gesture:null,ghost:null,marker:null,markerText:null,style:null,blockClickUntil:0,frameTime:0};
+function eslDDTargets(id){
+  if(!id||!P[id])return [];
+  return TL.map(function(row){return TG[row[0]];}).filter(function(t){
+    return t&&t.accept.indexOf(id)>=0&&!(t.ex&&HW.occ[t.id]);
+  });
+}
+function eslDDCanvasPoint(x,y){
+  var r=$('#c').getBoundingClientRect();
+  return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
+}
+function eslDDProject(t){
+  if(!camera||!t)return null;
+  var p=new THREE.Vector3(t.pos[0],t.pos[1],t.pos[2]).project(camera);
+  if(!isFinite(p.x)||!isFinite(p.y)||p.z<=-1||p.z>=1||Math.abs(p.x)>1||Math.abs(p.y)>1)return null;
+  var c=$('#c').getBoundingClientRect(),s=$('#stage').getBoundingClientRect();
+  return {x:c.left-s.left+(p.x+1)*c.width/2,y:c.top-s.top+(1-p.y)*c.height/2,
+    clientX:c.left+(p.x+1)*c.width/2,clientY:c.top+(1-p.y)*c.height/2};
+}
+function eslDDHit(x,y,id){
+  if(!scene||!raycaster||!camera||!eslDDCanvasPoint(x,y))return null;
+  var r=$('#c').getBoundingClientRect();
+  raycaster.setFromCamera(new THREE.Vector2(2*(x-r.left)/r.width-1,1-2*(y-r.top)/r.height),camera);
+  var hits=raycaster.intersectObjects(tgMeshes,false);
+  var valid=eslDDTargets(id),byId={};valid.forEach(function(t){byId[t.id]=t;});
+  for(var i=0;i<hits.length;i++){
+    var t=byId[hits[i].object.userData.tid];if(t)return t.id;
+  }
+  // Tiny slots are hard to reach on phones: allow a short radius around their 3D projection.
+  var limit=Math.min(86,Math.max(48,r.width*.11));
+  var best=null,dist=Infinity;
+  valid.forEach(function(t){
+    var p=eslDDProject(t);if(!p)return;
+    var d=Math.hypot(x-p.clientX,y-p.clientY);
+    if(d<limit&&d<dist){best=t.id;dist=d;}
+  });
+  return best;
+}
+function eslDDMarkerFrame(){
+  var m=eslDD.marker;if(!m||S.mode!=='latihan'||S.dom!=='hw'||!HW.sel||!P[HW.sel]||
+    HW.installed[HW.sel]||P[HW.sel].bad||!(HW.showLoc||HW.force)){if(m)m.hidden=true;return;}
+  var now=performance.now();if(now-eslDD.frameTime<55)return;eslDD.frameTime=now;
+  var list=eslDDTargets(HW.sel),p=null;
+  for(var i=0;i<list.length;i++){p=eslDDProject(list[i]);if(p)break;}
+  if(!p){m.hidden=true;return;}
+  var stage=$('#stage');if(!stage||p.x<16||p.y<45||p.x>stage.clientWidth-16||p.y>stage.clientHeight-18){m.hidden=true;return;}
+  m.style.left=p.x+'px';m.style.top=p.y+'px';
+  eslDD.markerText.textContent='Pasang di sini: '+P[HW.sel].n;
+  m.hidden=false;
+}
+function eslDDCleanup(){
+  document.body.classList.remove('esl-dd-dragging');
+  $('#stage').classList.remove('esl-dd-over','esl-dd-invalid');
+  if(eslDD.ghost){eslDD.ghost.remove();eslDD.ghost=null;}
+  eslDD.gesture=null;
+}
+function eslDDInit(panel){
+  if(panel.dataset.eslDirectDrag==='yes')return;
+  panel.dataset.eslDirectDrag='yes';panel.classList.add('esl-dd-enabled');
+  var style=document.createElement('style');style.id='esl-dd-photo-style';
+  style.textContent=`
+    #panel.esl-dd-enabled .chip.th img.esl-training-image,
+    #panel.esl-dd-enabled .chip.th .esl-training-empty{
+      touch-action:none!important;user-select:none;-webkit-user-select:none;
+      -webkit-user-drag:none;cursor:grab;
+    }
+    #panel.esl-dd-enabled .chip.th:after,#panel.esl-dd-enabled .chip.th:before{
+      content:none!important;display:none!important;
+    }
+    #panel .esl-dd-help{font-size:12px;line-height:1.5;color:var(--mut);margin:9px 0 0}
+    #stage .lbl.g{display:none!important} /* elak dua label menunjuk sasaran sama */
+    #panel .esl-dd-help b{color:var(--acx)}
+    #esl-dd-target{position:absolute;z-index:8;transform:translate(-50%,-100%);
+      pointer-events:none;text-align:center;max-width:min(220px,60%);filter:drop-shadow(0 5px 8px #0009)}
+    #esl-dd-target[hidden]{display:none!important}
+    #esl-dd-target span{display:block;background:#0b1829ed;color:#fff;border:1px solid #38bdf8;
+      border-radius:9px;padding:6px 10px;font-size:11px;line-height:1.3;font-weight:800}
+    #esl-dd-target i{display:block;margin:1px auto -7px;font-size:25px;font-weight:900;
+      line-height:1;color:#38bdf8;font-style:normal;text-shadow:0 2px 4px #000}
+    #esl-dd-target i:after{content:'↓'}
+    @media(prefers-reduced-motion:no-preference){#esl-dd-target i{animation:esl-dd-hint 1.7s ease-in-out infinite}}
+    @keyframes esl-dd-hint{50%{transform:translateY(5px)}}
+    #esl-dd-ghost{position:fixed;z-index:99999;width:128px;min-height:95px;pointer-events:none;
+      display:flex;flex-direction:column;gap:4px;align-items:center;background:#111d30ed;
+      border:2px solid #38bdf8;border-radius:12px;padding:8px;box-shadow:0 12px 38px #0009;
+      transform:translate(-50%,-90%);color:#fff;text-align:center}
+    #esl-dd-ghost img{width:105px;height:77px;object-fit:contain;border-radius:6px;background:#fff}
+    #esl-dd-ghost b{font-size:10.5px;line-height:1.25;overflow-wrap:anywhere}
+    #stage.esl-dd-over{box-shadow:inset 0 0 0 4px rgba(34,197,94,.7)}
+    #stage.esl-dd-invalid{box-shadow:inset 0 0 0 4px rgba(239,68,68,.7)}
+    @media(max-width:860px){#esl-dd-ghost{width:102px;padding:5px}#esl-dd-ghost img{width:88px;height:65px}#esl-dd-ghost b{font-size:10px}}
+  `;
+  document.head.appendChild(style);eslDD.style=style;
+  var mark=document.createElement('div');mark.id='esl-dd-target';mark.hidden=true;
+  var txt=document.createElement('span'),arrow=document.createElement('i');arrow.setAttribute('aria-hidden','true');
+  mark.appendChild(txt);mark.appendChild(arrow);$('#stage').appendChild(mark);
+  eslDD.marker=mark;eslDD.markerText=txt;
+  panel.addEventListener('pointerdown',function(e){
+    if(S.mode!=='latihan'||S.dom!=='hw'||!scene||e.isPrimary===false||e.button>0)return;
+    var source=e.target.closest('img.esl-training-image,.esl-training-empty');
+    var chip=source&&source.closest('.chip.th');if(!chip)return;
+    var id=chip.dataset.v;if(!P[id]||HW.installed[id])return;
+    eslDD.gesture={id:id,pointerId:e.pointerId,x:e.clientX,y:e.clientY,live:false,chip:chip};
+  },{passive:true});
+  panel.addEventListener('dragstart',function(e){if(e.target.closest('.chip.th img'))e.preventDefault();});
+  panel.addEventListener('click',function(e){
+    if(Date.now()<eslDD.blockClickUntil&&e.target.closest('.chip.th')){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
+  document.addEventListener('pointermove',function(e){
+    var g=eslDD.gesture;if(!g||g.pointerId!==e.pointerId)return;
+    if(S.mode!=='latihan'||S.dom!=='hw'){eslDDCleanup();return;}
+    if(!g.live){
+      if(Math.hypot(e.clientX-g.x,e.clientY-g.y)<10)return;
+      g.live=true;HW.sel=g.id;HW.force=false;HW.fb=null;
+      var ghost=document.createElement('div');ghost.id='esl-dd-ghost';
+      var original=g.chip.querySelector('img.esl-training-image');
+      if(original&&original.getAttribute('src')){
+        var photo=document.createElement('img');photo.src=original.src;photo.alt='';ghost.appendChild(photo);
+      }
+      var title=document.createElement('b');title.textContent=P[g.id].n;ghost.appendChild(title);
+      document.body.appendChild(ghost);eslDD.ghost=ghost;
+      document.body.classList.add('esl-dd-dragging');
+    }
+    e.preventDefault();
+    if(eslDD.ghost){eslDD.ghost.style.left=e.clientX+'px';eslDD.ghost.style.top=e.clientY+'px';}
+    var stage=$('#stage'),hit=eslDDCanvasPoint(e.clientX,e.clientY);
+    stage.classList.toggle('esl-dd-over',hit&&!!eslDDHit(e.clientX,e.clientY,g.id));
+    stage.classList.toggle('esl-dd-invalid',hit&&!eslDDHit(e.clientX,e.clientY,g.id));
+  },{passive:false});
+  function end(e,cancel){
+    var g=eslDD.gesture;if(!g||g.pointerId!==e.pointerId)return;
+    var live=g.live,id=g.id,x=e.clientX,y=e.clientY;
+    eslDDCleanup();if(!live||cancel)return;
+    eslDD.blockClickUntil=Date.now()+420;
+    if(!scene||S.dom!=='hw'||S.mode!=='latihan')return;
+    HW.sel=id;HW.force=false;
+    if(!eslDDCanvasPoint(x,y)){
+      toast('Lepaskan foto pada lokasi dalam model PC 3D, atau ketik foto dan ketik lokasi.');
+      render();return;
+    }
+    var tid=eslDDHit(x,y,id);
+    if(tid){tryPlace(id,tid);return;}
+    hwMistake(P[id].n+': lokasi salah. Lepaskan foto pada penanda pemasangan di model 3D.');
+  }
+  document.addEventListener('pointerup',function(e){end(e,false);});
+  document.addEventListener('pointercancel',function(e){end(e,true);});
+  window.addEventListener('blur',eslDDCleanup);
+}
+
 /* ====== PICK / TAP ====== */
 function ndc(e){var r=$('#c').getBoundingClientRect();return new THREE.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);}
 function pickPart(e){
@@ -2864,7 +3014,7 @@ function trayHTML(){
 }
 function hwLatihan(){
   var t=totalSlots(),d=doneSlots();
-  var h='<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p>Pilih komponen, kemudian <b>ketuk lokasi</b> pada model 3D.</p>'
+  var h='<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p><b>Seret terus foto komponen ke lokasi pemasangan 3D.</b> Atau ketik foto, kemudian ketik lokasi. Anak panah menunjukkan sasaran pada model, bukan kad sebelah.</p>'
    +'<div class="row2"><button class="btn sm" data-act="hint">Petunjuk</button><button class="btn sm" data-act="reset">Mula semula</button><label><input type="checkbox" data-chk="loc"'+(HW.showLoc?' checked':'')+'> cahaya lokasi</label></div></div>';
   if(HW.fb)h+='<div class="fb '+(HW.fb.ok?'ok':'bad')+'">'+esc(HW.fb.msg)+'</div>';
   if(d===t)return h+'<div class="card info"><h3>PC siap dipasang!</h3><p>Semua perkakasan telah disambung. Seterusnya pasang perisian.</p><div class="row2"><button class="btn pri" data-act="tosw">Teruskan ke Perisian</button><button class="btn" data-act="reset">Ulang</button></div></div>';
@@ -3291,6 +3441,7 @@ function bind(){
   $('#modal').addEventListener('click',function(e){if(e.target.id==='modal')act('skclose');var b=e.target.closest('[data-act]');if(b)act(b.dataset.act,b.dataset.v);});
   var panel=$('#panel');
   panel.addEventListener('click',function(e){var b=e.target.closest('[data-act]');if(b)act(b.dataset.act,b.dataset.v);});
+  eslDDInit(panel);
   panel.addEventListener('input',function(e){
     var t=e.target;
     if(t.dataset.range==='ex'){HW.exT=t.value/100;}
@@ -3376,6 +3527,7 @@ function tick(t){
   var pulse=.28+.2*Math.sin(t/180);
   TL.forEach(function(r){var T=TG[r[0]];var on=glow&&T.accept.indexOf(HW.sel)>=0&&!(T.ex&&HW.occ[T.id])&&!HW.installed[HW.sel];var kb=kbT>=0&&TL[kbT][0]===T.id;T.mesh.material.color.setHex(kb?0xf2b134:0x22d3ee);T.mesh.material.opacity=kb?.55:(on?pulse:0);});
   updateLabels();
+  eslDDMarkerFrame();
   renderer.render(scene,camera);
 }
 
@@ -3561,6 +3713,10 @@ Object.keys(ESL_TRAINING_LOCAL_PHOTOS).forEach(function(id) {
 /* === TAMAT PEMETAAN FOTO SETEMPAT === */
 
 function timg(id){
+  // Model-accurate reference; merchant-owned image, check usage permission.
+  if(id==='mobo'){return '<img class="th esl-training-image" src="https://img.overclockers.co.uk/media/image/MB645AS_114948.jpg" alt="Motherboard ASUS Z170-P" loading="lazy" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.hidden=false;">'
+    +'<div class="esl-training-empty" hidden role="status">Foto ASUS Z170-P tidak dapat dimuatkan. Semak sumber foto.</div>'
+    +'<small class="esl-training-source">Foto ASUS Z170-P daripada Katalog / penjual. Hak penggunaan tertakluk kepada pemilik.</small>'; }
   var m=ESL_TRAINING_CATALOG[id], name=P[id]?P[id].n:id;
   if(!m){
     return '<div class="esl-training-empty" role="img" aria-label="Foto belum ada untuk '+esc(name)+'">'

@@ -14,6 +14,7 @@ function refresh(){
  const s=S.state(),guided=s.mode==='guided',step=mission1Step(s);
  if(box){box.setAttribute('aria-hidden',guided?'false':'true');if(!guided&&timer!==null){stopClock();status.textContent='Belum dimulakan'}}
  document.querySelectorAll('.esl-next-target').forEach(e=>e.classList.remove('esl-next-target'));
+ document.querySelectorAll('.esl-choice-group').forEach(e=>e.classList.remove('esl-choice-group'));
  if(!guided||s.mission!==0)return;
  const list=Array.from(byId('m-steps')?.children||[]);
  list.forEach((li,i)=>{li.classList.toggle('done',i<step);li.classList.toggle('cur',i===step);li.classList.toggle('locked',i>step);if(i>step)li.setAttribute('aria-disabled','true');else li.removeAttribute('aria-disabled')});
@@ -29,8 +30,10 @@ function refresh(){
     const card=Array.from(cards?.querySelectorAll('.card-item')||[]).find(e=>e.textContent.includes(q));
     if(card)target=card;
   }else{
-    const card=Array.from(cards?.querySelectorAll('.card-item')||[]).find(e=>e.textContent.includes('Kabel Cat6 UTP'));
-    if(card)target=card;
+    // Semua pilihan kabel dibenarkan. Jangan arahkan kad pertama ke kad sebelah.
+    Array.from(cards?.querySelectorAll('.card-item')||[])
+      .filter(e=>/Kabel\s+Cat(?:6A?|7|8)\b/i.test(e.textContent))
+      .forEach(e=>e.classList.add('esl-choice-group'));
   }
  }else if(step===3)target=byId('btn-confirm');else if(step===4)target=byId('btn-next');
  target?.classList.add('esl-next-target');

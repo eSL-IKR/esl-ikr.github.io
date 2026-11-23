@@ -61,7 +61,8 @@ export function createScene(canvas) {
   controls.minDistance = 15; controls.maxDistance = 190; controls.maxPolarAngle = Math.PI * 0.48; controls.screenSpacePanning = true;
   controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
 
-  const home = { pos: new THREE.Vector3(0, 80, 95), target: new THREE.Vector3(0, 0, -2) };
+  // ESL-IKR-ISU-123-V1: mobile camera aims nearer the workbench, not empty background.
+  const home = { pos: new THREE.Vector3(0, 80, 95), target: new THREE.Vector3(0, mobile ? -15 : 0, -2) };
   let fly = null;
   function flyTo(pos, target, ms = 600) {
     fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: pos, t1: target, s: performance.now(), ms };

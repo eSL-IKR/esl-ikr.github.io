@@ -196,20 +196,45 @@ function updateTip() {
   tip.style.left = ((v.x + 1) / 2 * r.width) + 'px'; tip.style.top = ((1 - v.y) / 2 * r.height) + 'px'; tip.hidden = false;
 }
 
-// Petunjuk 3D merah mengikut kedudukan objek. Dipaparkan dalam latihan berpandu sahaja.
+// Petunjuk 3D: hanya SATU anak panah, dengan sasaran tepat.
+// Langkah 1 menunjuk KUMPULAN 4 KABEL, bukan Cat6 sebagai jawapan wajib.
 const eslGuidePos=new THREE.Vector3();
+let eslCableGroupCenter=null;
 function update3DGuide(){
  const el=$('esl3dNextArrow');if(!el||!sc||!comps)return;
- const s=S.state(),step=mission1Step(s),cable=s.cable.id&&comps.items[s.cable.id];
- const item=(step===0?'cat6':step===1&&!cable?.shielded?'rj45':step===2&&!cable?.shielded?'panel':null);
- const g=item&&objs[item];
- if(s.mode!=='guided'||s.mission!==0||!g||step>=3){el.hidden=true;return;}
- if(!g.userData.eslGuideCenter){const bounds=new THREE.Box3().setFromObject(g);if(bounds.isEmpty()){el.hidden=true;return;}bounds.getCenter(eslGuidePos);eslGuidePos.y=bounds.max.y+1.5;g.userData.eslGuideCenter=eslGuidePos.clone();}
- eslGuidePos.copy(g.userData.eslGuideCenter).project(sc.camera);
- if(!Number.isFinite(eslGuidePos.x)||!Number.isFinite(eslGuidePos.y)||eslGuidePos.z<-1||eslGuidePos.z>1||Math.abs(eslGuidePos.x)>1){el.hidden=true;return;}
+ const s=S.state(),step=mission1Step(s);
+ if(s.mode!=='guided'||s.mission!==0||step>=3){el.hidden=true;return;}
+ let point=null;
+ if(step===0){
+  const group=['cat6','cat6a','cat7','cat8'].map(id=>objs[id]).filter(Boolean);
+  if(group.length!==4){el.hidden=true;return;}
+  if(!eslCableGroupCenter){
+   const b=new THREE.Box3();group.forEach(g=>b.expandByObject(g));
+   const c=b.getCenter(new THREE.Vector3());c.y=b.max.y+2.3;
+   eslCableGroupCenter=c;
+  }
+  point=eslCableGroupCenter;
+ }else{
+  const chosen=s.cable.id&&comps.items[s.cable.id];
+  // Plug/panel berperisai belum ada GLB: tunjuk kad inventori sahaja.
+  const item=chosen&&!chosen.shielded?(step===1?'rj45':'panel'):null;
+  const g=item&&objs[item];if(!g){el.hidden=true;return;}
+  if(!g.userData.eslGuideCenter){
+   const b=new THREE.Box3().setFromObject(g);
+   if(b.isEmpty()){el.hidden=true;return;}
+   const c=b.getCenter(new THREE.Vector3());c.y=b.max.y+2;
+   g.userData.eslGuideCenter=c;
+  }
+  point=g.userData.eslGuideCenter;
+ }
+ eslGuidePos.copy(point).project(sc.camera);
  const canvas=$('c'),w=canvas.clientWidth,h=canvas.clientHeight;
- el.style.left=((eslGuidePos.x+1)/2*w)+'px';el.style.top=((1-eslGuidePos.y)/2*h)+'px';
- el.querySelector('span').textContent=step===0?'Pilih kabel':step===1?'Pilih plug RJ45':'Pilih patch panel';
+ const x=(eslGuidePos.x+1)/2*w,y=(1-eslGuidePos.y)/2*h;
+ // Jangan menunjuk tempat kosong/di luar skrin atau melepasi topbar/dock.
+ if(!Number.isFinite(x)||!Number.isFinite(y)||eslGuidePos.z<-1||eslGuidePos.z>1
+    ||x<70||x>w-100||y<95||y>h-75){el.hidden=true;return;}
+ el.style.left=x+'px';el.style.top=y+'px';
+ el.querySelector('span').textContent=step===0?'Pilih satu daripada 4 kabel':step===1?'Pilih plug RJ45':'Pilih patch panel';
  el.hidden=false;
 }
 

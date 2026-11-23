@@ -1,0 +1,67 @@
+FOTO RUJUKAN — Wikimedia Commons (eSL-IKR)
+
+Imej ini adalah FOTO RUJUKAN KATEGORI, bukan pengesahan model tepat di dalam simulator.
+Lesen dan maklumat pengarang diperiksa semasa muat turun menggunakan Wikimedia Commons API.
+Jika imej tidak tersedia atau lesen tidak dibenarkan, ilustrasi SVG asli digunakan.
+Model 3D serta mekanik permainan tidak diubah.
+
+mobo: Computer motherboard.jpg
+  Pencipta: Kurt Kaiser
+  Lesen: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+  Sumber: https://commons.wikimedia.org/wiki/File:Computer_motherboard.jpg
+
+moboEATX: Computer motherboard 13.jpg
+  Pencipta: Kurt Kaiser
+  Lesen: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+  Sumber: https://commons.wikimedia.org/wiki/File:Computer_motherboard_13.jpg
+
+psu: Computer power supply units 5399.jpg
+  Pencipta: Henry Kellner
+  Lesen: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Sumber: https://commons.wikimedia.org/wiki/File:Computer_power_supply_units_5399.jpg
+
+psuLow: Take me PSU.jpg
+  Pencipta: Maciej Ławrecki
+  Lesen: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Sumber: https://commons.wikimedia.org/wiki/File:Take_me_PSU.jpg
+
+psuSFX: SFX PC-PSU Delta IMG 9760.JPG
+  Pencipta: Hans Haase
+  Lesen: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  Sumber: https://commons.wikimedia.org/wiki/File:SFX_PC-PSU_Delta_IMG_9760.JPG
+
+psuLong: PC PSU 500W IMG 8964.jpg
+  Pencipta: Hans Haase
+  Lesen: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  Sumber: https://commons.wikimedia.org/wiki/File:PC_PSU_500W_IMG_8964.jpg
+
+cpu: CPU-INTEL-CORE.jpg
+  Pencipta: Whityya23
+  Lesen: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+  Sumber: https://commons.wikimedia.org/wiki/File:CPU-INTEL-CORE.jpg
+
+cpuBad: Cpu.jpg
+  Pencipta: Poooow
+  Lesen: Public domain ()
+  Sumber: https://commons.wikimedia.org/wiki/File:Cpu.jpg
+
+cpuNew: CPU-INTEL-CORE.jpg
+  Pencipta: Whityya23
+  Lesen: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+  Sumber: https://commons.wikimedia.org/wiki/File:CPU-INTEL-CORE.jpg
+
+paste: Thermal Paste 9648.jpg
+  Pencipta: Ashley Pomeroy
+  Lesen: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0)
+  Sumber: https://commons.wikimedia.org/wiki/File:Thermal_Paste_9648.jpg
+
+cooler: Intel Pentium Processor (backside) with heat sink.jpg
+  Pencipta: Krzysztof Burghardt
+  Lesen: CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
+  Sumber: https://commons.wikimedia.org/wiki/File:Intel_Pentium_Processor_(backside)_with_heat_sink.jpg
+
+coolerTall: Intel Pentium Processor (backside) with heat sink.jpg
+  Pencipta: Krzysztof Burghardt
+  Lesen: CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
+  Sumber: https://commons.wikimedia.org/wiki/File:Intel_Pentium_Processor_(backside)_with_heat_sink.jpg
+

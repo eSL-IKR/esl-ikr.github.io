@@ -811,6 +811,27 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
   #mbm .mbc button{padding:6px 8px;font-size:11px}
 }
 </style>
+<style id="esl-training-photo-fit-v1">
+/* TRAINING inventory only. The 3D stage and gallery models are untouched. */
+#panel .chip.th{box-sizing:border-box;min-width:0;width:calc(50% - 3px);padding:7px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:left;}
+#panel .chip.th img.esl-training-image,
+#panel .card.info>img.esl-training-image{display:block;box-sizing:border-box;
+ width:100%;max-width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;object-position:center;
+ padding:7px;border:1px solid #d9e2eb;background:#f6f8fc;border-radius:9px;
+ filter:none;transform:none;min-height:0;max-height:none;}
+#panel .chip.th span:not(.th){display:block;min-width:0;max-width:100%;font-size:12px;line-height:1.35;
+ font-weight:650;overflow-wrap:anywhere;word-break:normal;}
+#panel .card.info>img.esl-training-image{max-width:320px;margin:10px auto;}
+@media(max-width:390px){
+ #panel .chip.th{padding:5px;gap:5px;}
+ #panel .chip.th img.esl-training-image{padding:5px;}
+ #panel .chip.th span:not(.th){font-size:11.5px;}
+}
+@media(min-width:700px) and (max-width:1023px){
+ #panel .chip.th{width:calc(33.333% - 5px);}
+}
+</style>
 </head><body>
 <noscript><p style="padding:24px;font-family:sans-serif">Simulator ini memerlukan JavaScript. Sila aktifkan JavaScript dalam pelayar anda.</p></noscript>
 <div id="intro" role="dialog" aria-label="Pengenalan Simulator PC 3D">
@@ -3373,21 +3394,18 @@ function initQuality(){
   setQuality(m,false);
   $('#qsel').addEventListener('change',function(e){setQuality(e.target.value,true);});
 }
-/* gambar kecil dimuat satu demi satu supaya tidak mengunci telefon */
-var thQ=[],thTimer=0;
+// esl-training-photo-fit-v1: local educational photos/illustrations, never WebGL previews.
+var ESL_TRAINING_IMAGES = {"mobo":{"file":"mobo.jpg","real":true},"moboEATX":{"file":"moboEATX.jpg","real":true},"psu":{"file":"psu.jpg","real":true},"psuLow":{"file":"psuLow.jpg","real":true},"psuSFX":{"file":"psuSFX.jpg","real":true},"psuLong":{"file":"psuLong.jpg","real":true},"cpu":{"file":"cpu.jpg","real":true},"cpuBad":{"file":"cpuBad.jpg","real":true},"cpuNew":{"file":"cpuNew.jpg","real":true},"paste":{"file":"paste.jpg","real":true},"cooler":{"file":"cooler.jpg","real":true},"coolerTall":{"file":"coolerTall.jpg","real":true},"coolerL":{"file":"coolerL.svg","real":false},"ram1":{"file":"ram1.svg","real":false},"ram2":{"file":"ram2.svg","real":false},"ramBad":{"file":"ramBad.svg","real":false},"ram5":{"file":"ram5.svg","real":false},"gpu":{"file":"gpu.svg","real":false},"gpuLong":{"file":"gpuLong.svg","real":false},"m2":{"file":"m2.svg","real":false},"hdd":{"file":"hdd.svg","real":false},"ssd":{"file":"ssd.svg","real":false},"nic":{"file":"nic.svg","real":false},"c24":{"file":"c24.svg","real":false},"c8":{"file":"c8.svg","real":false},"cgpu":{"file":"cgpu.svg","real":false},"sataH":{"file":"sataH.svg","real":false},"sataS":{"file":"sataS.svg","real":false},"fanF1":{"file":"fanF1.svg","real":false},"fanF2":{"file":"fanF2.svg","real":false},"fanR":{"file":"fanR.svg","real":false},"fp":{"file":"fp.svg","real":false},"wifi":{"file":"wifi.svg","real":false},"kb":{"file":"kb.svg","real":false},"mouse":{"file":"mouse.svg","real":false},"lan":{"file":"lan.svg","real":false},"monitor":{"file":"monitor.svg","real":false},"spk":{"file":"spk.svg","real":false},"wall":{"file":"wall.svg","real":false},"pwr":{"file":"pwr.svg","real":false}};
 function timg(id){
-  if(THUMB[id]===undefined){if(thQ.indexOf(id)<0)thQ.push(id);pumpTh();return '<span class="th ph" data-th="'+id+'"></span>';}
-  return THUMB[id]?'<img class="th" src="'+THUMB[id]+'" alt="">':'';
-}
-function pumpTh(){
-  if(thTimer||!thQ.length)return;
-  thTimer=setTimeout(function(){
-    thTimer=0;var id=thQ.shift(),u=thumb(id);
-    document.querySelectorAll('[data-th="'+id+'"]').forEach(function(el){
-      if(u){var im=document.createElement('img');im.className='th';im.alt='';im.src=u;el.replaceWith(im);}else el.classList.add('off');
-    });
-    pumpTh();
-  },30);
+  var a=ESL_TRAINING_IMAGES[id]||{file:id+'.svg',real:false};
+  var folder='./assets/training-photos/';
+  var name=P[id]?P[id].n:id;
+  var fallback=folder+id+'.svg';
+  var desc=(a.real?'Foto rujukan: ':'Ilustrasi komponen: ')+name;
+  return '<img class="th esl-training-image" src="'+folder+esc(a.file)+'"'
+    +' alt="'+esc(desc)+'" loading="lazy" decoding="async"'
+    +' onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src=\''+fallback+'\';}"'
+    +' title="'+esc(a.real?'Foto rujukan (jenis komponen, bukan semestinya model tepat)':'Ilustrasi contoh komponen')+'">';
 }
 
 /* ====== V2: PAPAN KEKUNCI ====== */

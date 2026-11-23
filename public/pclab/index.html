@@ -833,6 +833,40 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 }
 </style>
 <link rel="stylesheet" href="./mobile-focus-v2.css">
+<style id="ESL_GUIDED_PC_28_V4">
+/* Petunjuk tunggal: hanya langkah semasa diserlahkan. Tiada jawapan pada Ujian. */
+#panel .chip.th .esl-dd-cue{display:none!important}
+#panel .chip.th.esl-dd-step .esl-dd-cue{display:grid!important;background:var(--ac);color:#fff;border-color:var(--ac);font-size:14px;min-width:42px;height:33px;letter-spacing:0}
+#panel .chip.th .esl-dd-instr{display:none!important}
+#panel .chip.th.esl-dd-step .esl-dd-instr{display:block!important;color:var(--acx);font-weight:800}
+#panel .chip.th.esl-dd-step{outline:3px solid var(--ac)!important;outline-offset:0;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac),transparent 82%)!important}
+#panel .chip.th.esl-dd-step::before,#panel .chip.th.esl-dd-step::after{content:none!important}
+#panel .esl-dd-choices{margin:12px 0 4px;border:1px solid var(--line);border-radius:12px;padding:0 10px;overflow:hidden}
+#panel .esl-dd-choices summary{min-height:46px;padding:12px 3px;cursor:pointer;font-size:13px;font-weight:750;color:var(--tx)}
+#panel .esl-dd-choices[open] summary{border-bottom:1px solid var(--line)}
+#panel .esl-dd-choices p{font-size:12px;color:var(--mut);line-height:1.5}
+#panel .esl-dd-choices .chips{padding:8px 0}
+#panel .esl-coach{margin:8px 0 12px;padding:15px 14px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ac);border-radius:12px;color:var(--tx)}
+#panel .esl-coach-kicker{font-size:12px;font-weight:850;color:var(--acx);letter-spacing:.02em;margin-bottom:8px}
+#panel .esl-coach h4{font-size:16px;line-height:1.3;margin:0 0 8px}
+#panel .esl-coach p{font-size:13px;line-height:1.55;margin:8px 0;color:var(--tx2,var(--tx))}
+#panel .esl-coach p b{color:var(--tx)}
+#panel .esl-coach .esl-coach-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+#panel .esl-coach .esl-coach-actions button{min-height:42px}
+#panel .esl-coach-progress{height:8px;border:1px solid var(--line);background:var(--inset);border-radius:999px;overflow:hidden;margin:8px 0}
+#panel .esl-coach-progress i{height:100%;display:block;background:var(--ac);transition:width .2s ease}
+#panel .esl-coach-alert{padding:12px;margin:8px 0;border-radius:10px;border:1px solid var(--warn);background:var(--card);font-size:13px;line-height:1.5}
+#panel .esl-coach-alert b{display:block;margin-bottom:3px}
+#panel .esl-roadmap{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+#panel .esl-roadmap summary{cursor:pointer;min-height:40px;padding:9px 0;font-size:12px;font-weight:750}
+#panel .esl-roadmap ol{padding-left:25px;margin:6px 0;font-size:12px;line-height:1.7;color:var(--mut)}
+#panel .esl-roadmap li.current{color:var(--acx);font-weight:900}
+#panel .esl-roadmap li.passed{color:var(--ok)}
+#panel .esl-dd-examhelp{font-size:12px;color:var(--mut);margin:7px 0 12px}
+@media(max-width:767px){#panel .esl-coach{padding:13px}#panel .esl-coach h4{font-size:15px}}
+@media(prefers-reduced-motion:reduce){#panel .esl-coach-progress i{transition:none}}
+</style>
+
 <style id="ESL_LEFT_ARROW_HOLD_V3">
 /* Penanda panel kiri: warna tema asal, tanpa memberi jawapan dalam ujian. */
 #panel .pi.esl-dd-learn-step{position:relative;outline:2px solid var(--ac)!important;outline-offset:-2px;padding-right:36px!important}
@@ -2380,6 +2414,7 @@ function resetHW(){
   if(!scene)return;
   setHL(null);
   if(S.mode==='belajar'){PARTS.forEach(function(p){if(p.bad||p.id==='coolerL')return;installPart(p.id,firstTarget(p.id),false);});spawnBrandDisplay();}
+  else if(S.mode==='latihan'){var next=nextHint();HW.sel=next?next.id:null;HW.force=true;}
 }
 /* ====== LOGIK PASANG ====== */
 function toast(msg,type){var t=$('#toast');t.textContent=msg;t.className='show '+(type||'');clearTimeout(toast.h);toast.h=setTimeout(function(){t.className='';},2800);}
@@ -2391,8 +2426,10 @@ function hwMistake(msg){
   HW.fb={ok:false,msg:lat?msg:'Salah. Cuba lagi.'};
   toast(lat?msg:'Salah. Cuba lagi.','bad');
   updateHud();render();
+  if(lat)requestAnimationFrame(function(){var el=document.querySelector('#panel .esl-coach-alert');if(el)el.scrollIntoView({block:'nearest'});});
 }
 function tryPlace(id,tid){
+  if(S.mode==='latihan'&&eslCoachWrong(id,true))return false;
   var p=P[id],T=TG[tid],lat=S.mode==='latihan';
   if(p.bad){hwMistake(p.n+': '+p.bad);return false;}
   if(p.slot&&HW.slotDone[p.slot]){hwMistake(p.n+': pilihan lain dalam kumpulan ini sudah dipasang ('+(p.slot==='net'?'rangkaian: WiFi atau LAN, satu sahaja':'penyejuk CPU: satu sahaja')+').');return false;}
@@ -2401,7 +2438,7 @@ function tryPlace(id,tid){
   var miss=reqNames(p);
   if(miss.length){hwMistake(p.n+': belum boleh dipasang. Pasang dahulu '+miss.join(', ')+'.');return false;}
   installPart(id,tid,true);
-  HW.sel=null;HW.force=false;
+  HW.sel=lat&&nextHint()?nextHint().id:null;HW.force=lat;
   HW.fb={ok:true,msg:lat?('Berjaya: '+p.n+'. '+(p.tip||'')):'Dipasang.'};
   toast(lat?'Berjaya dipasang: '+p.n:'Dipasang','ok');
   updateHud();
@@ -2422,8 +2459,76 @@ function nextHint(){
   return null;
 }
 
+
+/* ESL_GUIDED_PC_28_V4: 28 langkah berturutan + penjelasan kesilapan. */
+var ESL_GUIDE_EASY = {"mobo": ["Ini papan utama komputer. Komponen lain akan disambungkan padanya.", "Cari ruang papan besar di dalam casing, bukan di atas meja."], "psu": ["PSU membekalkan elektrik kepada seluruh PC.", "Cari ruang bekalan kuasa di bahagian bawah casing."], "cpu": ["CPU ialah otak komputer. Ia mesti padan dengan soket motherboard.", "Jangan pilih CPU AMD untuk papan Intel LGA1151."], "paste": ["Thermal paste membantu memindahkan haba daripada CPU.", "Sapukan di atas CPU dahulu, sebelum memasang penyejuk."], "cooler": ["Kipas dan heatsink membantu CPU kekal sejuk.", "Pasang di atas CPU selepas thermal paste."], "ram1": ["RAM membantu komputer menjalankan aplikasi dengan lancar.", "Gunakan RAM DDR4, bukan DDR3 atau DDR5."], "ram2": ["RAM kedua menambah kapasiti dan boleh mengaktifkan dual channel.", "Cari slot DIMM yang sesuai di sisi CPU."], "m2": ["SSD M.2 ialah storan yang dipasang terus pada motherboard.", "Jangan keliru dengan SSD SATA yang menggunakan kabel."], "gpu": ["Kad grafik memproses imej dan paparan permainan.", "Cari slot PCIe x16 yang panjang pada motherboard."], "nic": ["Kad rangkaian membolehkan sambungan LAN tambahan.", "Cari slot PCIe yang pendek."], "hdd": ["HDD menyimpan fail menggunakan cakera yang berputar.", "Letak HDD pada ruang pemacu, kemudian sambungkan kabel SATA."], "ssd": ["SSD SATA menyimpan fail tanpa bahagian bergerak, jadi ia lebih laju berbanding HDD.", "Letak SSD pada ruang storan, kemudian sambungkan kabel SATA."], "c24": ["Kabel 24-pin membekalkan kuasa utama kepada motherboard.", "Pastikan motherboard dan PSU sudah dipasang."], "c8": ["Kabel CPU 8-pin membekalkan kuasa khusus kepada CPU.", "Jangan keliru dengan kabel kuasa GPU."], "cgpu": ["Sesetengah kad grafik memerlukan kabel elektrik tambahan.", "Pasang GPU dahulu, baru sambungkan kabel kuasa PCIe."], "sataH": ["Kabel SATA menghubungkan HDD kepada motherboard dan kuasa PSU.", "Pilih port SATA dan semak sambungan HDD."], "sataS": ["Kabel SATA SSD membawa data dan bekalan elektrik untuk SSD.", "Gunakan port SATA yang belum digunakan oleh HDD."], "fanF1": ["Kipas depan menarik udara sejuk masuk ke dalam casing.", "Cari tempat kipas pertama pada bahagian depan casing."], "fanF2": ["Kipas depan kedua membantu udara sejuk masuk lebih lancar.", "Cari tempat kipas kedua pada bahagian depan casing."], "fanR": ["Kipas belakang membuang udara panas keluar dari casing.", "Cari tempat kipas di bahagian belakang atas casing."], "fp": ["Wayar panel depan membolehkan butang kuasa dan lampu depan berfungsi.", "Sambungkan ke pin F_PANEL pada motherboard."], "wifi": ["Adapter Wi-Fi membolehkan komputer terhubung ke rangkaian tanpa kabel.", "Masukkan pada port USB yang sesuai."], "kb": ["Papan kekunci digunakan untuk menaip dan memberi arahan.", "Sambungkan ke port USB."], "mouse": ["Tetikus digunakan untuk mengawal penuding pada skrin.", "Sambungkan ke port USB yang kosong."], "monitor": ["Monitor memaparkan gambar daripada komputer.", "Sambungkan kabel paparan pada port yang sesuai."], "spk": ["Pembesar suara membolehkan kita mendengar bunyi.", "Sambungkan pada port audio hijau."], "pwr": ["Kabel kuasa AC menyambung PSU kepada soket kuasa.", "Semak semua komponen dan kabel dalaman dahulu."], "wall": ["Plag 3-pin ialah sambungan terakhir sebelum menghidupkan PC.", "Dalam amali sebenar, pastikan suis dimatikan sebelum menyambung."]};
+function eslCoachStep(){
+  if(S.mode!=='latihan'||S.dom!=='hw')return null;
+  return nextHint();
+}
+function eslCoachRoadmap(){
+  var installed={},used={},road=[];
+  while(road.length<totalSlots()){
+    var found=PARTS.filter(function(p){
+      return !p.bad&&!used[p.slot||p.id]&&p.req.every(function(r){return installed[r];});
+    })[0];
+    if(!found)break;
+    installed[found.id]=true;used[found.slot||found.id]=true;road.push(found);
+  }
+  return road;
+}
+function eslCoachWrong(id,attempt){
+  var step=eslCoachStep(),p=P[id];
+  if(!step||!p)return false;
+  if(id===step.id)return false;
+  var why=p.bad?'Komponen ini tidak serasi. '+p.bad
+    :HW.installed[id]?'Komponen ini sudah dipasang.':
+      reqNames(p).length?'Komponen ini belum boleh dipasang kerana perlu memasang '+reqNames(p).join(', ')+' dahulu.':
+      'Komponen ini mungkin boleh dipasang, tetapi latihan ini mengikut langkah satu demi satu supaya mudah difahami.';
+  var msg='Kamu memilih '+p.n+'. '+why+' Sekarang langkah '+(doneSlots()+1)+' ialah '+step.n+'.';
+  if(attempt){HW.sel=step.id;HW.force=true;hwMistake(msg);}else{
+    HW.sel=step.id;HW.force=true;HW.fb={ok:false,msg:msg};
+    toast('Semak kad langkah '+(doneSlots()+1)+'.','bad');render();
+    requestAnimationFrame(function(){var el=document.querySelector('#panel .esl-coach-alert');if(el)el.scrollIntoView({block:'nearest'});});
+  }
+  return true;
+}
+function eslCoachCard(){
+  if(S.mode!=='latihan'||S.dom!=='hw')return '';
+  var step=eslCoachStep(),done=doneSlots(),total=totalSlots();
+  if(!step)return '';
+  var tips=ESL_GUIDE_EASY[step.id]||[];
+  var desc=tips[0]||step.i||'Kenal pasti bentuk dan fungsi komponen ini.';
+  var warn=tips[1]||step.tip||'Semak lokasi sebelum melepaskan komponen.';
+  var success=HW.fb&&HW.fb.ok?'':HW.fb&&HW.fb.msg
+    ?'<div class="esl-coach-alert" role="alert"><b>Belum tepat — cuba lagi</b>'+esc(HW.fb.msg)+'</div>':'';
+  return '<section class="esl-coach" aria-label="Panduan langkah pemasangan PC">'
+    +'<div class="esl-coach-kicker">LANGKAH '+(done+1)+' DARIPADA '+total+'</div>'
+    +'<div class="esl-coach-progress" role="progressbar" aria-label="Kemajuan latihan" aria-valuenow="'+done+'" aria-valuemin="0" aria-valuemax="'+total+'"><i style="width:'+(done/total*100)+'%"></i></div>'
+    +'<h4>① Pilih '+esc(step.n)+'</h4>'
+    +'<p><b>Apa benda ini?</b> '+esc(desc)+'</p>'
+    +'<p><b>Di mana dipasang?</b> '+esc(step.w||'Cari tempat penyambung yang sepadan pada PC 3D.')+'</p>'
+    +'<p><b>Ingat:</b> '+esc(warn)+'</p>'
+    +'<p>② <b>Tekan lama</b> pada gambar kad bertanda <b>↓ SERET</b> di bawah. Kemudian seret ke PC 3D dan <b>lepaskan pada lokasi bertanda</b>. Dengan tetikus, klik dan seret terus. Jika sukar, tekan kad kemudian tekan tempat pada PC 3D.</p>'
+    +(step.id==='psu'?'<p><b>Perhatian PSU:</b> PC ini memerlukan sekurang-kurangnya '+psuNeed()+'W serta saiz yang muat. Foto rujukan mungkin tidak menunjukkan watt yang tepat; pilih berdasarkan nama dan spesifikasi kad, bukan rupa gambar sahaja.</p>':'')
+    +'<div class="esl-coach-actions"><button type="button" class="btn sm" data-act="guidefocus">◎ Fokus tempat pasang</button><button type="button" class="btn sm" data-act="hint">? Tunjuk petunjuk</button></div>'
+    +'<details class="esl-roadmap"><summary>▸ Lihat urutan semua '+total+' langkah</summary><ol>'
+    +eslCoachRoadmap().map(function(p){return '<li class="'+(HW.installed[p.id]?'passed':p.id===step.id?'current':'')+'">'+(HW.installed[p.id]?'✓ ':'')+esc(p.n)+'</li>';}).join('')
+    +'</ol></details>'
+    +success+'</section>';
+}
+function eslCoachFocus(){
+  var p=eslCoachStep();if(!p||!camera)return;
+  var tid=firstTarget(p.id),t=TG[tid];if(!t)return;
+  HW.sel=p.id;HW.force=true;HW.showLoc=true;
+  // Focus on the installation coordinate, preserving the model and camera controls.
+  goal.T.set(t.pos[0],t.pos[1],t.pos[2]);goal.r=Math.max(6,Math.min(goal.r,12));
+  toast('Cari penanda pada PC 3D. Seret '+p.n+' ke lokasi itu.','ok');
+  render();
+}
+
 /* ESL_DIRECT_PHOTO_DRAG_V2 — Hanya Mod Latihan Perkakasan. */
-var eslDD={gesture:null,ghost:null,marker:null,markerText:null,style:null,blockClickUntil:0,frameTime:0,holdTimer:null};
+var eslDD={gesture:null,ghost:null,marker:null,markerText:null,style:null,blockClickUntil:0,frameTime:0,holdTimer:null,scrollTimer:null};
 function eslDDTargets(id){
   if(!id||!P[id])return [];
   return TL.map(function(row){return TG[row[0]];}).filter(function(t){
@@ -2474,7 +2579,7 @@ function eslDDMarkerFrame(){
   m.hidden=false;
 }
 function eslDDCleanup(){
-  clearTimeout(eslDD.holdTimer);eslDD.holdTimer=null;
+  clearTimeout(eslDD.holdTimer);eslDD.holdTimer=null;clearInterval(eslDD.scrollTimer);eslDD.scrollTimer=null;
   if(eslDD.gesture)eslDD.gesture.chip.classList.remove('esl-dd-armed');
   document.body.classList.remove('esl-dd-dragging');
   $('#stage').classList.remove('esl-dd-over','esl-dd-invalid');
@@ -2549,6 +2654,14 @@ function eslDDInit(panel){
     if(!g.live){
       if(delta<8)return;
       g.live=true;HW.sel=g.id;HW.force=false;HW.fb=null;
+      if(e.pointerType==='touch'&&window.innerWidth<=767){
+        eslDD.scrollTimer=setInterval(function(){
+          if(eslDD.gesture!==g||!g.live)return;
+          var y=g.lastY||g.y;
+          if(y<130)window.scrollBy(0,-19);
+          else if(y>window.innerHeight-90)window.scrollBy(0,16);
+        },32);
+      }
       var ghost=document.createElement('div');ghost.id='esl-dd-ghost';
       var original=g.chip.querySelector('img.esl-training-image');
       if(original&&original.getAttribute('src')){
@@ -2558,7 +2671,7 @@ function eslDDInit(panel){
       document.body.appendChild(ghost);eslDD.ghost=ghost;
       document.body.classList.add('esl-dd-dragging');
     }
-    e.preventDefault();
+    e.preventDefault();g.lastY=e.clientY;
     if(eslDD.ghost){eslDD.ghost.style.left=e.clientX+'px';eslDD.ghost.style.top=e.clientY+'px';}
     var stage=$('#stage'),hit=eslDDCanvasPoint(e.clientX,e.clientY);
     stage.classList.toggle('esl-dd-over',hit&&!!eslDDHit(e.clientX,e.clientY,g.id));
@@ -2576,10 +2689,11 @@ function eslDDInit(panel){
       toast('Lepaskan foto pada lokasi dalam model PC 3D, atau ketik foto dan ketik lokasi.');
       render();return;
     }
+    if(S.mode==='latihan'&&eslCoachWrong(id,true))return;
     if(P[id].bad){hwMistake(P[id].n+': '+P[id].bad);return;}
     var tid=eslDDHit(x,y,id);
     if(tid){tryPlace(id,tid);return;}
-    hwMistake(P[id].n+': lokasi salah. Lepaskan komponen pada slot pemasangan di model 3D.');
+    hwMistake(P[id].n+': lokasi salah. '+(S.mode==='latihan'?'Cari lokasi ini: '+P[id].w+'. ':'')+'Lepaskan komponen pada slot dalam PC 3D.');
   }
   document.addEventListener('pointerup',function(e){end(e,false);});
   document.addEventListener('pointercancel',function(e){end(e,true);});
@@ -3041,24 +3155,30 @@ function trayHTML(){
   var ids=S.mode==='ujian'?HW.order:PARTS.map(function(p){return p.id;});
   var avail=ids.filter(function(id){var p=P[id];return !HW.installed[id]&&!(p.slot&&HW.slotDone[p.slot]);});
   function chip(id){
-    var next=S.mode==='latihan'?nextHint():null;
-    var point=S.mode==='latihan'&&(HW.sel===id||(!HW.sel&&next&&next.id===id));
-    return '<button type="button" class="chip th'+(HW.sel===id?' sel':'')+(point?' esl-dd-step':'')+'" data-act="sel" data-v="'+id+'" aria-label="'+esc(P[id].n)+', tekan lama dan seret ke PC 3D">'
-      +'<b class="esl-dd-cue" aria-hidden="true">↗</b>'+timg(id)+'<span>'+esc(P[id].n)+'</span>'
-      +'<small class="esl-dd-instr">Tekan lama · seret ke PC 3D</small></button>';
+    var next=S.mode==='latihan'?eslCoachStep():null;
+    var point=!!next&&next.id===id;
+    return '<button type="button" class="chip th'+(HW.sel===id?' sel':'')+(point?' esl-dd-step':'')+'" data-act="sel" data-v="'+id+'" aria-label="'+esc(P[id].n)+(point?', komponen untuk langkah ini':', pilihan komponen')+'">'
+      +(point?'<b class="esl-dd-cue" aria-hidden="true">↓ SERET</b>':'')
+      +timg(id)+'<span>'+esc(P[id].n)+'</span>'
+      +(point?'<small class="esl-dd-instr">LANGKAH '+(doneSlots()+1)+' — seret gambar ini</small>':'')
+      +'</button>';
   }
-  if(S.mode==='ujian')return '<div class="card"><h4>Senarai komponen</h4><div class="chips">'+avail.map(chip).join('')+'</div></div>';
-  var cats=[];avail.forEach(function(id){if(cats.indexOf(P[id].cat)<0)cats.push(P[id].cat);});
-  return '<div class="card"><h4>Senarai komponen</h4>'+cats.map(function(c){return '<div class="cat">'+esc(c)+'</div><div class="chips">'+avail.filter(function(id){return P[id].cat===c;}).map(chip).join('')+'</div>';}).join('')+'</div>';
+  if(S.mode==='ujian')return '<div class="card"><h4>Senarai komponen</h4><p class="esl-dd-examhelp">Pilih dan seret komponen ke PC 3D. Tiada jawapan atau anak panah semasa ujian.</p><div class="chips">'+avail.map(chip).join('')+'</div></div>';
+  var current=eslCoachStep(),other=avail.filter(function(id){return !current||id!==current.id;});
+  return '<section class="card" aria-label="Pilihan komponen latihan">'
+    +'<h4>Komponen yang perlu dipasang sekarang</h4>'
+    +(current?'<div class="chips">'+chip(current.id)+'</div>':'')
+    +'<details class="esl-dd-choices"><summary>▸ Lihat komponen lain / belajar jika tersalah pilih ('+other.length+')</summary>'
+    +'<p>Komponen lain disediakan untuk menguji kefahaman. Jika tersalah pilih, penerangan akan muncul tanpa terus memasang komponen itu.</p>'
+    +'<div class="chips">'+other.map(chip).join('')+'</div></details></section>';
 }
 function hwLatihan(){
   var t=totalSlots(),d=doneSlots();
-  var h='<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p><b>Seret terus foto komponen ke lokasi pemasangan 3D.</b> Atau ketik foto, kemudian ketik lokasi. Anak panah pada kad kiri menunjukkan komponen seterusnya; penanda pada model 3D menunjukkan lokasi. Di telefon, tekan lama kad kemudian seret dan lepaskan pada PC.</p>'
+  var h=eslCoachCard()+'<div class="card"><h3>Mod Latihan: Pasang PC</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+HW.mistakes+'</p><p><b>Ikut langkah di atas.</b> Satu kad sahaja ditandakan untuk setiap langkah; seret ke model atau tekan kad lalu lokasi.</p>'
    +'<div class="row2"><button class="btn sm" data-act="hint">Petunjuk</button><button class="btn sm" data-act="reset">Mula semula</button><label><input type="checkbox" data-chk="loc"'+(HW.showLoc?' checked':'')+'> cahaya lokasi</label></div></div>';
-  if(HW.fb)h+='<div class="fb '+(HW.fb.ok?'ok':'bad')+'">'+esc(HW.fb.msg)+'</div>';
+  if(HW.fb&&HW.fb.ok)h+='<div class="fb ok">'+esc(HW.fb.msg)+'</div>';
   if(d===t)return h+'<div class="card info"><h3>PC siap dipasang!</h3><p>Semua perkakasan telah disambung. Seterusnya pasang perisian.</p><div class="row2"><button class="btn pri" data-act="tosw">Teruskan ke Perisian</button><button class="btn" data-act="reset">Ulang</button></div></div>';
-  if(HW.sel){var p=P[HW.sel];h+='<div class="card info"><h3>'+esc(p.n)+'</h3>'+timg(HW.sel)+(p.bad?'<p>Semak dahulu sama ada komponen ini serasi dengan motherboard dan casing '+esc(CASE.name)+'.</p>':'<p>'+esc(p.i)+'</p><p class="tip"><b>Lokasi:</b> '+esc(p.w)+'</p>')+(HW.sel==='mobo'?'<button class="btn pri sm" type="button" data-mbview="1" style="margin-top:8px">11 label motherboard ASUS Z170-P</button>':'')+'</div>';}
-  return h+trayHTML()+compatCard();
+  return h+trayHTML()+'<details class="esl-dd-choices"><summary>▸ Rujukan tambahan: semak keserasian PC</summary>'+compatCard()+'</details>';
 }
 function ujianIntro(kind){
   var tot=kind==='hw'?totalSlots():SWS.length,pen=kind==='hw'?PEN_HW:PEN_SW;
@@ -3379,10 +3499,11 @@ function render(){
 /* ====== TINDAKAN ====== */
 function act(a,v){
   switch(a){
-    case 'sel':HW.sel=HW.sel===v?null:v;HW.force=false;if(S.mode==='latihan'&&HW.sel&&!P[HW.sel].bad){HW.fb=null;}render();break;
+    case 'sel':if(S.mode==='latihan'&&eslCoachWrong(v,false))break;HW.sel=HW.sel===v?null:v;HW.force=false;if(S.mode==='latihan'&&HW.sel&&!P[HW.sel].bad){HW.fb=null;}render();break;
     case 'info':var q=v.split(':');selectInfo({kind:q[0],id:q[1]});break;
     case 'cool':setCooler(v);selectInfo({kind:'part',id:v});break;
     case 'hint':var p=nextHint();if(p){HW.sel=p.id;HW.force=true;HW.fb={ok:true,msg:'Petunjuk: pasang "'+p.n+'". Lokasi: '+p.w};}render();break;
+    case 'guidefocus':eslCoachFocus();break;
     case 'cgrp':S.cOpen=S.cOpen===v?'':v;render();break;
     case 'reset':if(S.dom==='hw')resetHW();else resetSW();render();break;
     case 'tosw':S.dom='sw';resetSW();render();break;

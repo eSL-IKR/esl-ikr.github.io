@@ -833,6 +833,21 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 }
 </style>
 <link rel="stylesheet" href="./mobile-focus-v2.css">
+<style id="esl-training-catalog-reuse-v1">
+/* Kad latihan sahaja: gambar sama dengan Katalog/Pembina, bukan GLB baharu. */
+#panel .chip.th .esl-training-image{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;object-position:center;
+  display:block;background:#f5f7fa;padding:7px;border:1px solid #d9e2eb;border-radius:9px;}
+#panel .chip.th .esl-training-source,#panel .card.info .esl-training-source{display:block;color:var(--mut);
+  font-size:10px;line-height:1.35;overflow-wrap:anywhere;font-weight:500;}
+#panel .chip.th .esl-training-empty,#panel .card.info .esl-training-empty{display:flex;
+  justify-content:center;align-items:center;text-align:center;padding:12px 8px;min-height:115px;
+  aspect-ratio:4/3;color:#50606f;border-radius:9px;border:1px dashed #9baab5;background:#eef1f5;
+  font-size:11px;line-height:1.4;font-weight:600;}
+#panel .chip.th .esl-training-empty[hidden],#panel .card.info .esl-training-empty[hidden]{display:none!important;}
+#panel .card.info>img.esl-training-image{max-width:320px;margin:10px auto;}
+#panel .card.info .esl-training-source{margin:5px 0 9px;}
+@media(max-width:390px){#panel .chip.th .esl-training-source{font-size:9.5px;}}
+</style>
 </head><body>
 <noscript><p style="padding:24px;font-family:sans-serif">Simulator ini memerlukan JavaScript. Sila aktifkan JavaScript dalam pelayar anda.</p></noscript>
 <div id="intro" role="dialog" aria-label="Pengenalan Simulator PC 3D">
@@ -3395,18 +3410,23 @@ function initQuality(){
   setQuality(m,false);
   $('#qsel').addEventListener('change',function(e){setQuality(e.target.value,true);});
 }
-// esl-training-photo-fit-v1: local educational photos/illustrations, never WebGL previews.
-var ESL_TRAINING_IMAGES = {"mobo":{"file":"mobo.jpg","real":true},"moboEATX":{"file":"moboEATX.jpg","real":true},"psu":{"file":"psu.jpg","real":true},"psuLow":{"file":"psuLow.jpg","real":true},"psuSFX":{"file":"psuSFX.jpg","real":true},"psuLong":{"file":"psuLong.jpg","real":true},"cpu":{"file":"cpu.jpg","real":true},"cpuBad":{"file":"cpuBad.jpg","real":true},"cpuNew":{"file":"cpuNew.jpg","real":true},"paste":{"file":"paste.jpg","real":true},"cooler":{"file":"cooler.jpg","real":true},"coolerTall":{"file":"coolerTall.jpg","real":true},"coolerL":{"file":"coolerL.svg","real":false},"ram1":{"file":"ram1.svg","real":false},"ram2":{"file":"ram2.svg","real":false},"ramBad":{"file":"ramBad.svg","real":false},"ram5":{"file":"ram5.svg","real":false},"gpu":{"file":"gpu.svg","real":false},"gpuLong":{"file":"gpuLong.svg","real":false},"m2":{"file":"m2.svg","real":false},"hdd":{"file":"hdd.svg","real":false},"ssd":{"file":"ssd.svg","real":false},"nic":{"file":"nic.svg","real":false},"c24":{"file":"c24.svg","real":false},"c8":{"file":"c8.svg","real":false},"cgpu":{"file":"cgpu.svg","real":false},"sataH":{"file":"sataH.svg","real":false},"sataS":{"file":"sataS.svg","real":false},"fanF1":{"file":"fanF1.svg","real":false},"fanF2":{"file":"fanF2.svg","real":false},"fanR":{"file":"fanR.svg","real":false},"fp":{"file":"fp.svg","real":false},"wifi":{"file":"wifi.svg","real":false},"kb":{"file":"kb.svg","real":false},"mouse":{"file":"mouse.svg","real":false},"lan":{"file":"lan.svg","real":false},"monitor":{"file":"monitor.svg","real":false},"spk":{"file":"spk.svg","real":false},"wall":{"file":"wall.svg","real":false},"pwr":{"file":"pwr.svg","real":false}};
+// esl-training-catalog-reuse-v1: reuse real product photos already linked in Katalog/Pembina.
+// Other categories deliberately have no fabricated or misleading image.
+var ESL_TRAINING_CATALOG = {"mobo":{"url":"https://img.overclockers.co.uk/media/image/MB645AS_114948.jpg","reference":"ASUS Z170-P","note":"Foto ASUS Z170-P daripada Katalog","catalogId":"mobo:z170"},"psu":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh PSU ATX: Corsair RM750e 750W","catalogId":"psu:rm750"},"psuLow":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh bentuk PSU ATX 750W — bukan model 450W","catalogId":"psu:rm750"},"psuSFX":{"url":"https://service.pcconnection.com/images/inhouse/9552B41D-DDDF-49A2-ADD1-4E5A595E8B80.jpg","reference":"Corsair SF750 750W SFX","note":"Contoh PSU SFX 750W — bukan model 650W","catalogId":"psu:sf750"},"psuLong":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh bentuk PSU ATX — panjang tidak sama","catalogId":"psu:rm750"},"cpu":{"url":"https://s.alicdn.com/%40sc04/kf/Hb64bd476d556497f94670c25c8d3e224f/The-New-Processor-Core-I5-6600k-CPU-LGA-1151-Suitable-for-H310-B360-H370.jpg","reference":"Intel Core i5-6600K","note":"Intel Core i5-6600K, soket LGA1151","catalogId":"cpu:i56"},"cpuNew":{"url":"https://products.autobuy.tw/IA1401140013821_678779ee.jpg","reference":"Intel Core Ultra 5 235 (kotak)","note":"Intel Core Ultra 5 235, soket LGA1851","catalogId":"cpu:od-6d3271f1"},"cooler":{"url":"https://www.pbtech.co.nz/imgprod/F/A/FANCLM0224A.jpg?h=346563272","reference":"Cooler Master Hyper 212 Black","note":"Contoh penyejuk udara: Hyper 212","catalogId":"cooler:h212"},"coolerTall":{"url":"https://cdn.mwave.com.au/images/400/AB55040.jpg","reference":"Noctua NH-D15","note":"Contoh penyejuk udara tinggi: NH-D15","catalogId":"cooler:d15"},"coolerL":{"url":"https://img.watercoolinguk.co.uk/2025/05/deepcool-lt720-complete-water-cooling-360mm-black-wase-731-82010-1.jpg","reference":"DeepCool LT720 360","note":"Contoh penyejuk cecair AIO: LT720","catalogId":"cooler:lt360"},"ram1":{"url":"https://down-th.img.susercontent.com/file/sg-11134201-22100-vl5ghexhy9ivbd","reference":"Kingston Fury Beast DDR4","note":"Contoh RAM DDR4: Kingston Fury Beast","catalogId":"ram:d4k"},"ram2":{"url":"https://down-th.img.susercontent.com/file/sg-11134201-22100-vl5ghexhy9ivbd","reference":"Kingston Fury Beast DDR4","note":"Contoh RAM DDR4: Kingston Fury Beast","catalogId":"ram:d4k"},"ram5":{"url":"https://images.kabum.com.br/produtos/fotos/sync_mirakl/462486/xlarge/Memoria-Kingston-Fury-Beast-RGB-32GB-DDR5-5200mhz-1-25v-Black-Desktop-KF552C40BBA-32_1775256819.jpg","reference":"Kingston Fury Beast DDR5","note":"Contoh RAM DDR5: Kingston Fury Beast","catalogId":"ram:d5k"},"gpu":{"url":"https://dlcdnwebimgs.asus.com/gain/2257afdb-0dad-4b27-a4ce-eac757cdeb67/","reference":"ASUS Dual GeForce RTX 4060","note":"Contoh kad grafik: RTX 4060","catalogId":"gpu:4060"},"gpuLong":{"url":"https://i5.walmartimages.com/seo/NVIDIA-GeForce-RTX-4090-Graphics-card-NVIDIA-GeForce-RTX-4090-24-GB-GDDR6X-PCIe-4-0-HDMI-3-x-DisplayPort_a1a585f9-74ed-44e6-8e93-c1544efc92fa.3d678aa5901a818fcaea2a890c331b39.jpeg","reference":"NVIDIA GeForce RTX 4090 Founders Edition","note":"Contoh GPU besar: RTX 4090 — panjang tidak sama","catalogId":"gpu:4090"},"m2":{"url":"https://www.titan-ice.co.za/images/detailed/42/SAMSUNG-MZ-V8V1T0BW-Samsung-MZ-V8V1T0BW-980-1TB-NVMe-M.2-Internal-SSDSolid-State-Drive3.jpg","reference":"Samsung 980 NVMe M.2 1TB","note":"Contoh SSD M.2 NVMe: Samsung 980","catalogId":"storage:nv1"},"hdd":{"url":"https://www.diskdataworks.com.au/images/Hard-Drives/BarraCuda/BarraCuda-Desktop.jpg","reference":"Seagate BarraCuda HDD","note":"Contoh HDD SATA 3.5 inci: Seagate BarraCuda","catalogId":"storage:hdd"},"ssd":{"url":"https://media2.nbb-cdn.de/images/products/Crucial_MX500-SSD1_500GB_Back_65ad.jpg?size=390","reference":"Crucial MX500 SATA SSD","note":"Contoh SSD SATA 2.5 inci: Crucial MX500","catalogId":"storage:ssd"}};
 function timg(id){
-  var a=ESL_TRAINING_IMAGES[id]||{file:id+'.svg',real:false};
-  var folder='./assets/training-photos/';
-  var name=P[id]?P[id].n:id;
-  var fallback=folder+id+'.svg';
-  var desc=(a.real?'Foto rujukan: ':'Ilustrasi komponen: ')+name;
-  return '<img class="th esl-training-image" src="'+folder+esc(a.file)+'"'
-    +' alt="'+esc(desc)+'" loading="lazy" decoding="async"'
-    +' onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src=\''+fallback+'\';}"'
-    +' title="'+esc(a.real?'Foto rujukan (jenis komponen, bukan semestinya model tepat)':'Ilustrasi contoh komponen')+'">';
+  var m=ESL_TRAINING_CATALOG[id], name=P[id]?P[id].n:id;
+  if(!m){
+    return '<div class="esl-training-empty" role="img" aria-label="Foto belum ada untuk '+esc(name)+'">'
+      +'Foto sebenar yang sepadan belum ada dalam Katalog / Pembina</div>';
+  }
+  // alt is the actual photographed product, NOT the training-card product when different.
+  var ref=esc(m.reference||''),note=esc(m.note||''),url=esc(m.url||'');
+  return '<img class="th esl-training-image" src="'+url+'"'
+    +' alt="Foto Katalog: '+ref+'" loading="lazy" decoding="async"'
+    +' onerror="this.style.display=\'none\';this.nextElementSibling.hidden=false;"'
+    +' title="'+note+'">'
+    +'<div class="esl-training-empty" hidden role="status">Foto asal Katalog gagal dimuatkan. Semak Internet / sumber gambar.</div>'
+    +'<small class="esl-training-source">'+note+'</small>';
 }
 
 /* ====== V2: PAPAN KEKUNCI ====== */

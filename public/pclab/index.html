@@ -3413,6 +3413,63 @@ function initQuality(){
 // esl-training-catalog-reuse-v1: reuse real product photos already linked in Katalog/Pembina.
 // Other categories deliberately have no fabricated or misleading image.
 var ESL_TRAINING_CATALOG = {"mobo":{"url":"https://img.overclockers.co.uk/media/image/MB645AS_114948.jpg","reference":"ASUS Z170-P","note":"Foto ASUS Z170-P daripada Katalog","catalogId":"mobo:z170"},"psu":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh PSU ATX: Corsair RM750e 750W","catalogId":"psu:rm750"},"psuLow":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh bentuk PSU ATX 750W — bukan model 450W","catalogId":"psu:rm750"},"psuSFX":{"url":"https://service.pcconnection.com/images/inhouse/9552B41D-DDDF-49A2-ADD1-4E5A595E8B80.jpg","reference":"Corsair SF750 750W SFX","note":"Contoh PSU SFX 750W — bukan model 650W","catalogId":"psu:sf750"},"psuLong":{"url":"https://www.dateks.lv/images/pic/1200/1200/963/1885.jpg","reference":"Corsair RM750e 750W","note":"Contoh bentuk PSU ATX — panjang tidak sama","catalogId":"psu:rm750"},"cpu":{"url":"https://s.alicdn.com/%40sc04/kf/Hb64bd476d556497f94670c25c8d3e224f/The-New-Processor-Core-I5-6600k-CPU-LGA-1151-Suitable-for-H310-B360-H370.jpg","reference":"Intel Core i5-6600K","note":"Intel Core i5-6600K, soket LGA1151","catalogId":"cpu:i56"},"cpuNew":{"url":"https://products.autobuy.tw/IA1401140013821_678779ee.jpg","reference":"Intel Core Ultra 5 235 (kotak)","note":"Intel Core Ultra 5 235, soket LGA1851","catalogId":"cpu:od-6d3271f1"},"cooler":{"url":"https://www.pbtech.co.nz/imgprod/F/A/FANCLM0224A.jpg?h=346563272","reference":"Cooler Master Hyper 212 Black","note":"Contoh penyejuk udara: Hyper 212","catalogId":"cooler:h212"},"coolerTall":{"url":"https://cdn.mwave.com.au/images/400/AB55040.jpg","reference":"Noctua NH-D15","note":"Contoh penyejuk udara tinggi: NH-D15","catalogId":"cooler:d15"},"coolerL":{"url":"https://img.watercoolinguk.co.uk/2025/05/deepcool-lt720-complete-water-cooling-360mm-black-wase-731-82010-1.jpg","reference":"DeepCool LT720 360","note":"Contoh penyejuk cecair AIO: LT720","catalogId":"cooler:lt360"},"ram1":{"url":"https://down-th.img.susercontent.com/file/sg-11134201-22100-vl5ghexhy9ivbd","reference":"Kingston Fury Beast DDR4","note":"Contoh RAM DDR4: Kingston Fury Beast","catalogId":"ram:d4k"},"ram2":{"url":"https://down-th.img.susercontent.com/file/sg-11134201-22100-vl5ghexhy9ivbd","reference":"Kingston Fury Beast DDR4","note":"Contoh RAM DDR4: Kingston Fury Beast","catalogId":"ram:d4k"},"ram5":{"url":"https://images.kabum.com.br/produtos/fotos/sync_mirakl/462486/xlarge/Memoria-Kingston-Fury-Beast-RGB-32GB-DDR5-5200mhz-1-25v-Black-Desktop-KF552C40BBA-32_1775256819.jpg","reference":"Kingston Fury Beast DDR5","note":"Contoh RAM DDR5: Kingston Fury Beast","catalogId":"ram:d5k"},"gpu":{"url":"https://dlcdnwebimgs.asus.com/gain/2257afdb-0dad-4b27-a4ce-eac757cdeb67/","reference":"ASUS Dual GeForce RTX 4060","note":"Contoh kad grafik: RTX 4060","catalogId":"gpu:4060"},"gpuLong":{"url":"https://i5.walmartimages.com/seo/NVIDIA-GeForce-RTX-4090-Graphics-card-NVIDIA-GeForce-RTX-4090-24-GB-GDDR6X-PCIe-4-0-HDMI-3-x-DisplayPort_a1a585f9-74ed-44e6-8e93-c1544efc92fa.3d678aa5901a818fcaea2a890c331b39.jpeg","reference":"NVIDIA GeForce RTX 4090 Founders Edition","note":"Contoh GPU besar: RTX 4090 — panjang tidak sama","catalogId":"gpu:4090"},"m2":{"url":"https://www.titan-ice.co.za/images/detailed/42/SAMSUNG-MZ-V8V1T0BW-Samsung-MZ-V8V1T0BW-980-1TB-NVMe-M.2-Internal-SSDSolid-State-Drive3.jpg","reference":"Samsung 980 NVMe M.2 1TB","note":"Contoh SSD M.2 NVMe: Samsung 980","catalogId":"storage:nv1"},"hdd":{"url":"https://www.diskdataworks.com.au/images/Hard-Drives/BarraCuda/BarraCuda-Desktop.jpg","reference":"Seagate BarraCuda HDD","note":"Contoh HDD SATA 3.5 inci: Seagate BarraCuda","catalogId":"storage:hdd"},"ssd":{"url":"https://media2.nbb-cdn.de/images/products/Crucial_MX500-SSD1_500GB_Back_65ad.jpg?size=390","reference":"Crucial MX500 SATA SSD","note":"Contoh SSD SATA 2.5 inci: Crucial MX500","catalogId":"storage:ssd"}};
+/* === eSL-IKR: FOTO SETEMPAT BAGI 40 KAD LATIHAN ===
+   Menggunakan fail public/gambar/; URL di laman: /gambar/.
+   Foto contoh bukan pengesahan model/varian yang tertera pada kad.
+   Tidak mengubah model 3D, Pembina, Perisian atau Structured Cabling. */
+var ESL_TRAINING_LOCAL_PHOTOS = {
+  "mobo": ["mobo.jpg", "Motherboard ASUS ATX (foto contoh; bukan pengesahan ASUS Z170-P)"],
+  "moboEATX": ["moboEATX.jpg", "Motherboard ASRock TRX50 WS E-ATX"],
+  "psu": ["psu.avif", "PSU ATX Corsair CX450M 450W (foto rujukan)"],
+  "psuLow": ["psuLow.avif", "PSU ATX Corsair CX450M 450W"],
+  "psuSFX": ["psuSFX.jpg", "PSU Corsair SF750 SFX 750W (bukan 650W)"],
+  "psuLong": ["psuLong.jpg", "PSU HX1000i 1000W (dimensi belum disahkan)"],
+  "cpu": ["cpu.webp", "CPU Intel Core i5-6600K LGA1151"],
+  "cpuBad": ["cpuBad.avif", "CPU AMD Ryzen 5 5600 AM4"],
+  "cpuNew": ["cpuNew.jpg", "CPU Intel Core Ultra 7 265K LGA1851"],
+  "paste": ["paste.jpg", "Pes haba ARCTIC MX-4"],
+  "cooler": ["cooler.jpg", "Penyejuk udara CPU Noctua NH-U12S redux"],
+  "coolerTall": ["coolerTall.jpg", "Penyejuk udara Noctua NH-D15 (tinggi belum disahkan)"],
+  "coolerL": ["coolerL.png", "Penyejuk cecair AIO Corsair H100x RGB ELITE"],
+  "ram1": ["ram1.webp", "RAM Kingston FURY Beast DDR4"],
+  "ram2": ["ram2.webp", "RAM Kingston FURY Beast DDR4"],
+  "ramBad": ["ramBad.jpg", "RAM Kingston ValueRAM DDR3 (bukan DDR4)"],
+  "ram5": ["ram5.webp", "RAM Kingston FURY Beast DDR5"],
+  "gpu": ["gpu.png", "GPU ASUS Dual GeForce RTX 4060"],
+  "gpuLong": ["gpuLong.webp", "GPU MSI RTX 4090 GAMING X TRIO (ukuran belum disahkan)"],
+  "m2": ["m2.avif", "SSD Samsung 980 PRO NVMe M.2 (foto rujukan)"],
+  "hdd": ["hdd.webp", "HDD Seagate BarraCuda SATA 3.5 inci"],
+  "ssd": ["ssd.webp", "SSD Kingston KC600 256GB SATA 2.5 inci"],
+  "nic": ["nic.avif", "Kad Ethernet TP-Link TG-3468 PCIe"],
+  "c24": ["c24.avif", "Penyambung kuasa motherboard ATX 24-pin"],
+  "c8": ["c8.avif", "Penyambung kuasa CPU EPS 4+4 pin"],
+  "cgpu": ["cgpu.jpg", "Penyambung kuasa PCIe 6+2 pin untuk GPU"],
+  "sataH": ["sataH.jpg", "Sambungan SATA data dan kuasa untuk HDD"],
+  "sataS": ["sataS.jpg", "Kabel SATA data 7-pin untuk SSD"],
+  "fanF1": ["fanF1.jpg", "Kipas casing Corsair RS120 120mm"],
+  "fanF2": ["fanF2.jpg", "Kipas casing Corsair RS120 120mm"],
+  "fanR": ["fanR.jpg", "Kipas belakang casing Corsair RS120 120mm"],
+  "fp": ["fp.jpg", "Penyambung front-panel POWER SW / RESET SW"],
+  "wifi": ["wifi.jpg", "Penyesuai Wi-Fi USB TP-Link Archer T3U"],
+  "kb": ["kb.jpg", "Papan kekunci Dell KM3322W"],
+  "mouse": ["mouse.jpg", "Tetikus Dell KM3322W"],
+  "lan": ["lan.webp", "Kabel Ethernet RJ45 CAT6"],
+  "monitor": ["monitor.jpg", "Monitor Dell P2425H"],
+  "spk": ["spk.jpg", "Pembesar suara Logitech Z150"],
+  "wall": ["wall.webp", "Soket elektrik Malaysia Type G 13A"],
+  "pwr": ["pwr.jpg", "Kabel IEC C13 ke palam Malaysia Type G"]
+};
+Object.keys(ESL_TRAINING_LOCAL_PHOTOS).forEach(function(id) {
+  var photo = ESL_TRAINING_LOCAL_PHOTOS[id];
+  var prev = ESL_TRAINING_CATALOG[id] || {};
+  ESL_TRAINING_CATALOG[id] = Object.assign({}, prev, {
+    url: "/gambar/" + photo[0],
+    reference: photo[1],
+    note: "Foto rujukan setempat: " + photo[1] + ". Semak padanan model sebelum digunakan."
+  });
+});
+/* === TAMAT PEMETAAN FOTO SETEMPAT === */
+
 function timg(id){
   var m=ESL_TRAINING_CATALOG[id], name=P[id]?P[id].n:id;
   if(!m){

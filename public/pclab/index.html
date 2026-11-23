@@ -848,6 +848,37 @@ body.enter #panel>*:nth-child(2){animation-delay:.08s}body.enter #panel>*:nth-ch
 #panel .card.info .esl-training-source{margin:5px 0 9px;}
 @media(max-width:390px){#panel .chip.th .esl-training-source{font-size:9.5px;}}
 </style>
+<style id="esl-perisian-four-choices-icons-v1">
+/* Hanya panel MOD LATIHAN Perisian. Ikon ialah SVG terbina dalam projek. */
+#panel .swq-status{display:grid;gap:8px}
+#panel .swq-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--mut);font-size:12px}
+#panel .swq-meta .pc-ico{width:16px;height:16px;flex:none}
+#panel .swq-progress{height:8px;background:var(--inset);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+#panel .swq-progress>i{display:block;height:100%;background:var(--ac);border-radius:99px;transition:width .25s ease}
+#panel .swq-card{display:grid;gap:12px;min-width:0}
+#panel .swq-kicker{display:flex;align-items:center;gap:7px;color:var(--mut);font-size:11px;font-weight:800;letter-spacing:.045em;text-transform:uppercase}
+#panel .swq-kicker .pc-ico{width:16px;height:16px}
+#panel .swq-card h4{margin:0;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+#panel .swq-sub{font-size:12px;color:var(--mut);line-height:1.5;margin:0}
+#panel .swq-choices{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+#panel .swq-choice{width:100%;min-width:0;min-height:61px;display:grid;grid-template-columns:30px 32px minmax(0,1fr) 18px;align-items:center;gap:9px;text-align:left;font-family:inherit;font-size:13px;line-height:1.45;font-weight:650;color:var(--tx);background:var(--btn);border:1px solid var(--line);border-radius:12px;padding:10px 10px;cursor:pointer;overflow-wrap:anywhere;transition:border-color .12s,background .12s}
+#panel .swq-choice:hover{border-color:var(--ac);background:var(--hov)}
+#panel .swq-choice:focus-visible,#panel .swq-next:focus-visible{outline:2px solid var(--acx);outline-offset:2px}
+#panel .swq-letter{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--inset);border:1px solid var(--line);color:var(--tx);font-size:12px;font-weight:900;flex:none}
+#panel .swq-symbol{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--acx);background:var(--acs);border:1px solid var(--line)}
+#panel .swq-symbol .pc-ico,#panel .swq-chevron .pc-ico{width:19px;height:19px}
+#panel .swq-chevron{display:grid;place-items:center;color:var(--mut)}
+#panel .swq-choice.swq-wrong{border-color:#df5e67;background:rgba(220,38,38,.09)}
+#panel .swq-choice.swq-wrong .swq-letter{color:#f58c96;border-color:#df5e67}
+#panel .swq-feedback{display:flex;gap:9px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);border-radius:11px;font-size:12.5px;line-height:1.55;overflow-wrap:anywhere}
+#panel .swq-feedback .pc-ico{width:21px;height:21px;min-width:21px;margin-top:1px}
+#panel .swq-feedback.is-error{background:rgba(220,38,38,.07);border-color:rgba(220,38,38,.45)}
+#panel .swq-feedback.is-ok{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.45)}
+#panel .swq-next{min-height:46px;display:flex;align-items:center;justify-content:center;gap:9px;width:100%;font:800 13px inherit;font-family:inherit;background:var(--ac);color:#fff;border:0;border-radius:10px;padding:10px;cursor:pointer}
+#panel .swq-next .pc-ico{width:19px;height:19px}
+@media(max-width:480px){#panel .swq-choice{grid-template-columns:27px 29px minmax(0,1fr) 16px;gap:7px;padding:10px 8px;font-size:12.5px}#panel .swq-letter{width:26px;height:26px}#panel .swq-symbol{width:29px;height:29px}#panel .swq-card{gap:11px}}
+@media(prefers-reduced-motion:reduce){#panel .swq-progress>i,#panel .swq-choice{transition:none}}
+</style>
 </head><body>
 <noscript><p style="padding:24px;font-family:sans-serif">Simulator ini memerlukan JavaScript. Sila aktifkan JavaScript dalam pelayar anda.</p></noscript>
 <div id="intro" role="dialog" aria-label="Pengenalan Simulator PC 3D">
@@ -2589,7 +2620,7 @@ SCR.bak=function(){return appHTML('Backup dan Recovery',[['Cipta restore point',
 /* ====== PERISIAN: STATE, SKRIN, PANEL ====== */
 function resetSW(){
   var os=SW.os||'11',calc=SW.calc||{label:256,c:100};
-  SW.done={};SW.mistakes=0;SW.log=[];SW.fb=null;SW.bel=0;SW.run=null;SW.cur=null;SW.form=false;SW.partOK=false;
+  SW.done={};SW.quizOptions={};SW.awaitNext=null;SW.lastChoice=null;SW.mistakes=0;SW.log=[];SW.fb=null;SW.bel=0;SW.run=null;SW.cur=null;SW.form=false;SW.partOK=false;
   SW.qin={a:'',b:'',c:''};SW.os=os;SW.calc=calc;SW.practice={};SW.quiz=newQuiz();
   SW.order=shuffle(SWS.map(function(s){return s.id;}).concat(SWB.map(function(s){return s.id;})));
 }
@@ -2605,12 +2636,14 @@ function swComplete(id){
   var s=SWM[id];
   SW.done[id]=true;SW.cur=id;SW.form=false;
   SW.fb={ok:true,msg:S.mode==='latihan'?(s.n+': '+T(s.why)):'Betul.'};
+  if(S.mode==='latihan'){SW.awaitNext=id;SW.lastChoice=null;}
   toast('Betul','ok');
   updateHud();
   if(swDone()===SWS.length&&S.mode==='ujian'&&SW.run&&SW.run.running)finishRun('sw');
   render();
 }
 function swPick(id){
+  if(S.mode==='latihan'){if(SW.awaitNext)return;SW.lastChoice=id;}
   if(S.mode==='ujian'&&!(SW.run&&SW.run.running)){toast('Isi maklumat dan tekan "Mula Ujian" dahulu.');return;}
   var bad=SWBM[id];
   if(bad){swMistake('"'+T(bad.a)+'" - '+bad.why);return;}
@@ -2938,12 +2971,68 @@ function swActions(){
   var rem=SW.order.filter(function(id){return !SW.done[id];});
   return '<div class="card"><h4>Pilih tindakan seterusnya</h4>'+rem.map(function(id){var a=SWM[id]?SWM[id].a:SWBM[id].a;return '<button class="act" data-act="swpick" data-v="'+id+'">'+esc(T(a))+'</button>';}).join('')+'</div>';
 }
+/* esl-perisian-four-choices-icons-v1: 29 langkah kekal, hanya MOD LATIHAN dipadatkan. */
+var SW_QUIZ_ICONS={
+ dl:'download',run:'settings',lic:'shield',lang:'settings',media:'usb',drive:'disk',
+ usbin:'usb',bios:'chip',boot:'usb',save:'check',wlang:'settings',now:'monitor',
+ key:'shield',edition:'monitor',eula:'shield',custom:'disk',part:'disk',copy:'download',
+ oobe:'settings',net:'network',wu:'download',drv:'chip',act:'shield',chrome:'download',
+ office:'folder',av:'shield',util:'folder',check:'check',bak:'disk',
+ d1:'shield',d2:'download',d3:'usb',d4:'shield',d5:'chip',d6:'monitor',d7:'disk',d8:'disk'
+};
+function swQuizOptions(s){
+  SW.quizOptions=SW.quizOptions||{};
+  if(SW.quizOptions[s.id])return SW.quizOptions[s.id];
+  // Hanya tindakan dari fasa KEMUDIAN boleh jadi pengganggu.
+  // Langkah lain pada fasa yang sama mungkin sah, jadi jangan dipaparkan sebagai salah.
+  var future=shuffle(SWS.filter(function(x){return !SW.done[x.id]&&x.g>s.g;}));
+  var traps=shuffle(SWB);
+  var list=[s.id];
+  for(var i=0;i<future.length&&list.length<3;i++)list.push(future[i].id);
+  for(var j=0;j<traps.length&&list.length<4;j++)list.push(traps[j].id);
+  SW.quizOptions[s.id]=shuffle(list);
+  return SW.quizOptions[s.id];
+}
+function swPracticeActions(){
+  if(SW.form)return (SW.fb&&!SW.fb.ok?'<div class="fb bad" role="alert">'+esc(SW.fb.msg)+'</div>':'')+partFormCard();
+  if(SW.awaitNext){
+    return '<section class="card swq-card" aria-label="Jawapan betul">'
+      +'<div class="swq-feedback is-ok" role="status">'+pcIcon('check')+'<span><b>Betul! Langkah selesai.</b> '+esc(SW.fb&&SW.fb.msg||'Teruskan ke langkah berikutnya.')+'</span></div>'
+      +'<button type="button" class="swq-next" data-act="swcontinue">'+pcIcon('arrow')+' Langkah Seterusnya</button></section>';
+  }
+  var step=SWS.filter(function(x){return !SW.done[x.id];})[0];
+  if(!step)return '';
+  var index=SWS.indexOf(step),phase=SW_PHASES[swPhaseOf(index)];
+  var opts=swQuizOptions(step),labels=['A','B','C','D'];
+  var h='<section class="card swq-card" aria-label="Latihan perisian empat pilihan">'
+      +'<div class="swq-kicker">'+pcIcon('chip')+' Langkah '+(index+1)+' / '+SWS.length+' · '+esc(phase.name)+'</div>'
+      +'<h4>Apakah tindakan yang perlu dilakukan seterusnya?</h4>'
+      +'<p class="swq-sub">Pilih satu jawapan. Setiap pilihan mempunyai ikon dan penerangan selepas jawapan dipilih.</p>'
+      +'<div class="swq-choices" role="group" aria-label="Empat pilihan tindakan">';
+  opts.forEach(function(id,i){
+    var obj=SWM[id]||SWBM[id];
+    var wrong=SW.fb&&!SW.fb.ok&&SW.lastChoice===id;
+    h+='<button type="button" class="swq-choice'+(wrong?' swq-wrong':'')+'" data-act="swpick" data-v="'+esc(id)+'" aria-label="Pilihan '+labels[i]+': '+esc(T(obj.a))+'">'
+      +'<span class="swq-letter">'+labels[i]+'</span>'
+      +'<span class="swq-symbol">'+pcIcon(SW_QUIZ_ICONS[id]||'info')+'</span>'
+      +'<span class="swq-answer">'+esc(T(obj.a))+'</span>'
+      +'<span class="swq-chevron">'+pcIcon(wrong?'info':'arrow')+'</span></button>';
+  });
+  h+='</div>';
+  if(SW.fb){h+='<div role="status" class="swq-feedback '+(SW.fb.ok?'is-ok':'is-error')+'">'
+      +pcIcon(SW.fb.ok?'info':'question')+'<span>'+esc(SW.fb.msg)+'</span></div>';}
+  return h+'</section>';
+}
+
 function swLatihan(){
   var t=SWS.length,d=swDone();
-  var h=osCard()+'<div class="card"><h3>Mod Latihan: Pasang Perisian</h3><div class="pbar"><i style="width:'+(100*d/t)+'%"></i></div><p class="mut">Siap '+d+' / '+t+' &middot; Kesilapan: '+SW.mistakes+'</p><p>Pilih tindakan yang betul mengikut urutan. Berhati-hati dengan jawapan yang salah.</p><div class="row2"><button class="btn sm" data-act="swhint">Petunjuk</button><button class="btn sm" data-act="reset">Mula semula</button></div></div>';
-  if(SW.fb)h+='<div class="fb '+(SW.fb.ok?'ok':'bad')+'">'+esc(SW.fb.msg)+'</div>';
-  if(d===t)return h+'<div class="card info"><h3>Pemasangan siap!</h3><p>PC sedia digunakan.</p><div class="row2"><button class="btn" data-act="reset">Ulang</button></div></div>';
-  return h+swActions();
+  var h=osCard()+'<div class="card swq-status"><h3>Mod Latihan: Pasang Perisian</h3>'
+    +'<div class="swq-progress" role="progressbar" aria-label="Kemajuan latihan perisian" aria-valuemin="0" aria-valuemax="'+t+'" aria-valuenow="'+d+'"><i style="width:'+(100*d/t)+'%"></i></div>'
+    +'<div class="swq-meta">'+pcIcon('check')+' '+d+' / '+t+' langkah selesai &middot; Kesilapan: '+SW.mistakes+'</div>'
+    +'<div class="row2"><button class="btn sm" data-act="swhint">'+pcIcon('question')+' Petunjuk</button><button class="btn sm" data-act="reset">'+pcIcon('arrow')+' Mula semula</button></div></div>';
+  if(d===t)return h+(SW.fb?'<div class="swq-feedback is-ok" role="status">'+pcIcon('check')+'<span>'+esc(SW.fb.msg)+'</span></div>':'')
+    +'<div class="card info"><h3>'+pcIcon('check')+' Pemasangan siap!</h3><p>Semua '+t+' langkah diselesaikan. PC sedia digunakan.</p><button class="btn" data-act="reset">Ulang latihan</button></div>';
+  return h+swPracticeActions();
 }
 function swUjian(){
   if(!SW.run)return osCard()+ujianIntro('sw');
@@ -3125,12 +3214,13 @@ function act(a,v){
     case 'swtab':S.dom='sw';render();break;
     case 'skclose':$('#modal').hidden=true;$('#skhost').innerHTML='';break;
     case 'swpick':swPick(v);break;
+    case 'swcontinue':if(S.mode==='latihan'&&S.dom==='sw'&&SW.awaitNext){SW.awaitNext=null;SW.fb=null;SW.lastChoice=null;render();$('#panel').scrollTop=0;}break;
     case 'swprev':SW.bel=Math.max(0,SW.bel-1);render();$('#panel').scrollTop=0;break;
     case 'swnext':SW.bel=Math.min(SWS.length-1,SW.bel+1);render();$('#panel').scrollTop=0;break;
     case 'swphase':
     case 'swgo':SW.bel=Math.max(0,Math.min(SWS.length-1,parseInt(v,10)||0));render();$('#panel').scrollTop=0;break;
     case 'swtry':var sp=v.split(':'),ss=SWS[SW.bel];if(ss&&ss.id===sp[0]){if(!SW.practice)SW.practice={};SW.practice[ss.id]=parseInt(sp[1],10);render();}break;
-    case 'swhint':var g=swCurG();var f=SWS.filter(function(x){return !SW.done[x.id]&&x.g===g;})[0];if(f){SW.fb={ok:true,msg:'Petunjuk: '+f.a};}render();break;
+    case 'swhint':if(S.mode==='latihan'&&SW.awaitNext)break;SW.lastChoice=null;var g=swCurG();var f=SWS.filter(function(x){return !SW.done[x.id]&&x.g===g;})[0];if(f){SW.fb={ok:true,msg:'Petunjuk: '+f.a};}render();break;
     case 'copy':copyResult();break;
     case 'print':window.print();break;
   }

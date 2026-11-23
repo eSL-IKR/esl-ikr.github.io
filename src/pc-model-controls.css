@@ -132,3 +132,41 @@ html[data-theme=light] .pp-model-indicator { background:rgba(238,245,253,.92); c
   border:1px solid rgba(133,193,237,.5);border-radius:9px;background:#122b43;
   color:#e9f8ff;padding:5px 10px;font-weight:700;font-size:11px;cursor:pointer}
 .pp-model-retry:hover {background:#1e4365}
+
+/* ESL_MOBILE_MODEL_ARROWS_FIX_V1 — Kawalan kiri/kanan Rack/PC 3D pada telefon sahaja.
+   Saiz pemapar mesti ikut lebar kad, bukan min-height + aspect-ratio. */
+@media (max-width: 640px) {
+  .studio-portal .pp-hero-grid,
+  .studio-portal .pp-hero-preview,
+  .studio-portal .pp-stage,
+  .studio-portal .pp-stage-canvas {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .studio-portal .pp-stage-canvas {
+    aspect-ratio: auto;
+    height: clamp(300px, 82vw, 390px);
+    overflow: hidden;
+  }
+  .studio-portal .pp-stage-canvas > .pp-canvas {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .studio-portal .pp-model-nav {
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .studio-portal .pp-model-arrow {
+    box-sizing: border-box;
+    width: 44px;
+    height: 48px;
+    padding: 0;
+    touch-action: manipulation;
+  }
+  .studio-portal .pp-model-prev { left: 10px; right: auto; }
+  .studio-portal .pp-model-next { right: 10px; left: auto; }
+}

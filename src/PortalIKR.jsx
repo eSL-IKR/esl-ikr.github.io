@@ -9,6 +9,7 @@ import ProgressBackup from './ProgressBackup';
 import useTheme from './useTheme';
 import StudioNav from './StudioNav';
 import './studio.css';
+import './ux-patch/responsive-ux.css'; // ESL-IKR RESPONSIVE UX V1
 
 // Import modul menggunakan lazy loading untuk penjimatan data internet
 const ModuleIKR3013 = lazy(() => import('./IKR3013')); 
@@ -156,6 +157,7 @@ const MODULE_TEXT = {
 export default function PortalIKR() {
   const [activeSLe, setActiveSLe] = useState(null);
   const [activeSem, setActiveSem] = useState(null);
+  const [landingTarget, setLandingTarget] = useState(null);
   const [labTab, setLabTab] = useState('');
   const { theme } = useTheme();
   const openLab = (tab) => {
@@ -181,6 +183,22 @@ export default function PortalIKR() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeSLe, activeSem]);
+
+  // Wait until the original landing components have mounted before navigating.
+  const goLanding = (target) => {
+    setQuery(''); setActiveSem(null); setLandingTarget({ target });
+  };
+  useEffect(() => {
+    if (!landingTarget || activeSem !== null || searching || activeSLe) return;
+    const frame = requestAnimationFrame(() => {
+      const { target } = landingTarget;
+      if (target === 'makmal') window.dispatchEvent(new Event('esl:open-lab-chooser'));
+      else if (target === 'home') window.scrollTo({ top: 0, behavior: 'auto' });
+      else document.getElementById(target)?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      setLandingTarget(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [landingTarget, activeSem, searching, activeSLe]);
 
   if (activeSLe === 'PCLAB') {
     return (
@@ -317,10 +335,12 @@ export default function PortalIKR() {
   }
 
   return (
-    <div className="studio-portal min-h-screen font-sans flex flex-col selection:bg-blue-300 selection:text-blue-900 bg-slate-50 relative overflow-hidden">
+    <div className="studio-portal eslr-portal min-h-screen font-sans flex flex-col selection:bg-blue-300 selection:text-blue-900 bg-slate-50 relative overflow-hidden">
       <StudioNav modules={MODULE_TEXT} onModule={setActiveSLe} onLab={openLab}
-        onHome={() => { setQuery(''); setActiveSem(null); window.scrollTo({ top: 0 }); }}
-        onSemester={() => { setQuery(''); setActiveSem(null); requestAnimationFrame(() => document.getElementById('pilih-semester')?.scrollIntoView({ block: 'start' })); }} />
+        onHome={() => goLanding('home')}
+        onSemester={() => goLanding('pilih-semester')}
+        onGuide={() => goLanding('eslux-guide')}
+        onChooseLab={() => goLanding('makmal')} />
       
       {/* KOD CSS ANIMASI */}
       <style>{`
@@ -353,7 +373,7 @@ export default function PortalIKR() {
           Header lama sengaja dibuang bagi mengelakkan navigasi/logo berganda. */}
 
       {/* KANDUNGAN UTAMA (Responsif) */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-8 md:py-12 relative z-10 flex flex-col justify-center">
+      <main className={`flex-1 max-w-6xl mx-auto w-full px-4 py-8 md:py-12 relative z-10 flex flex-col justify-center${activeSem === null && !searching ? ' eslr-main' : ''}`}>
         
         {activeSem === null && !searching && (
           <>

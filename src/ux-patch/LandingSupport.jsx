@@ -4,8 +4,9 @@ import './ux-patch.css';
 
 export function LearningGuide() {
   return (
-<section className="eslux-guide" aria-labelledby="eslux-guide-title">
-  <h2 id="eslux-guide-title">Bagaimana hendak bermula?</h2>
+<section id="eslux-guide" className="eslux-guide" aria-labelledby="eslux-guide-title">
+  <h2 id="eslux-guide-title">Pertama kali menggunakan eSL-IKR?</h2>
+  <p className="eslr-section-intro">Ikuti empat langkah ini untuk membina kemahiran anda.</p>
   <ol>
     <li><BookOpen aria-hidden="true" /><span><strong>01 · Baca nota</strong><small>Kenali konsep asas.</small></span></li>
     <li><Brain aria-hidden="true" /><span><strong>02 · Jawab kuiz</strong><small>Semak kefahaman.</small></span></li>

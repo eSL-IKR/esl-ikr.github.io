@@ -134,6 +134,7 @@ export default function InkOrbitFeatures({
             <div className="ib-head">
               {F.tag && <span className="ib-tag">{F.tag}</span>}
               <Title id={uid + 'feat'} text={F.title} />
+              <p className="eslr-illustration">Rajah dan graf di bawah ialah ilustrasi fungsi, bukan rekod kemajuan sebenar.</p>
             </div>
             <div className="ib-bento">
               <FlowCard brand={brand} features={F} labels={L} uid={uid} reduced={reduced} inView={featIn} />
@@ -201,7 +202,7 @@ function Mark({ size = 18 }) {
   // glif jenama: huruf N yang dilipat
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M3 21V3h4.2l9.6 12.2V3H21v18h-4.2L7.2 8.8V21z" fill="currentColor" />
+      <image href={`${import.meta.env.BASE_URL}eSL-IKR-mark.png`} x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" />
     </svg>
   );
 }

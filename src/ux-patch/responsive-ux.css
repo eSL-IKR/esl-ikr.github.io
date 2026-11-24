@@ -1,0 +1,145 @@
+/* ESL-IKR RESPONSIVE UX V1 — portal UI only. No simulator styles. */
+.studio-portal.eslr-portal{--eslr-header:76px;padding-top:var(--eslr-header)!important;min-width:0}
+.studio-portal.eslr-portal .eslr-main{width:min(100%,1280px);max-width:1280px;min-width:0;padding-inline:clamp(16px,3vw,36px);padding-top:clamp(20px,3vw,40px);padding-bottom:32px;justify-content:flex-start}
+/* Stable single header: existing search, logo, backup, and real navigation. */
+.studio-portal.eslr-portal .studio-nav.eslr-nav{display:flex!important;top:0!important;left:0!important;right:0!important;transform:none!important;min-height:var(--eslr-header)!important;width:100%!important;max-width:none!important;padding:9px clamp(12px,3vw,36px)!important;gap:clamp(8px,1.5vw,22px)!important;justify-content:flex-start!important;align-items:center!important;box-sizing:border-box;border-radius:0!important}
+.studio-portal.eslr-portal .eslr-nav .studio-brand{display:flex!important;flex:none;min-width:0;margin:0!important;grid-column:auto;grid-row:auto}
+.studio-portal.eslr-portal .eslr-nav .esl-logo-button{width:clamp(116px,13vw,190px)!important;height:50px!important}
+.studio-portal.eslr-portal .eslr-navlinks{display:flex;gap:4px;align-items:center;flex:none}
+.studio-portal.eslr-portal .eslr-nav .eslr-navlinks button,.studio-portal.eslr-portal .eslr-nav .eslr-help{display:inline-flex!important;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:44px;padding:8px 10px;font-size:14px;white-space:nowrap;border-radius:9px;font-weight:650}
+.studio-portal.eslr-portal .eslr-nav .studio-topsearch{display:flex!important;flex:1 1 220px;min-width:0!important;width:auto!important;max-width:390px!important;height:44px!important;margin:0 0 0 auto!important;grid-column:auto;grid-row:auto;font-size:14px}
+.studio-portal.eslr-portal .eslr-nav .studio-tools{display:flex!important;flex:none;margin-left:0;align-items:center}
+.studio-portal.eslr-portal .eslr-nav .studio-tools button{min-width:44px;min-height:44px}
+.studio-portal.eslr-portal .eslr-nav .eslr-help{display:none!important}
+.studio-portal.eslr-portal .eslr-nav .studio-tools [role=dialog]{max-width:min(288px,calc(100vw - 24px));text-align:left}
+.studio-portal.eslr-portal .studio-bottom{display:none}
+.studio-portal.eslr-portal .studio-dialog{max-height:calc(100dvh - 32px);width:min(620px,calc(100vw - 24px));overflow:auto}
+.studio-portal.eslr-portal .studio-dialog input{font-size:16px}
+.studio-portal.eslr-portal .studio-dialog li button{min-height:44px}
+.studio-portal.eslr-portal .studio-dialog li span{font-size:14px}
+/* Hero and viewer: do not change the original GLB or the canvas engine. */
+.eslr-portal .eslr-main .pp-hero{padding:clamp(22px,3.3vw,48px);margin:0 0 clamp(34px,5vw,64px)}
+.eslr-portal .eslr-main .pp-hero-grid{grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:clamp(20px,3vw,42px);align-items:center}
+.eslr-portal .eslr-main .pp-hero-grid>*,.eslr-portal .eslr-main .pp-hero-preview,.eslr-portal .eslr-main .pp-stage,.eslr-portal .eslr-main .pp-stage-canvas{min-width:0;max-width:100%;box-sizing:border-box}
+.eslr-portal .eslr-main .pp-title{font-size:clamp(34px,4vw,58px);line-height:1.1;overflow-wrap:break-word}
+.eslr-portal .eslr-main .pp-lead{font-size:16px;line-height:1.75}
+.eslr-portal .eslr-main .pp-eyebrow{font-family:inherit;font-size:13px;line-height:1.6;white-space:normal}
+.eslr-portal .eslr-main .pp-btn{min-height:46px;justify-content:center;font-size:15px;font-weight:650;white-space:normal}
+.eslr-portal .eslr-main .pp-stats dt{font-size:13px;line-height:1.4}
+.eslr-portal .eslr-main .pp-stats dd{font-size:26px;font-weight:750}
+.eslr-portal .eslr-main .pp-stage-canvas{width:100%;height:clamp(300px,35vw,440px);min-height:0;aspect-ratio:auto;overflow:hidden}
+.eslr-portal .eslr-main .pp-canvas{width:100%;height:100%;touch-action:pan-y}
+.eslr-portal .eslr-main .pp-model-arrow{width:44px;height:48px;padding:0;touch-action:manipulation}
+.eslr-portal .eslr-main .pp-model-prev{left:8px;right:auto}.eslr-portal .eslr-main .pp-model-next{right:8px;left:auto}
+.eslr-portal .eslr-main .pp-model-indicator{font-size:12px;max-width:calc(100% - 16px);min-width:0;white-space:nowrap}
+.eslr-portal .eslr-main .pc-tools{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 46px;gap:7px;min-width:0}
+.eslr-portal .eslr-main .pc-tools :is(.pc-tool-face,button){min-height:46px;font-size:13px}
+.eslr-portal .eslr-main .pc-tool-label{min-width:0;overflow-wrap:anywhere;white-space:normal}
+.eslr-portal .eslr-main .eslux-viewer-hint{font-size:14px;line-height:1.55}
+/* Four steps, then the real 3D semester scene. */
+.eslr-portal .eslr-main .eslux-guide{scroll-margin-top:96px;margin-bottom:clamp(32px,5vw,56px)}
+.eslr-portal .eslr-main .eslux-guide h2,.eslr-portal .eslr-main .eslux-rack-head h2,.eslr-portal .eslr-main .eslux-support h2{font-size:clamp(24px,2.5vw,34px);line-height:1.2}
+.eslr-portal .eslr-main .eslr-section-intro{color:var(--ux-muted);font-size:15px;line-height:1.65;margin:0 0 16px}
+.eslr-portal .eslr-main .eslux-guide ol{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.eslr-portal .eslr-main .eslux-guide li{padding:16px;gap:12px;flex-direction:column;min-height:112px}
+.eslr-portal .eslr-main .eslux-guide svg{width:28px;height:28px}
+.eslr-portal .eslr-main .eslux-guide strong{font-size:16px;line-height:1.4}
+.eslr-portal .eslr-main .eslux-guide small{font-size:14px;line-height:1.5}
+.eslr-portal .eslr-main #pilih-semester,.eslr-portal .eslr-main #faq{scroll-margin-top:96px}
+.eslr-portal .eslr-main .semester-racks{width:100%;max-width:none;margin:0 auto clamp(38px,6vw,70px)}
+.eslr-portal .eslr-main .rack-stage{height:clamp(220px,37vw,450px);min-width:0}
+.eslr-portal .eslr-main .rack-labels{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,1.5vw,18px);align-items:stretch}
+.eslr-portal .eslr-main .semester-rack{display:flex;flex-direction:column;align-items:center;min-width:0;gap:4px;padding:6px 2px 12px}
+.eslr-portal .eslr-main .semester-rack h3{font-size:clamp(14px,2.2vw,26px);line-height:1.25}
+.eslr-portal .eslr-main .semester-rack p{font-size:clamp(12px,1.3vw,15px);line-height:1.45;margin:0;overflow-wrap:anywhere}
+.eslr-portal .eslr-main .semester-rack .eslr-sem-title{font-weight:750;color:#e4edff}
+.eslr-portal .eslr-main .semester-rack .eslr-sem-detail{color:#bac9df;max-width:28ch;margin-bottom:8px}
+.eslr-portal .eslr-main .rack-enter{visibility:visible;opacity:1;min-height:44px;max-width:100%;margin-top:auto;font-size:14px;padding:8px 12px;gap:8px;justify-content:center}
+/* Four access cards; original three buttons + real Structured Cabling link. */
+.eslr-portal .eslr-main .pp-lab{margin:0 0 clamp(38px,6vw,64px)}
+.eslr-portal .eslr-main .pp-lab-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.eslr-portal .eslr-main .pp-lab-card{min-width:0;min-height:208px;padding:20px;text-decoration:none}
+.eslr-portal .eslr-main .pp-lab-card h3{color:#edf3ff;font-size:17px;line-height:1.3}
+.eslr-portal .eslr-main .pp-lab-card p{color:#b9c7dc;font-size:14px;line-height:1.65}
+.eslr-portal .eslr-main .pp-lab-card .pp-go{font-size:14px;color:#b5c5ff}
+.eslr-portal .eslr-main .eslr-cabling .pp-lab-icon{color:#75e3d2;background:#17453c66}
+.eslr-portal .eslr-main .eslr-cabling .pp-go{color:#83e7d7}
+/* Keep the existing three diagrams (four explanations); match portal palette. */
+.eslr-portal .eslr-main .eslux-features[data-theme=dark]{--ib-page:#0b1426;--ib-hatch:rgba(151,173,230,.045);--ib-paper:#101a2d;--ib-card:#142038;--ib-raise:#1a2942;--ib-ink:#f0f4ff;--ib-soft:#c9d5ea;--ib-muted:#b4c3dc;--ib-faint:#9eafca;--ib-line:#2b3c5b;--ib-line-strong:#587094;--ib-bracket:#50668b;--ib-inv:#dbe6fa;--ib-inv-ink:#17243c;padding:clamp(10px,2vw,22px)}
+.eslr-portal .eslr-main .eslux-features .ib-sec{padding:clamp(18px,3.4vw,42px)}
+.eslr-portal .eslr-main .eslux-features .ib-head{margin-bottom:28px;gap:10px}
+.eslr-portal .eslr-main .eslux-features .ib-h2{font-size:clamp(24px,3.2vw,38px);line-height:1.18}
+.eslr-portal .eslr-main .eslux-features .ib-bento{gap:18px}
+.eslr-portal .eslr-main .eslux-features .ib-card h3{font-size:17px;line-height:1.4}
+.eslr-portal .eslr-main .eslux-features .ib-card p{font-size:15px;line-height:1.65;color:var(--ib-muted)}
+.eslr-portal .eslr-main .eslux-features .ib-wide{width:100%}
+.eslr-portal .eslr-main .eslux-features .ib-tag{background:#26375a;color:#cbd8f9;border-color:#4c6087}
+.eslr-portal .eslr-main .eslux-features .eslr-illustration{font-size:13px;color:var(--ib-muted);line-height:1.55;text-align:center;margin:0}
+/* FAQ remains full-width; no feedback/database form. */
+.eslr-portal .eslr-main .eslux-support{margin-top:clamp(30px,5vw,56px);margin-bottom:0}
+.eslr-portal .eslr-main .eslux-support #faq summary{min-height:44px;padding:10px 0;font-size:16px;line-height:1.5}
+.eslr-portal .eslr-main .eslux-support #faq details p{font-size:15px;line-height:1.7}
+.eslr-portal .eslr-main .eslux-support #faq details{padding:3px 0}
+@media(max-width:1100px){
+ .studio-portal.eslr-portal .eslr-navlinks{gap:0}
+ .studio-portal.eslr-portal .eslr-nav .eslr-navlinks button{padding-inline:8px;font-size:13px}
+ .eslr-portal .eslr-main .pp-lab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1023px){
+ .studio-portal.eslr-portal{--eslr-header:68px;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+ .studio-portal.eslr-portal .eslr-navlinks{display:none!important}
+ .studio-portal.eslr-portal .eslr-nav .eslr-help{display:inline-flex!important;padding:8px!important}
+ .studio-portal.eslr-portal .eslr-nav .studio-topsearch{max-width:none!important}
+ .studio-portal.eslr-portal .studio-bottom{display:flex!important;position:fixed;inset:auto 0 0;z-index:60;gap:3px;padding:5px 8px calc(6px + env(safe-area-inset-bottom,0px));background:#0e1729;border-top:1px solid var(--studio-line)}
+ .studio-portal.eslr-portal .studio-bottom button{display:flex;flex:1 1 0;min-width:0;min-height:54px;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px;font-size:12px;color:#dce7ff;border-radius:8px}
+ .eslr-portal .eslr-main .pp-hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+ .eslr-portal .eslr-main .pp-title{font-size:clamp(28px,4.2vw,42px)}
+ .eslr-portal .eslr-main .pp-stage-canvas{height:clamp(270px,36vw,390px)}
+ .eslr-portal .eslr-main .eslux-guide ol{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .eslr-portal .eslr-main .pc-tools{grid-template-columns:minmax(0,1fr) 46px}
+ .eslr-portal .eslr-main .pc-picker{grid-column:1/-1}
+ .eslr-portal .eslr-main .pc-explode{grid-column:1}.eslr-portal .eslr-main .pc-spin{grid-column:2}
+}
+@media(max-width:767px){
+ .studio-portal.eslr-portal .eslr-main{padding:16px 12px 28px}
+ .studio-portal.eslr-portal .studio-nav.eslr-nav{gap:8px!important;padding:7px 10px!important;min-height:var(--eslr-header)!important}
+ .studio-portal.eslr-portal .eslr-nav .esl-logo-button{width:clamp(105px,31vw,140px)!important;height:44px!important}
+ .studio-portal.eslr-portal .eslr-nav .studio-topsearch{flex:0 0 44px;width:44px!important;padding:0!important;justify-content:center;margin-left:auto!important}
+ .studio-portal.eslr-portal .eslr-nav .studio-topsearch span,.studio-portal.eslr-portal .eslr-nav .studio-topsearch kbd{display:none!important}
+ .studio-portal.eslr-portal .eslr-nav .studio-tools{display:flex!important}
+ .eslr-portal .eslr-main .pp-hero{padding:clamp(14px,4vw,26px);border-radius:18px}
+ .eslr-portal .eslr-main .pp-hero-grid{grid-template-columns:minmax(0,1fr);gap:24px}
+ .eslr-portal .eslr-main .pp-title{font-size:clamp(30px,7.4vw,44px);margin:12px 0}
+ .eslr-portal .eslr-main .pp-title br{display:none}
+ .eslr-portal .eslr-main .pp-lead{font-size:15px;line-height:1.65}
+ .eslr-portal .eslr-main .pp-cta{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:20px}
+ .eslr-portal .eslr-main .pp-stats{gap:8px;margin-top:20px;padding-top:16px}
+ .eslr-portal .eslr-main .pp-stats dt{font-size:12px}
+ .eslr-portal .eslr-main .pp-stats dd{font-size:24px}
+ .eslr-portal .eslr-main .pp-stage-canvas{height:clamp(245px,77vw,400px)}
+ .eslr-portal .eslr-main .pp-stage{border-radius:14px}
+ .eslr-portal .eslr-main .eslux-guide li{padding:13px;gap:8px;min-height:114px}
+ .eslr-portal .eslr-main .eslux-guide strong{font-size:15px}.eslr-portal .eslr-main .eslux-guide small{font-size:13px}
+ .eslr-portal .eslr-main .rack-stage{height:clamp(185px,57vw,340px)}
+ .eslr-portal .eslr-main .semester-rack .eslr-sem-detail{font-size:12px}
+ .eslr-portal .eslr-main .rack-enter{font-size:12px;padding:6px 4px;gap:4px;width:100%}
+ .eslr-portal .eslr-main .pp-lab-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+ .eslr-portal .eslr-main .pp-lab-card{min-height:0;padding:16px}
+ .eslr-portal .eslr-main .eslux-features .ib-bento,.eslr-portal .eslr-main .eslux-features .ib-wide-copy{grid-template-columns:minmax(0,1fr)}
+ .eslr-portal .eslr-main .eslux-features .ib-wide{grid-column:auto}
+ .eslr-portal .eslr-main .eslux-features .ib-wide-copy{padding:0 14px 16px!important}
+ .eslr-portal .eslr-main .eslux-features .ib-card p{font-size:14px}
+ .eslr-portal .eslr-main .eslux-support #faq{padding:16px}
+ .eslr-portal .eslr-main .eslux-support #faq summary{font-size:15px}
+}
+@media(max-width:359px){
+ .studio-portal.eslr-portal .studio-nav.eslr-nav{gap:5px!important;padding-inline:8px!important}
+ .eslr-portal .eslr-main .eslux-guide li{padding:10px}
+ .eslr-portal .eslr-main .semester-rack p{font-size:11px}
+ .eslr-portal .eslr-main .semester-rack .eslr-sem-detail{font-size:11px}
+ .eslr-portal .eslr-main .rack-enter{font-size:11px;gap:2px}
+}
+/* The chooser is rendered into body by React portal. Scoped to its existing ID. */
+#pp-chooser-dialog .pp-chooser-close{min-width:44px;min-height:44px}
+#pp-chooser-dialog .pp-chooser-option{min-width:0}
+@media(max-width:480px){#pp-chooser-dialog .pp-chooser-option-content>span:not(.pp-chooser-open){font-size:14px}}

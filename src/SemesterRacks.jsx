@@ -239,7 +239,9 @@ export default function SemesterRacks({ semesters, onSelect }) {
         onPointerLeave={event => { if (event.pointerType === 'mouse') setOpen(null); }}
         onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(null); }}>
         <h3>Semester {semester.n}</h3>
-        <p>Rack Server {semester.n} · {semester.count} modul</p>
+        <p>{semester.count} modul</p>
+        <p className="eslr-sem-title">{['Asas komputer', 'Kemahiran teknikal', 'Rangkaian lanjutan'][semester.n - 1]}</p>
+        <p className="eslr-sem-detail">{['Perkakasan dan asas rangkaian', 'Switching, routing dan pelayan', 'Keselamatan, automasi dan penyelenggaraan'][semester.n - 1]}</p>
         <button className="rack-enter" onClick={() => onSelect(semester.n)}>Lihat Modul <span aria-hidden="true">→</span></button>
       </article>)}
     </div>

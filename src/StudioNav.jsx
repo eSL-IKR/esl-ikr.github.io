@@ -1,25 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import { Home, BookOpen, Box, Search, X, Code2, Server, Database, GraduationCap } from 'lucide-react';
+import { Home, BookOpen, Box, Search, X, CircleHelp } from 'lucide-react';
 import ManualLogo from './ManualLogo';
-import ThemeToggle from './ThemeToggle';
 import ProgressBackup from './ProgressBackup';
 
-/** ONE responsive header. Top: static full logo + one search trigger.
- * Scrolled: rotating symbol only; click symbol to reveal the SAME search trigger.
- * Ctrl+K remains available anywhere. Search modal is shared by both states.
- */
-export default function StudioNav({ modules, onModule, onLab, onHome, onSemester }) {
+/** Single persistent responsive header with original search and progress backup. */
+export default function StudioNav({ modules, onModule, onLab, onHome, onSemester, onGuide, onChooseLab }) {
   const dialog = useRef(null);
   const input = useRef(null);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(0);
-  const [compact, setCompact] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
   const actions = [
     { id: 'home', title: 'Halaman utama', run: onHome },
     { id: 'semester', title: 'Pilih semester', run: onSemester },
+    { id: 'panduan', title: 'Panduan pengguna dan FAQ', run: onGuide },
+    { id: 'cabling', title: 'Structured Cabling 3D', description: 'RJ45 crimping patch panel kabel rangkaian', run: () => { window.location.href = `${import.meta.env.BASE_URL}structured-cabling/index.html`; } },
     { id: 'lab', title: 'Makmal PC 3D · Perkakasan', run: () => onLab('') },
     { id: 'software', title: 'Makmal PC 3D · Perisian', run: () => onLab('perisian') },
     { id: 'builder', title: 'Pembina PC 3D', run: () => onLab('pembina') },
@@ -36,15 +32,8 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
         e.preventDefault(); setQuery(''); setSelected(0); setOpen(v => !v);
       }
     };
-    const scroll = () => {
-      const scrolled = window.scrollY > 60;
-      setCompact(scrolled);
-      if (!scrolled) setExpanded(false);
-    };
     window.addEventListener('keydown', key);
-    window.addEventListener('scroll', scroll, { passive:true });
-    scroll();
-    return () => { window.removeEventListener('keydown', key); window.removeEventListener('scroll', scroll); };
+    return () => window.removeEventListener('keydown', key);
   }, []);
 
   useEffect(() => {
@@ -58,39 +47,28 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
 
   const links = [
     { label:'Utama', Icon:Home, run:onHome },
-    { label:'Semester', Icon:BookOpen, run:onSemester },
-    { label:'Makmal', Icon:Box, run:()=>window.dispatchEvent(new Event('esl:open-lab-chooser')) },
+    { label:'Modul', Icon:BookOpen, run:onSemester },
+    { label:'Makmal', Icon:Box, run:onChooseLab },
     { label:'Carian', Icon:Search, run:showSearch },
   ];
+  const desktopLinks = [...links.slice(0, 3), {label:'Panduan', Icon:CircleHelp, run:onGuide}];
 
   return <>
-    <nav className={`studio-nav${compact ? ' is-compact' : ''}${compact && expanded ? ' has-search' : ''}`}
-      aria-label="Navigasi utama eSL-IKR">
+    <nav className="studio-nav eslr-nav" aria-label="Navigasi utama eSL-IKR">
       <div className="studio-brand"><ManualLogo onHome={onHome} /></div>
-      <button type="button" className="studio-compact-toggle" aria-label={expanded ? 'Sembunyikan bar carian' : 'Tunjukkan bar carian'}
-        aria-expanded={expanded} aria-controls="esl-search-trigger"
-        onClick={() => setExpanded(v => !v)} title={expanded ? 'Tutup carian' : 'Buka carian'}>
-        <span className="studio-compact-rotor" aria-hidden="true">
-          <img src={`${import.meta.env.BASE_URL}eSL-IKR-mark.png`} className="studio-compact-face studio-compact-front"
-            alt="" draggable="false" />
-          <img src={`${import.meta.env.BASE_URL}eSL-IKR-mark.png`} className="studio-compact-face studio-compact-back"
-            alt="" draggable="false" />
-        </span>
-      </button>
+      <div className="eslr-navlinks">
+        {desktopLinks.map(({label,Icon,run}) => <button key={label} type="button" onClick={run}><Icon size={17} aria-hidden="true"/><span>{label === 'Makmal' ? 'Makmal 3D' : label}</span></button>)}
+      </div>
       <button type="button" className="studio-topsearch" id="esl-search-trigger" onClick={showSearch}
         aria-label="Cari modul, contoh firewall, VLAN atau IKR3153" title="Cari modul (Ctrl + K)">
-        <Search size={17} aria-hidden="true" />
-        <span>Cari modul, contoh: firewall, VLAN atau IKR3153</span><kbd>Ctrl K</kbd>
+        <Search size={19} aria-hidden="true" />
+        <span>Cari modul atau topik...</span><kbd>Ctrl K</kbd>
       </button>
-      <span className="studio-symbols" role="img" aria-label="Kod, pelayan dan pangkalan data">
-        <Code2 size={20} /><Server size={20} /><Database size={20} />
-      </span>
-      <button type="button" className="studio-lab-link" onClick={() => window.dispatchEvent(new Event('esl:open-lab-chooser'))}><Box size={15} aria-hidden="true" /><span>Pilihan Makmal 3D</span></button>
-      <div className="studio-tools"><ProgressBackup /><ThemeToggle /></div>
-      <span className="studio-learning"><GraduationCap size={18} aria-hidden="true" />Pusat E-Pembelajaran</span>
+      <button type="button" className="eslr-help" onClick={onGuide} aria-label="Panduan pengguna" title="Panduan pengguna"><CircleHelp size={21}/></button>
+      <div className="studio-tools"><ProgressBackup /></div>
     </nav>
-    <nav className="studio-bottom" aria-label="Navigasi telefon">
-      {links.map(({label,Icon,run}) => <button key={label} onClick={run}><Icon size={20} aria-hidden="true" /><span>{label}</span></button>)}
+    <nav className="studio-bottom" aria-label="Navigasi telefon dan tablet">
+      {links.map(({label,Icon,run}) => <button type="button" key={label} onClick={run}><Icon size={22} aria-hidden="true"/><span>{label}</span></button>)}
     </nav>
     <dialog ref={dialog} className="studio-dialog" aria-labelledby="studio-search-title"
       onCancel={() => setOpen(false)} onClick={e => { if (e.target === e.currentTarget) setOpen(false); }}>

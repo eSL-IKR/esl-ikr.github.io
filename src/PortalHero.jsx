@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowRight, Boxes, Wrench, MonitorCog, X } from 'lucide-react';
+import { ArrowRight, Boxes, Wrench, MonitorCog, X, Cable } from 'lucide-react';
 import './portal-pro.css';
 
 const HeroModel3D = lazy(() => import('./HeroModel3D'));
@@ -79,14 +79,14 @@ export default function PortalHero() {
         <div>
           <p className="pp-eyebrow">
             <span className="pp-dot" aria-hidden="true" />
-            eSL-IKR · Platform Pembelajaran Interaktif
+            eSmart Learning IKR · Teknologi Komputer Rangkaian
           </p>
           <h2 id="pp-hero-title" className="pp-title">
             Fahami komputer dan rangkaian,<br className="hidden sm:block" />
             <span className="pp-grad">langkah demi langkah</span>
           </h2>
           <p className="pp-lead">
-            Belajar melalui nota, kuiz dan simulasi 3D interaktif. Sesuai untuk pelajar yang baru mengenali komputer dan rangkaian.
+            Pelajari asas komputer, rangkaian dan pelayan melalui nota, kuiz dan simulasi amali 3D. Mulakan walaupun anda belum mempunyai pengalaman.
           </p>
           <div className="pp-cta">
             <button type="button" className="pp-btn pp-btn-primary" onClick={scrollToSemester}>
@@ -130,7 +130,7 @@ export default function PortalHero() {
           >
             <HeroModel3D src={MODEL_URL} />
           </Suspense>
-          <p className="eslux-viewer-hint">Tekan kiri atau kanan untuk menukar PC 3D dan Rack Server 3D.</p>
+          <p className="eslux-viewer-hint">Seret untuk memutar model. Tekan anak panah kiri atau kanan untuk menukar PC 3D dan Rack Server 3D.</p>
 
         </div>
       </div>
@@ -223,13 +223,13 @@ export function LabBand({ onOpenLab }) {
     <section className="pp-lab" aria-labelledby="pp-lab-title">
       <div className="pp-lab-head">
         <div>
-          <p className="text-[11px] font-bold tracking-[.3em] text-indigo-700 uppercase font-mono mb-3">{'// Makmal PC 3D'}</p>
+          <p className="text-[11px] font-bold tracking-[.3em] text-indigo-700 uppercase font-mono mb-3">{'// Makmal interaktif'}</p>
           <h2 id="pp-lab-title" className="text-2xl md:text-4xl font-black tracking-tight text-slate-900 leading-tight">
-            Kenali komputer melalui amali maya
+            Terokai makmal interaktif
           </h2>
         </div>
       </div>
-      <p className="eslux-viewer-hint" style={{textAlign: 'left', margin: '0 0 16px'}}>Pilih aktiviti Makmal PC 3D di bawah atau buka pilihan dua makmal.</p>
+      <p className="eslux-viewer-hint" style={{textAlign: 'left', margin: '0 0 16px'}}>Pilih satu daripada empat aktiviti amali dalam dua makmal sedia ada.</p>
       <div className="pp-lab-grid">
         {LAB_CARDS.map(({ tab, icon: Icon, title, text }) => (
           <button key={title} type="button" className="pp-lab-card" onClick={() => onOpenLab(tab)}>
@@ -244,6 +244,12 @@ export function LabBand({ onOpenLab }) {
             </span>
           </button>
         ))}
+        <a className="pp-lab-card eslr-cabling" href={`${import.meta.env.BASE_URL}structured-cabling/index.html`}>
+          <span className="pp-lab-icon"><Cable className="size-5" aria-hidden="true"/></span>
+          <h3>Structured Cabling 3D</h3>
+          <p>Kenali kabel, susunan wayar RJ45, crimping dan pengujian kabel dalam makmal pengkabelan.</p>
+          <span className="pp-go">Buka simulator <ArrowRight className="size-4" aria-hidden="true"/></span>
+        </a>
       </div>
       <button type="button" className="pp-btn pp-btn-ghost" style={{marginTop: 16}} onClick={() => window.dispatchEvent(new Event('esl:open-lab-chooser'))}>Pilihan dua makmal 3D <ArrowRight className="size-4" aria-hidden="true" /></button>
     </section>

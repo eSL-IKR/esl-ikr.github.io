@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Home, BookOpen, Box, Search, X, CircleHelp } from 'lucide-react';
 import ManualLogo from './ManualLogo';
 import ProgressBackup from './ProgressBackup';
+import { MODULE_NAMES, rankSearch } from './ux-patch/student-search';
 
 /** Single persistent responsive header with original search and progress backup. */
-export default function StudioNav({ modules, onModule, onLab, onHome, onSemester, onGuide, onChooseLab }) {
+export default function StudioNav({ modules, onModule, onLab, onHome, onSemester, onGuide, onChooseLab, activeNav }) {
   const dialog = useRef(null);
   const input = useRef(null);
   const [open, setOpen] = useState(false);
@@ -19,10 +20,10 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
     { id: 'lab', title: 'Makmal PC 3D · Perkakasan', run: () => onLab('') },
     { id: 'software', title: 'Makmal PC 3D · Perisian', run: () => onLab('perisian') },
     { id: 'builder', title: 'Pembina PC 3D', run: () => onLab('pembina') },
-    ...Object.entries(modules || {}).map(([id, description]) => ({ id, title: id, description, run: () => onModule(id) })),
+    ...Object.entries(modules || {}).map(([id, description]) => ({ id, title: `${id} · ${MODULE_NAMES[id] || id}`, description, run: () => onModule(id) })),
   ];
-  const term = query.trim().toLowerCase().replace(/\s+/g, '');
-  const results = actions.filter(a => `${a.title} ${a.description || ''}`.toLowerCase().replace(/\s+/g, '').includes(term));
+  const results = rankSearch(actions, query);
+  const current = label => activeNav === label ? 'location' : undefined;
   const launch = action => { setOpen(false); action.run(); };
   const showSearch = () => { setQuery(''); setSelected(0); setOpen(true); };
 
@@ -57,24 +58,24 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
     <nav className="studio-nav eslr-nav" aria-label="Navigasi utama eSL-IKR">
       <div className="studio-brand"><ManualLogo onHome={onHome} /></div>
       <div className="eslr-navlinks">
-        {desktopLinks.map(({label,Icon,run}) => <button key={label} type="button" onClick={run}><Icon size={17} aria-hidden="true"/><span>{label === 'Makmal' ? 'Makmal 3D' : label}</span></button>)}
+        {desktopLinks.map(({label,Icon,run}) => <button key={label} type="button" onClick={run} aria-current={current(label)}><Icon size={17} aria-hidden="true"/><span>{label === 'Makmal' ? 'Makmal 3D' : label}</span></button>)}
       </div>
-      <button type="button" className="studio-topsearch" id="esl-search-trigger" onClick={showSearch}
+      <button type="button" className="studio-topsearch" id="esl-search-trigger" onClick={showSearch} aria-haspopup="dialog" aria-expanded={open}
         aria-label="Cari modul, contoh firewall, VLAN atau IKR3153" title="Cari modul (Ctrl + K)">
         <Search size={19} aria-hidden="true" />
         <span>Cari modul atau topik...</span><kbd>Ctrl K</kbd>
       </button>
-      <button type="button" className="eslr-help" onClick={onGuide} aria-label="Panduan pengguna" title="Panduan pengguna"><CircleHelp size={21}/></button>
+      <button type="button" className="eslr-help" onClick={onGuide} aria-current={current('Panduan')} aria-label="Panduan pengguna" title="Panduan pengguna"><CircleHelp size={21}/></button>
       <div className="studio-tools"><ProgressBackup /></div>
     </nav>
     <nav className="studio-bottom" aria-label="Navigasi telefon dan tablet">
-      {links.map(({label,Icon,run}) => <button type="button" key={label} onClick={run}><Icon size={22} aria-hidden="true"/><span>{label}</span></button>)}
+      {links.map(({label,Icon,run}) => <button type="button" key={label} onClick={run} aria-current={label==='Carian'?undefined:current(label)} aria-pressed={label==='Carian'?open:undefined}><Icon size={22} aria-hidden="true"/><span>{label}</span></button>)}
     </nav>
     <dialog ref={dialog} className="studio-dialog" aria-labelledby="studio-search-title"
       onCancel={() => setOpen(false)} onClick={e => { if (e.target === e.currentTarget) setOpen(false); }}>
       <div className="studio-dialog-head"><h2 id="studio-search-title">Cari modul atau makmal</h2><button type="button" onClick={() => setOpen(false)} aria-label="Tutup carian"><X size={20} /></button></div>
       <label className="sr-only" htmlFor="studio-query">Kata carian</label>
-      <input ref={input} id="studio-query" placeholder="Contoh: IKR3033, fiber, perisian"
+      <input ref={input} id="studio-query" placeholder="Contoh: pasang komputer, kabel LAN, IP"
         value={query} onChange={e => { setQuery(e.target.value); setSelected(0); }} role="combobox"
         aria-expanded="true" aria-controls="studio-results" aria-autocomplete="list"
         aria-activedescendant={results[selected] ? `result-${results[selected].id}` : undefined}
@@ -85,11 +86,13 @@ export default function StudioNav({ modules, onModule, onLab, onHome, onSemester
           }
           if (e.key === 'Enter' && results[selected]) { e.preventDefault(); launch(results[selected]); }
         }} />
+      <div className="esls-search-suggestions"><span>Cadangan carian</span>{['Komputer','Kabel LAN','IP address','Windows','Firewall'].map(word=><button key={word} type="button" onClick={()=>{setQuery(word);setSelected(0);input.current?.focus();}}>{word}</button>)}</div>
+      <p className="esls-search-count" role="status" aria-live="polite">{results.length} hasil</p>
       <ul id="studio-results" role="listbox" aria-label="Hasil carian">
         {results.map((a,i) => <li key={a.id} id={`result-${a.id}`} role="option" aria-selected={i === selected}
           onMouseMove={() => setSelected(i)}><button type="button" tabIndex={-1} onClick={() => launch(a)}><strong>{a.title}</strong>{a.description && <span>{a.description.replace(a.id.toLowerCase(), '').trim()}</span>}</button></li>)}
       </ul>
-      {!results.length && <p className="studio-empty" role="status">Tiada hasil. Cuba kod modul atau kata kunci lain.</p>}
+      {!results.length && <p className="studio-empty" role="status">Tiada padanan. Cuba kata kunci pendek seperti kabel, komputer, IP atau Windows.</p>}
       <p className="studio-hint">↑ ↓ Pilih · Enter Buka · Esc Tutup</p>
     </dialog>
   </>;

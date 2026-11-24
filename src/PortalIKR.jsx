@@ -10,6 +10,9 @@ import useTheme from './useTheme';
 import StudioNav from './StudioNav';
 import './studio.css';
 import './ux-patch/responsive-ux.css'; // ESL-IKR RESPONSIVE UX V1
+import { ResumeLearning, BeginnerPaths, Breadcrumb, StudentFooter, DeferredFeatures, readLastModule, storeLastModule } from './ux-patch/StudentExperience';
+import { rankSearch, MODULE_NAMES } from './ux-patch/student-search';
+import './ux-patch/student-experience.css'; // ESL-IKR STUDENT EXPERIENCE V1
 
 // Import modul menggunakan lazy loading untuk penjimatan data internet
 const ModuleIKR3013 = lazy(() => import('./IKR3013')); 
@@ -158,6 +161,9 @@ export default function PortalIKR() {
   const [activeSLe, setActiveSLe] = useState(null);
   const [activeSem, setActiveSem] = useState(null);
   const [landingTarget, setLandingTarget] = useState(null);
+  const [lastModule,setLastModule] = useState(readLastModule);
+  const [visibleSection,setVisibleSection] = useState('Utama');
+  const [chooserOpen,setChooserOpen] = useState(false);
   const [labTab, setLabTab] = useState('');
   const { theme } = useTheme();
   const openLab = (tab) => {
@@ -167,6 +173,7 @@ export default function PortalIKR() {
   // Halaman modul tiada header portal, jadi butang tema diletakkan terapung.
   const withTheme = (node) => (
     <>
+      <div className="esls-module-context"><Breadcrumb semester={SEM_OF[activeSLe]} code={activeSLe} onHome={()=>goLanding('home')} onSemester={()=>chooseSemester(SEM_OF[activeSLe])}/></div>
       {node}
       <ThemeToggle floating />
     </>
@@ -174,30 +181,66 @@ export default function PortalIKR() {
   const [query, setQuery] = useState('');
   const q = query.trim().toLowerCase();
   const searching = q !== '';
-  const compact = (v) => v.replace(/\s+/g, '');
-  const show = (code) => (searching ? (MODULE_TEXT[code].includes(q) || compact(MODULE_TEXT[code]).includes(compact(q))) : SEM_OF[code] === activeSem);
+  const matchedCodes = searching ? new Set(rankSearch(Object.entries(MODULE_TEXT).map(([id,description])=>({id,title:MODULE_NAMES[id],description})),q).map(a=>a.id)) : null;
+  const show = (code) => searching ? matchedCodes.has(code) : SEM_OF[code] === activeSem;
   const matchCount = Object.keys(SEM_OF).filter(show).length;
   // Dibaca semula pada setiap render, jadi kemajuan terkini muncul apabila pengguna kembali ke senarai modul
   const progress = Object.fromEntries(Object.keys(FEATURES).map((c) => [c, readProgress(c)]));
 
+  const openModule = (code) => {
+    if (!Object.prototype.hasOwnProperty.call(SEM_OF,code)) return;
+    storeLastModule(code);setLastModule(code);setQuery('');setActiveSem(SEM_OF[code]);setActiveSLe(code);
+  };
+  const chooseSemester = (n) => {setActiveSLe(null);setQuery('');setActiveSem(n);setLandingTarget(null);window.scrollTo({top:0,behavior:'auto'});};
+  const activeNav = chooserOpen?'Makmal':activeSem!==null||searching?'Modul':visibleSection;
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   }, [activeSLe, activeSem]);
+  useEffect(() => {
+    const modal = e=>setChooserOpen(Boolean(e.detail));
+    window.addEventListener('esls:chooser-state',modal);
+    return ()=>window.removeEventListener('esls:chooser-state',modal);
+  }, []);
+  useEffect(() => {
+    if (activeSLe || activeSem!==null || searching) return;
+    let frame=0;
+    const measure=()=>{
+      frame=0;
+      const line=Math.min(window.innerHeight*.35,240);
+      const sections=[['eslux-guide','Panduan'],['esls-path-title','Panduan'],['pilih-semester','Modul'],['esls-labs','Makmal'],['faq','Panduan']];
+      let current='Utama';
+      for(const [id,label] of sections){const node=document.getElementById(id);if(node&&node.getBoundingClientRect().top<=line)current=label;}
+      setVisibleSection(current);
+    };
+    const schedule=()=>{if(!frame)frame=requestAnimationFrame(measure);};
+    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);schedule();
+    return ()=>{window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);if(frame)cancelAnimationFrame(frame);};
+  },[activeSLe,activeSem,searching]);
 
   // Wait until the original landing components have mounted before navigating.
   const goLanding = (target) => {
-    setQuery(''); setActiveSem(null); setLandingTarget({ target });
+    setActiveSLe(null); setQuery(''); setActiveSem(null); setLandingTarget({ target });
   };
   useEffect(() => {
     if (!landingTarget || activeSem !== null || searching || activeSLe) return;
-    const frame = requestAnimationFrame(() => {
+    let frame=0, timer=0, observer=null;
+    const navigate=()=>{
+      observer?.disconnect();window.clearTimeout(timer);
+      frame=requestAnimationFrame(() => {
       const { target } = landingTarget;
       if (target === 'makmal') window.dispatchEvent(new Event('esl:open-lab-chooser'));
       else if (target === 'home') window.scrollTo({ top: 0, behavior: 'auto' });
       else document.getElementById(target)?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       setLandingTarget(null);
-    });
-    return () => cancelAnimationFrame(frame);
+      });
+    };
+    const content=document.getElementById('esls-main');
+    if(landingTarget.target==='faq' && content && !content.querySelector('.eslux-features') && typeof MutationObserver!=='undefined'){
+      observer=new MutationObserver(()=>{if(content.querySelector('.eslux-features'))navigate();});
+      observer.observe(content,{childList:true,subtree:true});
+      timer=window.setTimeout(navigate,1800);
+    }else navigate();
+    return ()=>{observer?.disconnect();window.clearTimeout(timer);if(frame)cancelAnimationFrame(frame);};
   }, [landingTarget, activeSem, searching, activeSLe]);
 
   if (activeSLe === 'PCLAB') {
@@ -336,7 +379,8 @@ export default function PortalIKR() {
 
   return (
     <div className="studio-portal eslr-portal min-h-screen font-sans flex flex-col selection:bg-blue-300 selection:text-blue-900 bg-slate-50 relative overflow-hidden">
-      <StudioNav modules={MODULE_TEXT} onModule={setActiveSLe} onLab={openLab}
+      <a className="esls-skip" href="#esls-main" onClick={e=>{e.preventDefault();document.getElementById('esls-main')?.focus();}}>Langkau ke kandungan</a>
+      <StudioNav modules={MODULE_TEXT} onModule={openModule} onLab={openLab} activeNav={activeNav}
         onHome={() => goLanding('home')}
         onSemester={() => goLanding('pilih-semester')}
         onGuide={() => goLanding('eslux-guide')}
@@ -373,7 +417,7 @@ export default function PortalIKR() {
           Header lama sengaja dibuang bagi mengelakkan navigasi/logo berganda. */}
 
       {/* KANDUNGAN UTAMA (Responsif) */}
-      <main className={`flex-1 max-w-6xl mx-auto w-full px-4 py-8 md:py-12 relative z-10 flex flex-col justify-center${activeSem === null && !searching ? ' eslr-main' : ''}`}>
+      <main id="esls-main" tabIndex={-1} className={`flex-1 max-w-6xl mx-auto w-full px-4 py-8 md:py-12 relative z-10 flex flex-col justify-center${activeSem === null && !searching ? ' eslr-main' : ''}`}>
         
         {activeSem === null && !searching && (
           <>
@@ -386,13 +430,15 @@ export default function PortalIKR() {
 
         {activeSem === null && !searching && (
           <>
+            <ResumeLearning code={lastModule} semester={SEM_OF[lastModule]} progress={progress[lastModule]} onOpen={openModule}/>
             <LearningGuide />
-            <SemesterRacks semesters={SEMESTERS} onSelect={setActiveSem} />
+            <BeginnerPaths onBegin={()=>openModule('IKR3013')} onReview={()=>goLanding('pilih-semester')} onPractice={()=>goLanding('makmal')}/>
+            <SemesterRacks semesters={SEMESTERS} onSelect={chooseSemester} />
 
             <LabBand onOpenLab={openLab} />
-            <Suspense fallback={null}>
+            <DeferredFeatures eager={landingTarget?.target==='faq'}><Suspense fallback={<div className="esls-feature-placeholder" aria-hidden="true"/>}>
               <InkOrbitFeatures theme={theme} brand="eSL-IKR" className="eslux-features" />
-            </Suspense>
+            </Suspense></DeferredFeatures>
             <LandingSupport />
           </>
         )}
@@ -401,6 +447,7 @@ export default function PortalIKR() {
         {/* SENARAI MODUL MENGIKUT SEMESTER */}
         {(activeSem !== null || searching) && (
           <>
+            <Breadcrumb semester={activeSem} searching={searching} onHome={()=>goLanding('home')}/>
             {searching ? (
               <div className="max-w-6xl mx-auto w-full mb-6 md:mb-8">
                 <h2 className="text-2xl md:text-4xl font-black tracking-tight text-slate-900">Hasil carian</h2>
@@ -432,7 +479,7 @@ export default function PortalIKR() {
           {/* KAD IKR3013 */}
           {show('IKR3013') && (
           <button 
-            onClick={() => setActiveSLe('IKR3013')}
+            onClick={() => openModule('IKR3013')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(37,99,235,0.12)] hover:-translate-y-2 hover:border-blue-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-blue-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -466,7 +513,7 @@ export default function PortalIKR() {
           {/* KAD IKR3023 */}
           {show('IKR3023') && (
           <button 
-            onClick={() => setActiveSLe('IKR3023')}
+            onClick={() => openModule('IKR3023')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(16,185,129,0.12)] hover:-translate-y-2 hover:border-emerald-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-emerald-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -500,7 +547,7 @@ export default function PortalIKR() {
           {/* KAD IKR3033 */}
           {show('IKR3033') && (
           <button 
-            onClick={() => setActiveSLe('IKR3033')}
+            onClick={() => openModule('IKR3033')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(6,182,212,0.15)] hover:-translate-y-2 hover:border-cyan-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-cyan-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -532,7 +579,7 @@ export default function PortalIKR() {
           {/* KAD IKR3043 */}
           {show('IKR3043') && (
           <button 
-            onClick={() => setActiveSLe('IKR3043')}
+            onClick={() => openModule('IKR3043')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(37,99,235,0.15)] hover:-translate-y-2 hover:border-blue-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-blue-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -564,7 +611,7 @@ export default function PortalIKR() {
           {/* KAD IKR3053 */}
           {show('IKR3053') && (
           <button 
-            onClick={() => setActiveSLe('IKR3053')}
+            onClick={() => openModule('IKR3053')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(99,102,241,0.15)] hover:-translate-y-2 hover:border-indigo-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-indigo-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -596,7 +643,7 @@ export default function PortalIKR() {
           {/* KAD IKR3082 */}
           {show('IKR3082') && (
           <button 
-            onClick={() => setActiveSLe('IKR3082')}
+            onClick={() => openModule('IKR3082')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(16,185,129,0.15)] hover:-translate-y-2 hover:border-emerald-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-emerald-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -629,7 +676,7 @@ export default function PortalIKR() {
           {/* KAD IKR3063 */}
           {show('IKR3063') && (
           <button 
-            onClick={() => setActiveSLe('IKR3063')}
+            onClick={() => openModule('IKR3063')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(217,119,6,0.15)] hover:-translate-y-2 hover:border-amber-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-amber-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -659,7 +706,7 @@ export default function PortalIKR() {
           {/* KAD IKR3073 */}
           {show('IKR3073') && (
           <button 
-            onClick={() => setActiveSLe('IKR3073')}
+            onClick={() => openModule('IKR3073')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(2,132,199,0.15)] hover:-translate-y-2 hover:border-sky-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-sky-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -689,7 +736,7 @@ export default function PortalIKR() {
           {/* KAD IKR3093 */}
           {show('IKR3093') && (
           <button 
-            onClick={() => setActiveSLe('IKR3093')}
+            onClick={() => openModule('IKR3093')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(6,182,212,0.15)] hover:-translate-y-2 hover:border-cyan-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-cyan-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -721,7 +768,7 @@ export default function PortalIKR() {
           {/* KAD IKR3103 */}
           {show('IKR3103') && (
           <button 
-            onClick={() => setActiveSLe('IKR3103')}
+            onClick={() => openModule('IKR3103')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(22,163,74,0.15)] hover:-translate-y-2 hover:border-green-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-green-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -753,7 +800,7 @@ export default function PortalIKR() {
           {/* KAD IKR3113 */}
           {show('IKR3113') && (
           <button 
-            onClick={() => setActiveSLe('IKR3113')}
+            onClick={() => openModule('IKR3113')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(225,29,72,0.15)] hover:-translate-y-2 hover:border-rose-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-rose-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -785,7 +832,7 @@ export default function PortalIKR() {
           {/* KAD IKR3133 */}
           {show('IKR3133') && (
           <button 
-            onClick={() => setActiveSLe('IKR3133')}
+            onClick={() => openModule('IKR3133')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(220,38,38,0.15)] hover:-translate-y-2 hover:border-red-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-red-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -817,7 +864,7 @@ export default function PortalIKR() {
           {/* KAD IKR3122 */}
           {show('IKR3122') && (
           <button 
-            onClick={() => setActiveSLe('IKR3122')}
+            onClick={() => openModule('IKR3122')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(124,58,237,0.15)] hover:-translate-y-2 hover:border-violet-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-violet-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -851,7 +898,7 @@ export default function PortalIKR() {
           {/* KAD IKR3143 */}
           {show('IKR3143') && (
           <button 
-            onClick={() => setActiveSLe('IKR3143')}
+            onClick={() => openModule('IKR3143')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(220,38,38,0.15)] hover:-translate-y-2 hover:border-red-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-red-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -883,7 +930,7 @@ export default function PortalIKR() {
           {/* KAD IKR3153 */}
           {show('IKR3153') && (
           <button 
-            onClick={() => setActiveSLe('IKR3153')}
+            onClick={() => openModule('IKR3153')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(8,145,178,0.15)] hover:-translate-y-2 hover:border-cyan-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-cyan-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -915,7 +962,7 @@ export default function PortalIKR() {
           {/* KAD IKR3163 */}
           {show('IKR3163') && (
           <button 
-            onClick={() => setActiveSLe('IKR3163')}
+            onClick={() => openModule('IKR3163')}
             className="group text-left bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(124,58,237,0.15)] hover:-translate-y-2 hover:border-violet-200 transition-all duration-500 relative overflow-hidden flex flex-col h-full"
           >
             <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-gradient-to-bl from-violet-100 to-transparent rounded-bl-full -z-10 transition-transform group-hover:scale-125 duration-700"></div>
@@ -951,11 +998,7 @@ export default function PortalIKR() {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full py-6 md:py-8 bg-transparent text-center relative z-10 border-t border-slate-200/50">
-        <p className="text-slate-500 font-bold text-[10px] md:text-xs tracking-widest uppercase px-4">
-          Copyright &copy; TKR ADTEC Sandakan 2026
-        </p>
-      </footer>
+      <StudentFooter onHome={()=>goLanding('home')} onSemester={chooseSemester} onGuide={()=>goLanding('eslux-guide')} onFaq={()=>goLanding('faq')}/>
     </div>
   );
 }

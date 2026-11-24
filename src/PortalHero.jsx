@@ -72,22 +72,26 @@ export default function PortalHero() {
     };
   }, [isChooserOpen]);
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('esls:chooser-state', {detail:isChooserOpen}));
+    return () => window.dispatchEvent(new CustomEvent('esls:chooser-state', {detail:false}));
+  }, [isChooserOpen]);
+
   return (
     <section className="pp-hero" aria-labelledby="pp-hero-title">
       <div className="pp-hero-bg" aria-hidden="true" />
       <div className="pp-hero-grid">
-        <div>
+        <div className="esls-hero-copy">
           <p className="pp-eyebrow">
             <span className="pp-dot" aria-hidden="true" />
             eSmart Learning IKR · Teknologi Komputer Rangkaian
           </p>
-          <h2 id="pp-hero-title" className="pp-title">
-            Fahami komputer dan rangkaian,<br className="hidden sm:block" />
+          <h1 id="pp-hero-title" className="pp-title">
+            Fahami komputer dan rangkaian,{' '}<br className="hidden sm:block" />
             <span className="pp-grad">langkah demi langkah</span>
-          </h2>
-          <p className="pp-lead">
-            Pelajari asas komputer, rangkaian dan pelayan melalui nota, kuiz dan simulasi amali 3D. Mulakan walaupun anda belum mempunyai pengalaman.
-          </p>
+          </h1>
+          <p className="pp-lead esls-desktop-lead">Pelajari asas komputer, rangkaian dan pelayan melalui nota, kuiz dan simulasi amali 3D. Mulakan walaupun anda belum mempunyai pengalaman.</p>
+          <p className="pp-lead esls-mobile-lead">Belajar dari asas melalui nota, kuiz dan simulasi 3D.</p>
           <div className="pp-cta">
             <button type="button" className="pp-btn pp-btn-primary" onClick={scrollToSemester}>
               Mula Belajar <ArrowRight className="size-4" aria-hidden="true" />
@@ -104,20 +108,7 @@ export default function PortalHero() {
               Makmal 3D
             </button>
           </div>
-          <dl className="pp-stats">
-            <div>
-              <dt>Modul</dt>
-              <dd>16</dd>
-            </div>
-            <div>
-              <dt>Semester</dt>
-              <dd>3</dd>
-            </div>
-            <div>
-              <dt>Makmal 3D</dt>
-              <dd>2</dd>
-            </div>
-          </dl>
+
 
         </div>
         <div className="pp-hero-preview">
@@ -133,6 +124,20 @@ export default function PortalHero() {
           <p className="eslux-viewer-hint">Seret untuk memutar model. Tekan anak panah kiri atau kanan untuk menukar PC 3D dan Rack Server 3D.</p>
 
         </div>
+          <dl className="pp-stats">
+            <div>
+              <dt>Modul</dt>
+              <dd>16</dd>
+            </div>
+            <div>
+              <dt>Semester</dt>
+              <dd>3</dd>
+            </div>
+            <div>
+              <dt>Makmal 3D</dt>
+              <dd>2</dd>
+            </div>
+          </dl>
       </div>
       {isChooserOpen && createPortal(
         <div
@@ -220,7 +225,7 @@ const LAB_CARDS = [
 
 export function LabBand({ onOpenLab }) {
   return (
-    <section className="pp-lab" aria-labelledby="pp-lab-title">
+    <section id="esls-labs" className="pp-lab" aria-labelledby="pp-lab-title">
       <div className="pp-lab-head">
         <div>
           <p className="text-[11px] font-bold tracking-[.3em] text-indigo-700 uppercase font-mono mb-3">{'// Makmal interaktif'}</p>

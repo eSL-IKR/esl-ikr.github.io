@@ -21,8 +21,19 @@ export default function PortalHero() {
   // All generic Makmal links (desktop + phone) open the same 2-lab chooser.
   useEffect(() => {
     const openChooser = () => setChooserOpen(true);
+    const returnToLabs = () => {
+      if (window.location.hash === '#pilih-makmal') {
+        setChooserOpen(true);
+        window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search);
+      }
+    };
     window.addEventListener('esl:open-lab-chooser', openChooser);
-    return () => window.removeEventListener('esl:open-lab-chooser', openChooser);
+    window.addEventListener('hashchange', returnToLabs);
+    returnToLabs();
+    return () => {
+      window.removeEventListener('esl:open-lab-chooser', openChooser);
+      window.removeEventListener('hashchange', returnToLabs);
+    };
   }, []);
 
   useEffect(() => {
@@ -68,47 +79,46 @@ export default function PortalHero() {
         <div>
           <p className="pp-eyebrow">
             <span className="pp-dot" aria-hidden="true" />
-            eSL-IKR · Pembelajaran dan amali
+            eSL-IKR · Platform Pembelajaran Interaktif
           </p>
           <h2 id="pp-hero-title" className="pp-title">
             Fahami komputer dan rangkaian,<br className="hidden sm:block" />
             <span className="pp-grad">langkah demi langkah</span>
           </h2>
           <p className="pp-lead">
-            Bina pemahaman melalui nota dan kuiz. Kemudian terokai komponen, pemasangan dan konfigurasi komputer dalam Makmal PC 3D.
+            Belajar melalui nota, kuiz dan simulasi 3D interaktif. Sesuai untuk pelajar yang baru mengenali komputer dan rangkaian.
           </p>
           <div className="pp-cta">
+            <button type="button" className="pp-btn pp-btn-primary" onClick={scrollToSemester}>
+              Mula Belajar <ArrowRight className="size-4" aria-hidden="true" />
+            </button>
             <button
               ref={chooserTriggerRef}
               type="button"
-              className="pp-btn pp-btn-primary"
+              className="pp-btn pp-btn-ghost"
               onClick={() => setChooserOpen(true)}
               aria-haspopup="dialog"
               aria-expanded={isChooserOpen}
               aria-controls="pp-chooser-dialog"
             >
-              Pilihan Makmal 3D
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </button>
-            <button type="button" className="pp-btn pp-btn-ghost" onClick={scrollToSemester}>
-              Pilih semester
+              Makmal 3D
             </button>
           </div>
           <dl className="pp-stats">
+            <div>
+              <dt>Modul</dt>
+              <dd>16</dd>
+            </div>
             <div>
               <dt>Semester</dt>
               <dd>3</dd>
             </div>
             <div>
-              <dt>Mod pembelajaran</dt>
-              <dd>3</dd>
-            </div>
-            <div>
-              <dt>Pasang Windows</dt>
-              <dd>10 &amp; 11</dd>
+              <dt>Makmal 3D</dt>
+              <dd>2</dd>
             </div>
           </dl>
-          <ol className="studio-route" aria-label="Laluan pembelajaran"><li>01 · Nota</li><li>02 · Latihan</li><li>03 · Ujian</li></ol>
+
         </div>
         <div className="pp-hero-preview">
           <Suspense
@@ -120,6 +130,7 @@ export default function PortalHero() {
           >
             <HeroModel3D src={MODEL_URL} />
           </Suspense>
+          <p className="eslux-viewer-hint">Tekan kiri atau kanan untuk menukar PC 3D dan Rack Server 3D.</p>
 
         </div>
       </div>
@@ -214,10 +225,11 @@ export function LabBand({ onOpenLab }) {
         <div>
           <p className="text-[11px] font-bold tracking-[.3em] text-indigo-700 uppercase font-mono mb-3">{'// Makmal PC 3D'}</p>
           <h2 id="pp-lab-title" className="text-2xl md:text-4xl font-black tracking-tight text-slate-900 leading-tight">
-            Latih tangan sebelum menyentuh perkakasan
+            Kenali komputer melalui amali maya
           </h2>
         </div>
       </div>
+      <p className="eslux-viewer-hint" style={{textAlign: 'left', margin: '0 0 16px'}}>Pilih aktiviti Makmal PC 3D di bawah atau buka pilihan dua makmal.</p>
       <div className="pp-lab-grid">
         {LAB_CARDS.map(({ tab, icon: Icon, title, text }) => (
           <button key={title} type="button" className="pp-lab-card" onClick={() => onOpenLab(tab)}>
@@ -233,6 +245,7 @@ export function LabBand({ onOpenLab }) {
           </button>
         ))}
       </div>
+      <button type="button" className="pp-btn pp-btn-ghost" style={{marginTop: 16}} onClick={() => window.dispatchEvent(new Event('esl:open-lab-chooser'))}>Pilihan dua makmal 3D <ArrowRight className="size-4" aria-hidden="true" /></button>
     </section>
   );
 }

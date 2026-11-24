@@ -227,6 +227,7 @@ export default function SemesterRacks({ semesters, onSelect }) {
   };
 
   return <section id="pilih-semester" className="semester-racks" aria-label="Pilih semester">
+    <div className="eslux-rack-head"><h2>Mulakan perjalanan pembelajaran anda</h2><p>Pilih semester untuk meneroka modul, nota dan kuiz yang tersedia.</p></div>
     <div className="rack-stage" ref={wrap}>
       <canvas ref={canvas} aria-hidden="true" data-status={status}
         onPointerMove={onMove} onPointerLeave={event => { if (event.pointerType === 'mouse') setOpen(null); }} onClick={onClick} />
@@ -239,7 +240,7 @@ export default function SemesterRacks({ semesters, onSelect }) {
         onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(null); }}>
         <h3>Semester {semester.n}</h3>
         <p>Rack Server {semester.n} · {semester.count} modul</p>
-        <button className="rack-enter" onClick={() => onSelect(semester.n)}>Masuk Semester {semester.n} <span aria-hidden="true">→</span></button>
+        <button className="rack-enter" onClick={() => onSelect(semester.n)}>Lihat Modul <span aria-hidden="true">→</span></button>
       </article>)}
     </div>
   </section>;

@@ -1,4 +1,5 @@
 import SemesterRacks from './SemesterRacks';
+import { LearningGuide, LandingSupport } from './ux-patch/LandingSupport';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Box, Cpu, CircuitBoard, Network, Cable, ArrowLeft, Calculator, ChevronRight, Search, X, Loader2, Code2, Server, Database, GraduationCap, Waves, ClipboardCheck, Router, Terminal, Radar, Flame, Compass, ShieldCheck, Bot, Wrench} from 'lucide-react';
 
@@ -365,12 +366,14 @@ export default function PortalIKR() {
 
         {activeSem === null && !searching && (
           <>
+            <LearningGuide />
             <SemesterRacks semesters={SEMESTERS} onSelect={setActiveSem} />
 
             <LabBand onOpenLab={openLab} />
             <Suspense fallback={null}>
-              <InkOrbitFeatures theme={theme} brand="eSL-IKR" />
+              <InkOrbitFeatures theme={theme} brand="eSL-IKR" className="eslux-features" />
             </Suspense>
+            <LandingSupport />
           </>
         )}
 

@@ -1,5 +1,5 @@
 import SemesterRacks from './SemesterRacks';
-import { LearningGuide, LandingSupport } from './ux-patch/LandingSupport';
+import { LandingSupport } from './ux-patch/LandingSupport';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Box, Cpu, CircuitBoard, Network, Cable, ArrowLeft, Calculator, ChevronRight, Search, X, Loader2, Code2, Server, Database, GraduationCap, Waves, ClipboardCheck, Router, Terminal, Radar, Flame, Compass, ShieldCheck, Bot, Wrench} from 'lucide-react';
 
@@ -10,9 +10,10 @@ import useTheme from './useTheme';
 import StudioNav from './StudioNav';
 import './studio.css';
 import './ux-patch/responsive-ux.css'; // ESL-IKR RESPONSIVE UX V1
-import { ResumeLearning, BeginnerPaths, Breadcrumb, StudentFooter, DeferredFeatures, readLastModule, storeLastModule } from './ux-patch/StudentExperience';
+import { ResumeLearning, LearningHub, Breadcrumb, StudentFooter, DeferredFeatures, readLastModule, storeLastModule } from './ux-patch/StudentExperience';
 import { rankSearch, MODULE_NAMES } from './ux-patch/student-search';
 import './ux-patch/student-experience.css'; // ESL-IKR STUDENT EXPERIENCE V1
+// ESL-IKR LEARNING HUB V1
 
 // Import modul menggunakan lazy loading untuk penjimatan data internet
 const ModuleIKR3013 = lazy(() => import('./IKR3013')); 
@@ -431,8 +432,7 @@ export default function PortalIKR() {
         {activeSem === null && !searching && (
           <>
             <ResumeLearning code={lastModule} semester={SEM_OF[lastModule]} progress={progress[lastModule]} onOpen={openModule}/>
-            <LearningGuide />
-            <BeginnerPaths onBegin={()=>openModule('IKR3013')} onReview={()=>goLanding('pilih-semester')} onPractice={()=>goLanding('makmal')}/>
+            <LearningHub onBegin={()=>openModule('IKR3013')} onReview={()=>goLanding('pilih-semester')} onPractice={()=>goLanding('makmal')}/>
             <SemesterRacks semesters={SEMESTERS} onSelect={chooseSemester} />
 
             <LabBand onOpenLab={openLab} />

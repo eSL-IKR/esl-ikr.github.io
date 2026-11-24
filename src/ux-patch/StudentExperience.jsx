@@ -1,6 +1,6 @@
 // ESL-IKR STUDENT EXPERIENCE V1 — additive UI, no account or database.
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, GraduationCap, History, Wrench, ChevronRight, Home } from 'lucide-react';
+import { ArrowRight, BookOpen, GraduationCap, History, Wrench, ChevronRight, Home, Brain, ClipboardCheck } from 'lucide-react';
 import { MODULE_NAMES } from './student-search';
 export const LAST_KEY = 'ikr-last-module-v1';
 export function readLastModule() {
@@ -26,9 +26,60 @@ export function ResumeLearning({code,semester,progress,onOpen}) {
   <button type="button" className="esls-primary" onClick={()=>onOpen(code)}>Sambung Belajar <ArrowRight size={18} aria-hidden="true"/></button>
  </section>;
 }
-export function BeginnerPaths({onBegin,onReview,onPractice}) {
- const paths=[{Icon:GraduationCap,title:'Saya baru bermula',desc:'Kenali asas komputer dalam IKR3013.',run:onBegin},{Icon:BookOpen,title:'Saya ingin mengulang kaji',desc:'Pilih semester, nota dan kuiz.',run:onReview},{Icon:Wrench,title:'Saya ingin melakukan amali',desc:'Pilih salah satu daripada dua makmal 3D.',run:onPractice}];
- return <section className="esls-paths" aria-labelledby="esls-path-title"><h2 id="esls-path-title">Apa yang ingin anda pelajari?</h2><p>Pilih laluan yang sesuai. Anda bebas menukar pilihan pada bila-bila masa.</p><div className="esls-path-grid">{paths.map(({Icon,title,desc,run})=><button type="button" key={title} onClick={run}><Icon size={25} aria-hidden="true"/><span><strong>{title}</strong><small>{desc}</small></span><ChevronRight size={18} aria-hidden="true"/></button>)}</div></section>;
+// ESL-IKR LEARNING HUB V1 — one section, original three actions.
+export function LearningHub({onBegin, onReview, onPractice}) {
+  const steps = [
+    {Icon:BookOpen, title:'Baca nota', desc:'Fahami konsep asas.'},
+    {Icon:Brain, title:'Jawab kuiz', desc:'Semak kefahaman.'},
+    {Icon:Wrench, title:'Buat amali', desc:'Berlatih dalam simulator.'},
+    {Icon:ClipboardCheck, title:'Ambil ujian', desc:'Nilai kemahiran anda.'},
+  ];
+  const paths = [
+    {Icon:GraduationCap, title:'Saya baru bermula', desc:'Kenali asas komputer melalui IKR3013.', run:onBegin, primary:true},
+    {Icon:BookOpen, title:'Ulang kaji', desc:'Pilih semester, nota dan kuiz.', run:onReview},
+    {Icon:Wrench, title:'Lakukan amali', desc:'Terokai dua makmal 3D.', run:onPractice},
+  ];
+  return (
+    <section id="eslux-guide" className="eslh-hub" aria-labelledby="eslh-title">
+      <header className="eslh-head">
+        <GraduationCap size={28} aria-hidden="true" />
+        <div>
+          <h2 id="eslh-title">Mulakan pembelajaran anda</h2>
+          <p>Belajar mengikut tahap dan keperluan anda.</p>
+        </div>
+      </header>
+      <div className="eslh-body">
+        <div className="eslh-paths" aria-labelledby="eslh-path-title">
+          <h3 id="eslh-path-title">Pilih laluan anda</h3>
+          <div className="eslh-actions">
+            {paths.map(({Icon,title,desc,run,primary}) => (
+              <button type="button" key={title} onClick={run} className={primary ? 'eslh-action eslh-first' : 'eslh-action'}>
+                <Icon size={23} aria-hidden="true" />
+                <span className="eslh-action-copy">
+                  <strong>{title}</strong>
+                  <small>{desc}</small>
+                  {primary && <span className="eslh-recommend">Disarankan untuk pemula</span>}
+                </span>
+                <ChevronRight size={19} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="eslh-process" aria-labelledby="eslh-process-title">
+          <h3 id="eslh-process-title">Cara pembelajaran</h3>
+          <ol className="eslh-timeline">
+            {steps.map(({Icon,title,desc},index) => (
+              <li key={title}>
+                <span className="eslh-step-no" aria-hidden="true">{index+1}</span>
+                <Icon size={20} aria-hidden="true" />
+                <span className="eslh-step-copy"><strong>{title}</strong><small>{desc}</small></span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
 }
 export function Breadcrumb({semester,code,searching,onHome,onSemester}) {
  return <nav className="esls-breadcrumb" aria-label="Laluan halaman"><ol>

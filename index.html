@@ -33,13 +33,11 @@
       body{background-color:transparent;margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     </style>
       <script>
-      /* Tetapkan tema sebelum cat pertama supaya tiada kelipan putih. Kunci 'ikr-tema' dikongsi dengan Makmal PC 3D. */
+      /* Portal gelap sebelum cat pertama. Tetapan simulator tidak disentuh. */
       (function () {
-        var t = null;
-        try { t = localStorage.getItem('ikr-tema'); } catch (e) {}
-        if (t !== 'dark' && t !== 'light') t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', t);
-        document.documentElement.style.colorScheme = t;
+        // esl-portal-dark-only-v1
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.style.colorScheme = 'dark';
       })();
     </script>
       <!-- Muat turun model rak 3D lebih awal (menghormati base Vite) -->

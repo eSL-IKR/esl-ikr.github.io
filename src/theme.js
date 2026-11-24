@@ -1,4 +1,4 @@
-// Pengurusan tema gelap/cerah. Kunci 'ikr-tema' dikongsi dengan Makmal PC 3D (public/pclab/index.html).
+// Tema portal tetap gelap; kunci 'ikr-tema' milik pilihan simulator, hanya dibaca untuk keserasian API.
 const KEY = 'ikr-tema';
 
 export function getStoredTheme() {
@@ -17,17 +17,15 @@ export function currentTheme() {
   return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
 }
 
-export function applyTheme(theme, save = false) {
+// esl-portal-dark-only-v1: never write the simulator's shared storage key.
+export function applyTheme() {
   const root = document.documentElement;
-  root.setAttribute('data-theme', theme);
-  root.style.colorScheme = theme;
-  if (save) {
-    try { localStorage.setItem(KEY, theme); } catch { /* storan tidak tersedia */ }
-  }
-  window.dispatchEvent(new CustomEvent('ikr-theme-change', { detail: theme }));
+  root.setAttribute('data-theme', 'dark');
+  root.style.colorScheme = 'dark';
+  window.dispatchEvent(new CustomEvent('ikr-theme-change', { detail: 'dark' }));
 }
 
-// Tema tersimpan diutamakan; jika tiada, ikut tetapan peranti (gelap/cerah).
+// Tema portal tidak bergantung pada tetapan simulator atau peranti.
 export function initTheme() {
-  applyTheme(getStoredTheme() || systemTheme());
+  applyTheme();
 }

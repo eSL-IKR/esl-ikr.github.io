@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ExternalLink, Loader2 } from 'lucide-react';
 import './portal-pro.css';
-import { applyTheme, currentTheme } from './theme';
-import useTheme from './useTheme';
+// esl-portal-dark-only-v1 : simulator theme is independent of portal.
 
 // Makmal PC 3D dimuat dalam iframe daripada public/pclab/ supaya simulator dan pembina
 // kekal sebagai halaman bebas. initialTab: '' (perkakasan), 'perisian' atau 'pembina'.
 export default function PCLab3D({ onBackToPortal, initialTab = '' }) {
   const [loaded, setLoaded] = useState(false);
   const [lastResult, setLastResult] = useState(null);
-  const frameRef = useRef(null);
-  const { theme } = useTheme();
   const base = `${import.meta.env.BASE_URL}pclab/index.html`;
   const src = initialTab ? `${base}#${initialTab}` : base;
 
@@ -19,11 +16,6 @@ export default function PCLab3D({ onBackToPortal, initialTab = '' }) {
     const onMsg = (e) => {
       if (e.origin !== window.location.origin) return;
       const d = e.data;
-      // Tema ditukar di dalam simulator: ikut pada portal (kunci 'ikr-tema' dikongsi).
-      if (d && d.type === 'ikr-tema' && (d.t === 'dark' || d.t === 'light')) {
-        if (d.t !== currentTheme()) applyTheme(d.t, true);
-        return;
-      }
       if (!d || d.type !== 'ikr-ujian-amali') return;
       setLastResult(d);
       try {
@@ -36,10 +28,6 @@ export default function PCLab3D({ onBackToPortal, initialTab = '' }) {
     return () => window.removeEventListener('message', onMsg);
   }, []);
 
-  // Tema portal ditukar: hantar kepada simulator dalam iframe.
-  useEffect(() => {
-    try { frameRef.current?.contentWindow?.postMessage({ type: 'ikr-tema-portal', t: theme }, window.location.origin); } catch { /* iframe belum sedia */ }
-  }, [theme, loaded]);
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -77,7 +65,7 @@ export default function PCLab3D({ onBackToPortal, initialTab = '' }) {
             Memuatkan Makmal PC 3D...
           </div>
         )}
-        <iframe ref={frameRef} title="Makmal PC 3D" src={src} allow="clipboard-write; fullscreen" onLoad={() => setLoaded(true)} />
+        <iframe title="Makmal PC 3D" src={src} allow="clipboard-write; fullscreen" onLoad={() => setLoaded(true)} />
       </div>
     </div>
   );

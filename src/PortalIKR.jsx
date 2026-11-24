@@ -1,4 +1,5 @@
 import SemesterRacks from './SemesterRacks';
+import LandingPageV4 from './landing-v4/LandingPageV4';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Box, Cpu, CircuitBoard, Network, Cable, ArrowLeft, Calculator, ChevronRight, Search, X, Loader2, Code2, Server, Database, GraduationCap, Waves, ClipboardCheck, Router, Terminal, Radar, Flame, Compass, ShieldCheck, Bot, Wrench} from 'lucide-react';
 
@@ -180,6 +181,13 @@ export default function PortalIKR() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeSLe, activeSem]);
+  useEffect(() => {
+    if (activeSem === null || activeSLe !== null) return;
+    const toLabs = () => { setQuery(''); setActiveSem(null); window.location.hash = 'pilih-makmal'; };
+    window.addEventListener('esl:open-lab-chooser', toLabs);
+    return () => window.removeEventListener('esl:open-lab-chooser', toLabs);
+  }, [activeSem, activeSLe]);
+
 
   if (activeSLe === 'PCLAB') {
     return (
@@ -313,6 +321,12 @@ export default function PortalIKR() {
         <ModuleIKR3163 onBackToPortal={() => setActiveSLe(null)} />
       </Suspense>
     );
+  }
+
+  // eSL-IKR V4.1: replace ONLY the landing screen; retain all module/lab state.
+  if (activeSem === null && !searching) {
+    return <LandingPageV4 semesters={SEMESTERS} onModuleSelect={setActiveSLe}
+      onSemesterSelect={setActiveSem} onOpenLab={openLab} />;
   }
 
   return (

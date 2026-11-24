@@ -13,15 +13,14 @@ html[data-theme=light] .studio-portal{--ux-text:#182842;--ux-muted:#455b75;--ux-
 .studio-portal .semester-racks{scroll-margin-top:90px}
 .studio-portal .semester-racks .rack-enter{opacity:1;visibility:visible;max-width:100%;justify-content:center;white-space:normal}
 .studio-portal .eslux-viewer-hint{color:var(--ux-muted);font-size:13px;text-align:center;margin:10px 0 0;line-height:1.5}
-.studio-portal .eslux-support{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}
+.studio-portal .eslux-support{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-top:38px}
 .studio-portal .eslux-support section{min-width:0;border:1px solid var(--ux-line);background:var(--ux-surface);border-radius:16px;padding:clamp(16px,2.5vw,26px);scroll-margin-top:90px}
 .studio-portal .eslux-support details{border-bottom:1px solid var(--ux-line);padding:12px 0}.studio-portal .eslux-support summary{cursor:pointer;font-weight:650;line-height:1.5}.studio-portal .eslux-support details p{margin:8px 0 2px;font-size:14px}
-.studio-portal .eslux-support form{display:grid;gap:10px;margin-top:15px}.studio-portal .eslux-support fieldset{min-width:0;border:0;padding:0;margin:0 0 4px}.studio-portal .eslux-support legend,.studio-portal .eslux-support label{font-weight:650;font-size:14px}.studio-portal .eslux-support small{color:var(--ux-muted);font-size:12px}
-.studio-portal .eslux-ratings{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.studio-portal .eslux-ratings label{display:flex;gap:6px;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--ux-line);border-radius:8px;padding:5px 7px;cursor:pointer}.studio-portal .eslux-ratings input{accent-color:var(--ux-button)}
-.studio-portal .eslux-support select,.studio-portal .eslux-support textarea{background:var(--ux-surface);color:var(--ux-text);border:1px solid var(--ux-line);border-radius:8px;padding:10px;width:100%;font:inherit}.studio-portal .eslux-support textarea{resize:vertical}.studio-portal .eslux-support textarea::placeholder{color:var(--ux-muted)}
-.studio-portal .eslux-actions{display:flex;flex-wrap:wrap;gap:8px}.studio-portal .eslux-actions button{min-height:44px;border:1px solid var(--ux-line);border-radius:8px;padding:8px 12px;color:var(--ux-text);background:transparent;font-weight:650;cursor:pointer}.studio-portal .eslux-actions button:first-child{color:var(--ux-button-text);background:var(--ux-button);border-color:var(--ux-button)}.studio-portal .eslux-actions button:disabled{opacity:.5;cursor:not-allowed}
-.studio-portal .eslux-support :focus-visible{outline:2px solid var(--ux-accent);outline-offset:3px}.studio-portal .eslux-note{font-size:12px}
+.studio-portal .eslux-support :focus-visible{outline:2px solid var(--ux-accent);outline-offset:3px}
 .studio-portal .eslux-features .ib-muted{color:var(--ib-soft)}.studio-portal .eslux-features .ib-card p{font-size:14px;max-width:none;line-height:1.6}.studio-portal .eslux-features .ib-wide{width:100%}.studio-portal .eslux-features .ib-card h3{font-size:16px}.studio-portal .eslux-features .ib-wide-copy>div:last-child{justify-self:stretch}.studio-portal .eslux-features .ib-reveal{max-width:none}
 html[data-theme=light] .studio-portal .esl-logo-static{background:#142036;border-radius:8px;padding:3px 6px}
 @media(max-width:850px){.studio-portal .eslux-guide ol{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-portal .eslux-support{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:380px){.studio-portal .eslux-guide li{padding:9px;gap:6px}.studio-portal .eslux-guide svg{width:18px;height:18px}.studio-portal .eslux-guide strong{font-size:12px}.studio-portal .eslux-guide small{font-size:11px}}
+/* ESL-IKR FAQ ONLY */
+.studio-portal .eslux-support #faq{width:100%;min-width:0}
+.studio-portal .eslux-support #faq summary{min-height:32px;display:list-item;padding:5px 0}

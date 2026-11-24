@@ -11,7 +11,7 @@
 *{box-sizing:border-box}html,body{height:100%;margin:0}body{background:var(--bg);color:var(--text);overflow:hidden}
 .app{height:100dvh;min-height:340px;display:flex;flex-direction:column}
 header{flex:none;min-height:68px;background:#0e1721;display:flex;gap:14px;align-items:center;padding:9px clamp(12px,2vw,24px);border-bottom:1px solid var(--line);box-shadow:0 4px 18px #0003;z-index:5}
-.back{display:flex;align-items:center;justify-content:center;text-decoration:none;color:#c0d5e0;border:1px solid #385063;background:#152433;border-radius:10px;width:auto;min-width:38px;padding:0 10px;height:38px;flex:none;font-weight:750;font-size:12px}.back:hover,.back:focus-visible{border-color:var(--accent);color:#fff}
+.back{display:flex;align-items:center;justify-content:center;text-decoration:none;color:#c0d5e0;border:1px solid #385063;background:#152433;border-radius:10px;width:38px;height:38px;flex:none;font-weight:750;font-size:20px}.back:hover,.back:focus-visible{border-color:var(--accent);color:#fff}
 .brand{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto}.brand img{width:39px;height:39px;border-radius:11px;object-fit:contain;background:#0d2032;flex:none}.brand>div{min-width:0}.brand b{font-size:13px;letter-spacing:.02em;display:block;white-space:nowrap}.brand small{color:var(--muted);font-size:10px;display:block;margin-top:2px;white-space:nowrap}
 .tabs{display:flex;gap:5px;background:#0a1118;border:1px solid #2a3b48;border-radius:11px;padding:5px;min-width:0;flex:none}
 .tab{border:1px solid transparent;background:none;color:#aec0cb;padding:10px 14px;border-radius:8px;font:700 12px/1.2 inherit;font-family:inherit;font-size:12px;font-weight:750;cursor:pointer;white-space:nowrap}
@@ -19,14 +19,14 @@ header{flex:none;min-height:68px;background:#0e1721;display:flex;gap:14px;align-
 .tab:focus-visible{outline:2px solid #c8f3ee;outline-offset:2px}
 main{position:relative;flex:1;min-height:0;overflow:hidden}iframe{display:block;width:100%;height:100%;border:0;background:#0a111b}
 #loading{pointer-events:none;position:absolute;left:50%;top:12px;transform:translateX(-50%);font-size:11px;color:#cbd9e3;border:1px solid #385063;background:#112431ed;border-radius:999px;padding:7px 13px;transition:opacity .2s;z-index:2}#loading[hidden]{display:none}
-@media(max-width:720px){header{flex-wrap:wrap;row-gap:6px;min-height:0;padding:8px 11px}.brand{flex:1}.brand b{font-size:12px}.brand small{font-size:9px}.brand img{width:34px;height:34px}.back{width:auto;min-width:34px;height:34px;padding:0 7px}.tabs{order:3;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px}.tab{font-size:11px;padding:9px 5px;min-width:0}}
+@media(max-width:720px){header{flex-wrap:wrap;row-gap:6px;min-height:0;padding:8px 11px}.brand{flex:1}.brand b{font-size:12px}.brand small{font-size:9px}.brand img{width:34px;height:34px}.back{width:34px;height:34px}.tabs{order:3;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px}.tab{font-size:11px;padding:9px 5px;min-width:0}}
 @media(max-height:450px){header{min-height:48px;padding-block:4px}.brand small{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
- <a class="back" href="../" title="Kembali ke portal eSL-IKR" aria-label="Kembali ke portal eSL-IKR">← Kembali</a>
+ <a class="back" href="../" title="Kembali ke portal eSL-IKR" aria-label="Kembali ke portal eSL-IKR">←</a>
  <div class="brand"><img src="../assets/structured-cabling-3d.webp" alt="Logo Structured Cabling 3D"><div><b>Structured Cabling 3D</b><small>IKR3023 · Makmal Interaktif</small></div></div>
  <nav class="tabs" aria-label="Pilih latihan Structured Cabling" role="tablist">
   <button type="button" role="tab" class="tab" id="tab-crimp" aria-selected="true" aria-controls="simulator">RJ45 · Crimp &amp; Test</button>
